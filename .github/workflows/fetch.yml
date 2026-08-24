@@ -1,0 +1,30 @@
+name: Fetch CFBD data
+
+# Run this by hand from the Actions tab (no schedule yet).
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: "Seasons to fetch (e.g. 2023, or 2005-2024)"
+        default: "2023"
+        required: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch data and print coverage report
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
