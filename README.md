@@ -29,20 +29,3 @@ scripts/make_synthetic.py  fake-but-honest data to test with no key
 demo.py    runs the whole thing end to end
 ```
 
-## Run it now (no API key needed)
-
-```bash
-pip install -r requirements.txt
-python demo.py
-```
-
-You'll see the contract pass on good data, a walk-forward backtest table, the
-disagreement analysis, and finally the contract *catching* a deliberately
-broken column — last year's exact bug.
-
-## Wiring in real data (next step)
-
-Fill in `build_games_table()` in `scripts/fetch_cfbd.py`: map CFBD JSON to the
-schema columns. The contract will tell you exactly which columns you still owe
-it. Set `CFBD_API_KEY` as an environment variable / GitHub Actions secret.
-```
