@@ -1,0 +1,16 @@
+# --- Secrets: never commit your API key ---
+.env
+.env.*
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Local data (re-fetched from CFBD; too big / not needed in repo) ---
+data/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
