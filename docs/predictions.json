@@ -1,0 +1,47 @@
+{
+  "season": 2025,
+  "week": 1,
+  "generated_at": "2025-08-24 (sample data)",
+  "games": [
+    {
+      "away_team": "LSU", "away_rank": 16,
+      "home_team": "Vanderbilt", "home_rank": null,
+      "neutral": false,
+      "model_prob_home": 0.84,
+      "market_prob_home": 0.31,
+      "spread_home": 6.5,
+      "pick": "Vanderbilt",
+      "ai_note": null
+    },
+    {
+      "away_team": "Georgia Tech", "away_rank": 13,
+      "home_team": "Duke", "home_rank": null,
+      "neutral": false,
+      "model_prob_home": 0.462,
+      "market_prob_home": 0.55,
+      "spread_home": -1.5,
+      "pick": "Georgia Tech",
+      "ai_note": null
+    },
+    {
+      "away_team": "Louisville", "away_rank": 24,
+      "home_team": "Ole Miss", "home_rank": 9,
+      "neutral": true,
+      "model_prob_home": 0.68,
+      "market_prob_home": 0.72,
+      "spread_home": -6.5,
+      "pick": "Ole Miss",
+      "ai_note": null
+    },
+    {
+      "away_team": "SMU", "away_rank": 19,
+      "home_team": "Florida State", "home_rank": null,
+      "neutral": false,
+      "model_prob_home": 0.44,
+      "market_prob_home": 0.42,
+      "spread_home": 3.0,
+      "pick": "SMU",
+      "ai_note": null
+    }
+  ]
+}

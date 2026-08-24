@@ -1,0 +1,21 @@
+{
+  "_comment": "Keys must match the team names in predictions.json (CFBD names). Replace/extend with your own full FBS colors file from last year's repo.",
+  "LSU": { "primary": "#461D7C", "secondary": "#FDD023" },
+  "Vanderbilt": { "primary": "#CFAE70", "secondary": "#000000" },
+  "Georgia Tech": { "primary": "#B3A369", "secondary": "#003057" },
+  "Duke": { "primary": "#003087", "secondary": "#FFFFFF" },
+  "Louisville": { "primary": "#AD0000", "secondary": "#000000" },
+  "Ole Miss": { "primary": "#CE1126", "secondary": "#14213D" },
+  "SMU": { "primary": "#354CA1", "secondary": "#CC0035" },
+  "Florida State": { "primary": "#782F40", "secondary": "#CEB888" },
+  "Alabama": { "primary": "#9E1B32", "secondary": "#828A8F" },
+  "Georgia": { "primary": "#BA0C2F", "secondary": "#000000" },
+  "Ohio State": { "primary": "#BB0000", "secondary": "#666666" },
+  "Michigan": { "primary": "#00274C", "secondary": "#FFCB05" },
+  "Texas": { "primary": "#BF5700", "secondary": "#FFFFFF" },
+  "Oregon": { "primary": "#154733", "secondary": "#FEE123" },
+  "Notre Dame": { "primary": "#0C2340", "secondary": "#C99700" },
+  "Penn State": { "primary": "#041E42", "secondary": "#FFFFFF" },
+  "Tennessee": { "primary": "#FF8200", "secondary": "#58595B" },
+  "Washington": { "primary": "#4B2E83", "secondary": "#B7A57A" }
+}

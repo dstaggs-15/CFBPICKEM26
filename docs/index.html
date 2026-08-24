@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFB Pick'em Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>CFB Pick'em Model</h1>
+      </div>
+      <p class="dek" id="dek">Loading this week's board…</p>
+      <div class="controls">
+        <input id="filter" type="search" placeholder="Filter by team…" autocomplete="off" />
+        <span class="legend">
+          <span class="legend-chip agree">AGREE</span> model &amp; market concur
+          <span class="legend-chip disagree">DISAGREE</span> model breaks from the line
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main id="board" class="board" aria-live="polite"></main>
+
+  <footer class="footer">
+    <p>Model probabilities are calibrated on a walk-forward backtest. The line is the benchmark, not an input.
+       <span class="mono" id="stamp"></span></p>
+  </footer>
+
+  <template id="card-tpl">
+    <article class="game">
+      <div class="teams">
+        <div class="team team--away">
+          <span class="rank"></span><span class="name"></span>
+        </div>
+        <span class="at">@</span>
+        <div class="team team--home">
+          <span class="rank"></span><span class="name"></span>
+        </div>
+      </div>
+
+      <div class="pcts">
+        <span class="pct pct--away mono"></span>
+        <span class="pct pct--home mono"></span>
+      </div>
+      <div class="meter" role="img">
+        <div class="meter-fill meter--away"></div>
+        <div class="meter-fill meter--home"></div>
+      </div>
+
+      <div class="verdict">
+        <div class="pick"><span class="pick-label">PICK</span> <span class="pick-team"></span></div>
+        <div class="market mono"></div>
+      </div>
+
+      <div class="ai">
+        <span class="ai-label">AI take</span>
+        <span class="ai-body">—</span>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
