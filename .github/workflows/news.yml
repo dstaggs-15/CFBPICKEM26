@@ -1,0 +1,36 @@
+name: Refresh news
+
+
+on:
+  workflow_dispatch:        # the manual "Run workflow" button
+  schedule:
+    - cron: "0 15 * * 2,4,6" # ~10am ET Tue/Thu/Sat (UTC times)
+
+permissions:
+  contents: write
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull news headlines
+        run: python news.py
+
+      - name: Publish news to the site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/news.json
+          git commit -m "refresh news" || echo "nothing to commit"
+          git push
