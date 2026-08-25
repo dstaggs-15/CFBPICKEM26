@@ -12,16 +12,14 @@
 <body>
   <header class="masthead">
     <div class="masthead-inner">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <h1>CFB Pick'em Model</h1>
-      </div>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><h1>CFB Pick'em Model</h1></div>
       <p class="dek" id="dek">Loading this week's board…</p>
       <div class="controls">
         <input id="filter" type="search" placeholder="Filter by team…" autocomplete="off" />
         <span class="legend">
           <span class="legend-chip agree">AGREE</span> model &amp; market concur
           <span class="legend-chip disagree">DISAGREE</span> model breaks from the line
+          <span class="hint">· tap a card for the breakdown</span>
         </span>
       </div>
     </div>
@@ -36,33 +34,43 @@
 
   <template id="card-tpl">
     <article class="game">
-      <div class="teams">
-        <div class="team team--away">
-          <span class="rank"></span><span class="name"></span>
+      <button class="game-head" aria-expanded="false">
+        <div class="teams">
+          <div class="team team--away"><span class="rank"></span><span class="name"></span></div>
+          <span class="at">@</span>
+          <div class="team team--home"><span class="rank"></span><span class="name"></span></div>
         </div>
-        <span class="at">@</span>
-        <div class="team team--home">
-          <span class="rank"></span><span class="name"></span>
+        <div class="pcts"><span class="pct pct--away mono"></span><span class="pct pct--home mono"></span></div>
+        <div class="meter" role="img"><div class="meter-fill meter--away"></div><div class="meter-fill meter--home"></div></div>
+        <div class="verdict">
+          <div class="pick"><span class="pick-label">PICK</span> <span class="pick-team"></span></div>
+          <div class="market mono"></div>
         </div>
-      </div>
+        <span class="chevron" aria-hidden="true">▾</span>
+      </button>
 
-      <div class="pcts">
-        <span class="pct pct--away mono"></span>
-        <span class="pct pct--home mono"></span>
-      </div>
-      <div class="meter" role="img">
-        <div class="meter-fill meter--away"></div>
-        <div class="meter-fill meter--home"></div>
-      </div>
-
-      <div class="verdict">
-        <div class="pick"><span class="pick-label">PICK</span> <span class="pick-team"></span></div>
-        <div class="market mono"></div>
-      </div>
-
-      <div class="ai">
-        <span class="ai-label">AI take</span>
-        <span class="ai-body">—</span>
+      <div class="drawer" hidden>
+        <div class="why">
+          <span class="section-label">Why this pick</span>
+          <ul class="why-list"></ul>
+        </div>
+        <div class="statgrid">
+          <div class="statcol statcol--away">
+            <span class="statcol-team"></span>
+            <ul class="stat-list"></ul>
+          </div>
+          <div class="statcol statcol--home">
+            <span class="statcol-team"></span>
+            <ul class="stat-list"></ul>
+          </div>
+        </div>
+        <div class="news" hidden>
+          <span class="section-label">Around the matchup</span>
+          <ul class="news-list"></ul>
+        </div>
+        <div class="ai">
+          <span class="ai-label">AI take</span><span class="ai-body">coming soon</span>
+        </div>
       </div>
     </article>
   </template>
