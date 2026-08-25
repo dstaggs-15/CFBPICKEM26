@@ -1,14 +1,10 @@
-# This week's ESPN pick'em slate — edit this each week.
-# One game per line:  AWAY @ HOME   (use 'vs' for a neutral-site game)
-# Lines starting with # are ignored. Team names should match CFBD spelling.
-
-LSU @ Vanderbilt
-Georgia Tech @ Duke
-Louisville vs Ole Miss
+Tulane @ Duke
+Boston College @ Cincinnati
+Baylor @ Auburn
+Wyoming @ Colorado State
+Clemson @ LSU
+UNLV @ Hawai'i
+Western Kentucky @ Nevada
+UCLA @ California
+Louisville @ Ole Miss
 SMU @ Florida State
-Alabama @ Georgia
-Ohio State @ Texas
-Michigan @ Oklahoma
-Oregon @ Penn State
-Notre Dame @ Miami
-Tennessee @ Clemson
