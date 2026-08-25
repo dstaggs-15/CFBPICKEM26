@@ -1,0 +1,54 @@
+name: Run weekly pipeline
+
+# Does everything: fetch data -> build features -> train + backtest ->
+# predict this week's games.txt -> pull news -> publish results to the site.
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: "Seasons of data to train on"
+        default: "2014-2025"
+        required: true
+
+permissions:
+  contents: write   # lets the job commit predictions back to the repo
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch data
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
+
+      - name: Build features
+        run: python features.py
+
+      - name: Train + backtest (prints the report card)
+        run: python train_and_backtest.py
+
+      - name: Predict this week's slate
+        run: python predict.py
+
+      - name: Pull news headlines
+        run: python news.py
+
+      - name: Publish results to the site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/predictions.json docs/news.json docs/team_stats.json
+          git commit -m "weekly update: predictions + news" || echo "nothing to commit"
+          git push
