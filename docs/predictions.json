@@ -3,49 +3,20 @@
   "generated_at": "2026-08-25",
   "games": [
     {
-      "away_team": "Duke",
-      "home_team": "Tulane",
+      "away_team": "Tulane",
+      "home_team": "Duke",
       "neutral": false,
-      "model_prob_home": 0.832,
-      "market_prob_home": 0.552,
-      "spread_home": -1.5,
-      "pick": "Tulane",
+      "model_prob_home": 0.948,
+      "market_prob_home": 0.91,
+      "spread_home": -16.5,
+      "pick": "Duke",
       "why": [
-        "Tulane carries the stronger overall rating into this game.",
-        "Tulane has the stronger defense by opponent-adjusted efficiency.",
-        "Tulane is at home, worth a few points of edge."
+        "Duke has been more efficient on offense against comparable defenses.",
+        "Duke has the stronger defense by opponent-adjusted efficiency.",
+        "Duke is at home, worth a few points of edge."
       ],
       "teams": {
         "away": {
-          "name": "Duke",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.249,
-              "rank": 50,
-              "of": 310
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": 0.224,
-              "rank": 224,
-              "of": 310
-            },
-            {
-              "label": "Success rate",
-              "value": "45.7%",
-              "rank": 51,
-              "of": 310
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.35,
-              "rank": 69,
-              "of": 310
-            }
-          ]
-        },
-        "home": {
           "name": "Tulane",
           "stats": [
             {
@@ -73,6 +44,35 @@
               "of": 310
             }
           ]
+        },
+        "home": {
+          "name": "Duke",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.249,
+              "rank": 50,
+              "of": 310
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.224,
+              "rank": 224,
+              "of": 310
+            },
+            {
+              "label": "Success rate",
+              "value": "45.7%",
+              "rank": 51,
+              "of": 310
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.35,
+              "rank": 69,
+              "of": 310
+            }
+          ]
         }
       },
       "ai_note": null
@@ -80,20 +80,83 @@
     {
       "away_team": "Boston College",
       "home_team": "Cincinnati",
-      "neutral": false,
-      "error": "not found on the schedule \u2014 check spelling vs CFBD",
-      "model_prob_home": null,
-      "market_prob_home": null,
-      "spread_home": null,
-      "pick": null,
-      "why": [],
+      "neutral": true,
+      "model_prob_home": 0.835,
+      "market_prob_home": 0.741,
+      "spread_home": -7.5,
+      "pick": "Cincinnati",
+      "why": [
+        "Cincinnati has been more efficient on offense against comparable defenses.",
+        "Cincinnati has the stronger defense by opponent-adjusted efficiency.",
+        "Neutral site \u2014 no home-field edge for either team."
+      ],
+      "teams": {
+        "away": {
+          "name": "Boston College",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.164,
+              "rank": 130,
+              "of": 310
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.229,
+              "rank": 228,
+              "of": 310
+            },
+            {
+              "label": "Success rate",
+              "value": "42.7%",
+              "rank": 108,
+              "of": 310
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.23,
+              "rank": 202,
+              "of": 310
+            }
+          ]
+        },
+        "home": {
+          "name": "Cincinnati",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.304,
+              "rank": 27,
+              "of": 310
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.188,
+              "rank": 188,
+              "of": 310
+            },
+            {
+              "label": "Success rate",
+              "value": "47.0%",
+              "rank": 32,
+              "of": 310
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.35,
+              "rank": 73,
+              "of": 310
+            }
+          ]
+        }
+      },
       "ai_note": null
     },
     {
       "away_team": "Auburn",
       "home_team": "Baylor",
       "neutral": false,
-      "model_prob_home": 0.918,
+      "model_prob_home": 0.835,
       "market_prob_home": 0.465,
       "spread_home": 1.0,
       "pick": "Baylor",
@@ -169,7 +232,7 @@
       "away_team": "Wyoming",
       "home_team": "Colorado State",
       "neutral": false,
-      "model_prob_home": 0.549,
+      "model_prob_home": 0.709,
       "market_prob_home": 0.767,
       "spread_home": -8.5,
       "pick": "Colorado State",
@@ -242,49 +305,20 @@
       "ai_note": null
     },
     {
-      "away_team": "LSU",
-      "home_team": "Clemson",
-      "neutral": false,
-      "model_prob_home": 0.549,
-      "market_prob_home": 0.684,
-      "spread_home": -5.5,
+      "away_team": "Clemson",
+      "home_team": "LSU",
+      "neutral": true,
+      "model_prob_home": 0.135,
+      "market_prob_home": 0.652,
+      "spread_home": -4.5,
       "pick": "Clemson",
       "why": [
-        "Clemson carries the stronger overall rating into this game.",
+        "Clemson has been more efficient on offense against comparable defenses.",
         "Clemson has the stronger defense by opponent-adjusted efficiency.",
-        "Clemson is at home, worth a few points of edge."
+        "Neutral site \u2014 no home-field edge for either team."
       ],
       "teams": {
         "away": {
-          "name": "LSU",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.09,
-              "rank": 200,
-              "of": 310
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": 0.074,
-              "rank": 53,
-              "of": 310
-            },
-            {
-              "label": "Success rate",
-              "value": "39.5%",
-              "rank": 189,
-              "of": 310
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.23,
-              "rank": 204,
-              "of": 310
-            }
-          ]
-        },
-        "home": {
           "name": "Clemson",
           "stats": [
             {
@@ -312,6 +346,35 @@
               "of": 310
             }
           ]
+        },
+        "home": {
+          "name": "LSU",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.09,
+              "rank": 200,
+              "of": 310
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.074,
+              "rank": 53,
+              "of": 310
+            },
+            {
+              "label": "Success rate",
+              "value": "39.5%",
+              "rank": 189,
+              "of": 310
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.23,
+              "rank": 204,
+              "of": 310
+            }
+          ]
         }
       },
       "ai_note": null
@@ -320,7 +383,7 @@
       "away_team": "UNLV",
       "home_team": "Hawai'i",
       "neutral": false,
-      "model_prob_home": 0.154,
+      "model_prob_home": 0.135,
       "market_prob_home": 0.148,
       "spread_home": 12.5,
       "pick": "UNLV",
@@ -395,7 +458,7 @@
       "away_team": "Nevada",
       "home_team": "Western Kentucky",
       "neutral": false,
-      "model_prob_home": 0.979,
+      "model_prob_home": 0.966,
       "market_prob_home": 0.741,
       "spread_home": -7.5,
       "pick": "Western Kentucky",
@@ -471,7 +534,7 @@
       "away_team": "UCLA",
       "home_team": "California",
       "neutral": false,
-      "model_prob_home": 0.471,
+      "model_prob_home": 0.352,
       "market_prob_home": 0.167,
       "spread_home": 11.5,
       "pick": "UCLA",
@@ -546,13 +609,14 @@
       "away_team": "Louisville",
       "home_team": "Ole Miss",
       "neutral": true,
-      "model_prob_home": 0.154,
+      "model_prob_home": 0.571,
       "market_prob_home": 0.779,
       "spread_home": -9.0,
-      "pick": "Louisville",
+      "pick": "Ole Miss",
       "why": [
-        "Neutral site \u2014 no home-field edge for either team.",
-        "Early season: this leans on preseason ratings until more games are played."
+        "Ole Miss has been more efficient on offense against comparable defenses.",
+        "Louisville has the stronger defense by opponent-adjusted efficiency.",
+        "Neutral site \u2014 no home-field edge for either team."
       ],
       "teams": {
         "away": {
@@ -620,7 +684,7 @@
       "away_team": "Florida State",
       "home_team": "SMU",
       "neutral": false,
-      "model_prob_home": 0.979,
+      "model_prob_home": 0.966,
       "market_prob_home": 0.698,
       "spread_home": -6.0,
       "pick": "SMU",
