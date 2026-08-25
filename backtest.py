@@ -1,14 +1,3 @@
-"""
-backtest.py — the product.
-
-This is the thing last year never had. It trains each model on past seasons,
-predicts the next, and reports every model beside the same baselines on the
-same games. The number that actually matters for a pick'em pool is at the
-bottom: when your model DISAGREES with the market, does it win those games?
-Agreeing with the favorite is free; disagreements are the only place an edge
-can live.
-"""
-
 from __future__ import annotations
 import numpy as np
 import pandas as pd
@@ -18,8 +7,15 @@ EPS = 1e-6
 
 
 def _metrics(y, p):
-    y = np.asarray(y, dtype=int)
-    p = np.clip(np.asarray(p, dtype=float), EPS, 1 - EPS)
+    y = np.asarray(y, dtype=float)
+    p = np.asarray(p, dtype=float)
+    # Only score games this model could actually predict (market baseline has no
+    # number for line-less games). Skip NaN predictions rather than crashing.
+    mask = np.isfinite(p) & np.isfinite(y)
+    y = y[mask].astype(int)
+    p = np.clip(p[mask], EPS, 1 - EPS)
+    if len(y) == 0:
+        return {"n": 0, "acc": float("nan"), "brier": float("nan"), "logloss": float("nan")}
     pick_home = p >= 0.5
     return {
         "n": int(len(y)),
@@ -85,6 +81,10 @@ def _disagreement_analysis(games: pd.DataFrame, model="model", market="market"):
         return pd.DataFrame()
 
     g = games.copy()
+    # Compare only where BOTH the model and the market produced a number.
+    g = g.dropna(subset=[f"p_{model}", f"p_{market}"])
+    if g.empty:
+        return pd.DataFrame()
     g["model_home"] = g[f"p_{model}"] >= 0.5
     g["market_home"] = g[f"p_{market}"] >= 0.5
     g["agree"] = g["model_home"] == g["market_home"]
