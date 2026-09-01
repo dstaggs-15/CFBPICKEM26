@@ -35,7 +35,12 @@ TARGET = "home_win"  # 1 if home_points > away_points else 0
 CONTEXT_FEATURES = [
     "is_postseason",     # bool/int
     "rest_diff",         # home_rest_days - away_rest_days
-    "travel_diff_km",    # away travel distance proxy (home ~ 0)
+    # NOTE: travel_diff_km removed from MODEL_FEATURES on 2026-09-01. It was
+    # being hardcoded to 0.0 for every game — a fake constant that the data
+    # contract's check_no_constant_features() should have caught and would
+    # have, had the training pipeline actually been calling contract.validate()
+    # (it wasn't; see train_and_backtest.py history). Re-add once real venue
+    # coordinates are wired in from CFBD's /venues endpoint.
 ]
 
 # Team-strength features: opponent-adjusted, rolling, computed from PRIOR games only.
