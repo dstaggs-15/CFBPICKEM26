@@ -7,7 +7,7 @@ on:
     inputs:
       seasons:
         description: "Seasons of data to train on"
-        default: "2014-2025"
+        default: "2014-2026"
         required: true
 
 permissions:
