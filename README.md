@@ -1,108 +1,122 @@
 # CFB Pick'em Model
 
-A college-football prediction system that picks winners for a weekly ESPN pick'em pool — and, more importantly, **tells you how confident it is and why**, in plain English. It runs entirely on GitHub (no server, no cost) and publishes to a live website.
+A tool that predicts college football games for a weekly ESPN pick'em pool, shows a live website with the picks, and explains *why* it made each one in plain English. It runs entirely for free on GitHub — no server, no monthly cost.
 
-This is a ground-up rebuild of last year's version. The rest of this README explains what it is, how each part works, and the one question everyone asks: *how can it possibly know who'll win before a single game is played?*
-
----
-
-## Why it was rebuilt (the short, honest version)
-
-Last year's model looked finished — it had a website, confidence meters, the works — but under the hood it had quietly lost almost all of its data. The advanced team stats never loaded. The betting lines never loaded. Nothing warned anyone, because missing data was silently filled in with averages, so the model just ran on almost nothing and nobody could tell. On a fair test it was actually a hair *worse* than a one-line power rating.
-
-The rebuild is designed around a single idea: **make that kind of silent failure impossible.** If a piece of data is missing, the whole thing stops and says so, by name, before it ever makes a pick. Better to break loudly on a Tuesday than to lie quietly on a Saturday.
+This README explains what it does and how, in plain language, from the ground up.
 
 ---
 
-## How it works, station by station
+## The one-sentence version
 
-Think of it as an assembly line. Raw football data comes in one end; a pick with an explanation comes out the other. Each file is one station.
-
-### 1. The blueprint — `schema.py`
-A single list that defines exactly what one game's worth of data looks like: the teams, the score, the site, the stats, the betting line. Everything else in the project refers back to this one list, so there's never a disagreement about what the data should contain.
-
-### 2. The inspector — `contract.py`
-The most important file, and the thing last year didn't have. Before any data is allowed through, this checks it: are the stats actually here? Is any column suspiciously empty for a given season? Is anything a single frozen value (the fingerprint of a broken connection)? If something's wrong, it **stops the line and names the exact column and year.** This is the immune system.
-
-### 3. The data puller — `fetch_cfbd.py`
-The only file that reaches out to the internet. It pulls three things from the College Football Data API: game results, betting lines, and advanced team stats (efficiency numbers like PPA — points-per-play — and success rate). It saves them and prints a coverage report so you can *see* how complete the data is. This is where your `CFBD_API_KEY` is used.
-
-### 4. The measuring sticks — `baselines.py`
-Two dead-simple predictors: one based on **Elo** (a power rating that rises when you win and falls when you lose) and one based on the **betting line**. These aren't the model — they're the bar the model has to clear. If the fancy model can't beat "just trust the betting line," it isn't worth running. Last year had no such bar, which is why nobody noticed the model was underperforming.
-
-### 5. The feature builder — *(next to be built)*
-Turns raw stats into things the model can actually learn from. The headline one is **opponent-adjusted strength**: "Team X averaged 0.6 points per play" is meaningless until you adjust for *who they played*. Beating a great defense at 0.6 is elite; doing it against a cupcake is not. This adjustment is the single feature that separates two evenly-matched teams — and it's what vanished entirely last year.
-
-### 6. The brain — `model.py`
-A gradient-boosting model that learns from the football features only. Two rules baked in: it is **not** allowed to peek at the betting line (the line is the benchmark, not an input — otherwise it's just parroting Vegas), and it checks its own confidence honestly on data it hasn't seen, instead of grading its own homework the way last year's did.
-
-### 7. The report card — `backtest.py`
-Answers "how good is this, really?" honestly: it trains on old seasons and tests on a season it has never seen, exactly how it'll face the future. It prints your model beside the two baselines, and — the part that matters most — it splits games into where the model **agrees** with the betting line and where it **disagrees**. Agreeing is free; anyone can pick the favorite. The only place the model can earn its keep is winning the games where it *disagrees*. That row is the whole ballgame.
-
-### 8. The weekly slate — `weekly_input.py` + `docs/input/games.txt`
-Each week you edit `games.txt` with ESPN's 10 games, one per line (`Away @ Home`, or `Away vs Home` for a neutral site). Commit it, and the pipeline predicts exactly those games.
-
-### 9. The website — `docs/`
-A static site (plain HTML/CSS/JS) served free by GitHub Pages. Each game is a card with a **tug-of-war meter** built from the two teams' real colors — the more confident the pick, the more the bar is filled by that team's color. Each card shows the pick, how it compares to the betting line (an AGREE/DISAGREE tag), and a slot for the plain-English explanation and (later) an AI second opinion.
+Every week you type in your 10 ESPN games, click one button, and a few minutes later your website shows real predictions — with a confidence percentage, a comparison to the Vegas betting line, each team's stats, and news headlines — for all 10 games.
 
 ---
 
-## The question everyone asks: how does it know before any games are played?
+## Why this exists (the honest backstory)
 
-Say it's Week 1 and the model gives Ole Miss a 68% chance to win. No games have happened yet — so what on earth is that number based on? Fair question. Here's the honest answer.
+An earlier version of this looked done — website, percentages, the works — but it turned out to be quietly broken. It was supposed to use detailed team stats and betting lines, but those never actually loaded, and nothing told anyone. So it was making picks almost blind. When actually measured, it did *worse* than just picking whichever team was favored.
 
-**Before the season starts, the model leans on what carries over from last year:**
-- **Where each team ended last season** (their final power rating). A team that finished strong starts strong; this "memory" fades a bit over the off-season but doesn't reset to zero.
-- **How good each program usually is.** Blue-bloods and perennial contenders get the benefit of the doubt over programs that are usually rebuilding.
-- **Home field and travel.** Playing at home is worth real points; a long road trip costs something. A neutral-site game (the `vs` games) removes that edge.
-
-So a Week 1 "68%" is really the model saying: *based on how these two teams finished last year, who's generally stronger, and who's at home, Ole Miss should win about two times out of three.* It is a starting estimate from prior evidence, not a guess pulled from nowhere — the same way you'd expect a returning playoff team to beat a rebuilding one even though you haven't watched them yet.
-
-**As the season plays, the memory gets replaced by this year's reality.** After a few weeks the model shifts its weight onto how each team is *actually* performing right now — their recent efficiency, adjusted for the quality of who they've played. By midseason, last year barely matters; the number is grounded in games you've watched. That's also when the model is at its sharpest.
-
-**And this is exactly why the "why" panel matters.** When it's built, clicking a game will show the handful of things pushing the pick — "Ole Miss rated higher entering the year," "playing at a neutral site (no home edge for either)," "stronger recent efficiency" — so you're never asked to just trust a naked percentage. If the model can't explain itself in plain terms, you shouldn't believe it, and neither should we.
+This version is built around one rule: **if data is missing, stop and say so loudly, instead of quietly guessing.** Every piece described below follows that rule.
 
 ---
 
-## The weekly routine (once it's all wired up)
+## The pieces, in plain English
 
-1. Edit `docs/input/games.txt` with this week's 10 ESPN games. Commit.
-2. The GitHub Action runs automatically: pulls fresh data, rebuilds features, predicts your 10 games, writes `docs/predictions.json`.
-3. Your website updates itself with the new picks, meters, and explanations.
+Think of this as a factory line. Each station does one job and hands off to the next.
 
-No computer setup required — it all happens in your browser and in GitHub's cloud.
+**1. Get the data.** A script reaches out to a college football data service and downloads years of game results, betting lines, and detailed team stats (how efficient each team's offense and defense are, not just win/loss).
 
----
+**2. Check the data.** Before anything is trusted, an "inspector" checks it — is anything suspiciously missing? Is any column just one repeated value (a sign something broke)? If so, it stops and names the exact problem instead of quietly continuing. This is the safeguard the old version never had.
 
-## Running it in the browser (no local install)
+**3. Turn stats into "who's actually better."** Raw stats aren't fair on their own — a team that scores a lot against weak opponents isn't the same as a team that scores a lot against strong ones. This step adjusts every team's numbers for *who they actually played*, so the comparisons are fair.
 
-Everything runs through GitHub Actions, so you never install Python on your own machine.
+**4. Set the bar to beat.** Two simple, honest predictors are built first: one based on a power-rating system (Elo, like chess rankings), and one based on the Vegas betting line. These aren't fancy, but they're a fair baseline. The real model isn't allowed to call itself "good" unless it beats both of these.
 
-- **Your API key** lives as a repository secret: **Settings -> Secrets and variables -> Actions -> New repository secret**, named `CFBD_API_KEY`.
-- **To fetch data**, go to the **Actions** tab -> **Fetch CFBD data** -> **Run workflow**.
-- **The website** is turned on at **Settings -> Pages -> Deploy from a branch -> `main` / `docs`**.
+**5. Train the actual model.** A machine-learning model studies years of past games — using the fair, adjusted stats — and learns the patterns that lead to wins.
 
----
+**6. Grade it honestly.** The model is tested the fair way: it only ever predicts games it hasn't seen the result of yet (like predicting next season using only past seasons). It's scored against the two baselines from step 4. Most importantly, it's split into two groups: games where it *agrees* with Vegas, and games where it *disagrees*. Agreeing with Vegas is easy — anyone can do that. The only place this model can prove it's actually smart is in the disagreements. That number is the real report card.
 
-## What's built vs. what's coming
+**7. You type in this week's games.** Each week you edit one small text file with the 10 games from your ESPN pool (just team names, like `LSU @ Vanderbilt`).
 
-**Built and working:**
-- The data contract (the inspector)
-- Real data fetching from CFBD, with coverage reporting
-- Elo and betting-line baselines
-- The walk-forward backtest with the agree/disagree analysis
-- The weekly `games.txt` slate reader
-- The live website with team-colored confidence meters
+**8. It makes the picks.** The trained model looks at exactly those 10 games and predicts a winner and a confidence percentage for each.
 
-**Coming next, in order:**
-1. **The feature builder + trained model** — turns the raw data into real, opponent-adjusted predictions. Unlocks everything below.
-2. **The "why" panel** — click a game to see, in plain English, the real factors behind the pick (only possible once the model exists, so it shows genuine reasoning, not filler).
-3. **Team stats in the card** — recent efficiency, form, and the betting line, so you can sanity-check the pick yourself.
-4. **News per game** — headlines and injury notes pulled in weekly and attached to each matchup.
-5. **The AI second opinion** — an independent, plain-English take that gets scored on the same backtest as the model, so it has to earn its credibility too.
+**9. It explains itself.** For every pick, it writes a short, plain-English reason — like "Tulane has been more efficient on offense against similar defenses" or "Vanderbilt is at home, which is worth a few points." It's built from the model's real inputs, not made up after the fact.
+
+**10. It gathers news.** For each of the 20 teams playing this week, it searches for a few recent headlines (injuries, roster news, storylines) and attaches them to that game.
+
+**11. It builds the website.** All of this — picks, percentages, stats, explanations, news — gets written into your live website automatically.
 
 ---
 
-## A note on honesty
+## What the website actually shows you
 
-The guiding rule of this project: **never show a number or a pick without a real basis behind it.** Placeholder data is always labeled as placeholder. The model doesn't ship unless it beats the baselines on a fair test. The AI opinion, when it arrives, keeps a public win-loss record. If something can't be explained or measured, it doesn't go on the site. That discipline is the entire difference between this and last year.
+Each game is a card. Tap it and it expands to show:
+
+- **The pick and the percentage** — a bar that fills with each team's real school colors, showing how confident the model is.
+- **Whether it agrees with Vegas** — an AGREE or DISAGREE tag next to the betting line.
+- **Why it picked that team** — a few plain-English bullet points.
+- **Each team's season stats** — offense, defense, and how they rank nationally (e.g. "7th out of 134").
+- **Recent news** — a few headlines about each team.
+- An **AI take** slot, currently empty — reserved for a second, independent AI opinion (not built yet, see below).
+
+If a game can't be matched to the schedule (usually because of a small spelling difference), the card says "not found" honestly instead of pretending to have an answer.
+
+---
+
+## How it knows anything before the season starts
+
+Fair question — if no games have been played yet, what is a "68% chance" even based on? Three things:
+
+1. **How each team finished last season** — a power rating that carries over and fades slowly, not a full reset.
+2. **How good each program usually is** — a blue-blood program gets more benefit of the doubt than a team that's usually rebuilding.
+3. **Home field** — playing at home is worth real points; a neutral-site game removes that edge.
+
+As real games get played, the model leans more and more on *this season's* actual performance and less on last year's memory. By midseason, it's mostly grounded in games you've actually watched happen.
+
+---
+
+## Where your data comes from and where it goes
+
+- **Game results, stats, and betting lines**: pulled from a service called CollegeFootballData, using your personal API key (kept private as a GitHub "secret," never visible in the code).
+- **News headlines**: pulled from Google News' public feed for each team.
+- **Everything runs on GitHub's computers**, not your own — you just click "Run workflow" in the Actions tab and it does the work in the cloud.
+- **Your website**: a set of plain files (`docs/` folder) that GitHub hosts for free and updates every time the pipeline runs.
+
+---
+
+## The weekly routine
+
+1. Edit the games file with this week's 10 ESPN matchups.
+2. Go to the Actions tab, click **Run weekly pipeline**, click Run.
+3. Wait a few minutes.
+4. Your website updates itself with real picks, stats, and news for all 10 games.
+
+Optionally, run **Refresh news** on its own (like Friday night) to get updated headlines without redoing the whole model.
+
+---
+
+## Honest status — what's real right now vs. what's still coming
+
+**Actually working today:**
+- Real data pulled from 2021-2025+ (tens of thousands of real games)
+- The safety-check system that stops on bad data
+- Fair, opponent-adjusted team stats
+- A trained model, graded against Elo and the betting line
+- The weekly picks pipeline, fully automated
+- The live website with real team colors, expandable explanations, stats, and news
+
+**Known rough edges:**
+- A few teams occasionally show "not found" if their name doesn't exactly match the schedule's spelling
+- Not every team has its exact brand color dialed in perfectly yet (falls back to a red/gray theme when unknown, so nothing looks broken)
+- The full "does it actually beat Vegas" grade has only been checked on a shorter data window so far — a full-history check is the next big milestone, and the honest result so far shows the model doing well overall but not yet consistently beating Vegas when it disagrees with the line
+
+**Not built yet:**
+- Turnover stats (interceptions/fumbles) in the dropdown — currently only shows offense/defense efficiency
+- The second, independent AI opinion next to the model's pick
+- The Kalshi trading-focused version of this tool (a separate, future project)
+
+---
+
+## The one rule this whole project follows
+
+**Never show a number without a real basis behind it.** If something can't be explained, measured, or verified, it doesn't go on the site. That discipline — not fancier math — is the actual difference between this version and the one that came before it.
