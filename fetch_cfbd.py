@@ -25,6 +25,13 @@ import numpy as np
 import pandas as pd
 import requests
 
+# Load CFBD_API_KEY from a local .env file if present (never committed).
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # falls back to a real environment variable
+
 CFBD_BASE = "https://api.collegefootballdata.com"
 RAW_DIR = "data/raw"
 DERIVED_DIR = "data/derived"
@@ -55,14 +62,28 @@ def _headers():
 
 
 def _get(path, **params):
-    for attempt in range(4):
-        r = requests.get(f"{CFBD_BASE}{path}", headers=_headers(), params=params, timeout=90)
+    last_err = None
+    for attempt in range(5):
+        try:
+            r = requests.get(f"{CFBD_BASE}{path}", headers=_headers(), params=params, timeout=120)
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
+            last_err = e
+            wait = 3 * (attempt + 1)
+            print(f"    ...{path} timed out/dropped (attempt {attempt+1}/5), retrying in {wait}s")
+            time.sleep(wait)
+            continue
         if r.status_code == 429:
             time.sleep(2 * (attempt + 1))
             continue
+        if r.status_code >= 500:
+            last_err = requests.exceptions.HTTPError(f"{r.status_code} server error")
+            wait = 3 * (attempt + 1)
+            print(f"    ...{path} returned {r.status_code} (attempt {attempt+1}/5), retrying in {wait}s")
+            time.sleep(wait)
+            continue
         r.raise_for_status()
         return r.json()
-    raise RuntimeError(f"Repeated rate-limiting on {path} {params}")
+    raise RuntimeError(f"Gave up on {path} {params} after 5 attempts. Last error: {last_err}")
 
 
 def parse_games(raw, season):
