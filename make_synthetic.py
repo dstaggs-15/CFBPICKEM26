@@ -46,7 +46,8 @@ def make(seasons=range(2016, 2024), n_teams=48, games_per_team=12, seed=7,
                 rows.append({
                     "game_id": f"g{gid}", "season": season, "week": week,
                     "date": pd.Timestamp("2016-08-25", tz="UTC")
-                            + pd.to_timedelta((season - 2016) * 365 + week * 7, unit="D"),
+                            + pd.to_timedelta((season - 2016) * 365 + week * 7, unit="D")
+                            + pd.to_timedelta(int(rng.integers(0, 3)), unit="D"),  # realistic day-of-week spread
                     "home_team": h, "away_team": a, "neutral_site": neutral,
                     "home_points": hp, "away_points": ap,
                     "is_postseason": int(neutral and rng.random() < 0.5),
