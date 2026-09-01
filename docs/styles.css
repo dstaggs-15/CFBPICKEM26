@@ -30,7 +30,7 @@ body {
 /* ---------- Masthead ---------- */
 .masthead { border-bottom: 1px solid var(--line); }
 .masthead-inner { max-width: 820px; margin: 0 auto; padding: 32px 20px 20px; }
-.brand { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .brand-mark {
   width: 8px; height: 28px; border-radius: 2px;
   background: linear-gradient(180deg, var(--red), var(--red-deep));
@@ -40,6 +40,29 @@ h1 {
   font-family: "Oswald", sans-serif; font-weight: 700; letter-spacing: 0.02em;
   text-transform: uppercase; font-size: clamp(26px, 5vw, 40px); margin: 0;
 }
+
+/* Top 25 Bubble Link */
+.top-25-bubble {
+  margin-left: auto;
+  text-decoration: none;
+  font-family: "Oswald", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line-strong);
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.top-25-bubble:hover {
+  background: var(--red-soft);
+  border-color: var(--red);
+  color: var(--red);
+}
+
 .dek { color: var(--muted); margin: 8px 0 20px; font-size: 15px; }
 .controls { display: flex; flex-direction: column; gap: 12px; }
 #filter {
