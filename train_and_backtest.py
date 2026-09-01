@@ -17,6 +17,7 @@ import pandas as pd
 import joblib
 
 import schema
+import contract
 from backtest import walk_forward, format_report
 from baselines import EloModel, MarketModel
 from model import V1Model
@@ -26,28 +27,16 @@ MODEL_OUT = "model.joblib"
 MIN_PRIOR = 3
 
 
-def integrity_checks(df: pd.DataFrame):
-    """Cheap guards against the silent-failure class of bug. Raise loudly."""
-    problems = []
-    for c in schema.MODEL_FEATURES + ["home_points", "away_points"]:
-        if c not in df.columns:
-            problems.append(f"missing column: {c}")
-    # strength features must not be entirely empty (that = broken join)
-    for c in schema.STRENGTH_FEATURES:
-        if c in df.columns and not df[c].notna().any():
-            problems.append(f"strength feature '{c}' is ALL null — broken join upstream")
-    # among games where both teams have history, strength coverage should be high
-    if "home_off_ppa_adj" in df.columns:
-        pass
-    if problems:
-        raise SystemExit("INTEGRITY CHECK FAILED:\n  - " + "\n  - ".join(problems))
-
-
 def main():
     df = pd.read_parquet(TRAIN_PARQUET)
     played = df.dropna(subset=["home_points", "away_points"]).copy()
     played = played.sort_values(["season", "week", "date"]).reset_index(drop=True)
-    integrity_checks(played)
+
+    # The actual safety check, not a smaller stand-in. If travel_diff_km (or
+    # anything else) is a dead constant, or a strength feature is silently
+    # empty, this stops the run and names the exact problem.
+    contract.validate(played, require_market=False, strength_min_coverage=0.30, stage="training")
+    print(contract.report(played))
 
     print(f"Training on {len(played)} completed games, "
           f"seasons {int(played['season'].min())}-{int(played['season'].max())}.\n")
