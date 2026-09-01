@@ -27,7 +27,7 @@ function renderStatList(ul, stats, homeSide) {
       ? `<span class="stat-rank">${ordinal(s.rank)}${s.of ? ` / ${s.of}` : ""}</span>` : "";
     li.innerHTML =
       `<span class="stat-label">${s.label}</span>` +
-      `<span><span class="stat-val">${s.value}</span>${rank}</span>`;
+      `<span class="stat-figure"><span class="stat-val">${s.value}</span>${rank}</span>`;
     ul.appendChild(li);
   });
 }
@@ -49,6 +49,7 @@ function render() {
     const node = tpl.content.cloneNode(true);
     if (g.error || g.model_prob_home == null) {
       // graceful card for a game we couldn't locate
+      node.querySelector(".game").classList.add("notfound");
       node.querySelector(".pick-team").textContent = "—";
       node.querySelector(".team--away .name").textContent = g.away_team || "?";
       node.querySelector(".team--home .name").textContent = g.home_team || "?";
@@ -58,23 +59,32 @@ function render() {
     }
 
     const homeP = g.model_prob_home, awayP = 1 - homeP;
-    const hc = colorsFor(g.home_team), ac = colorsFor(g.away_team);
+    const homeFav = homeP >= 0.5;
 
     const away = node.querySelector(".team--away");
     away.querySelector(".rank").textContent = rankLabel(g.away_rank);
-    away.querySelector(".name").textContent = g.away_team;
-    away.querySelector(".name").style.color = ac.primary;
+    const awayName = away.querySelector(".name");
+    awayName.textContent = g.away_team;
     const home = node.querySelector(".team--home");
     home.querySelector(".rank").textContent = rankLabel(g.home_rank);
-    home.querySelector(".name").textContent = g.home_team;
-    home.querySelector(".name").style.color = hc.primary;
+    const homeName = home.querySelector(".name");
+    homeName.textContent = g.home_team;
+    // the favored (picked) team's name goes red
+    (homeFav ? homeName : awayName).classList.add("name--pick");
     if (g.neutral) node.querySelector(".at").textContent = "vs";
 
-    node.querySelector(".pct--away").textContent = pct(awayP);
-    node.querySelector(".pct--home").textContent = pct(homeP);
+    const pctAway = node.querySelector(".pct--away");
+    const pctHome = node.querySelector(".pct--home");
+    pctAway.textContent = pct(awayP);
+    pctHome.textContent = pct(homeP);
+    (homeFav ? pctHome : pctAway).classList.add("lead");
+
+    // meter: red = the pick, graphite = the other side
     const aFill = node.querySelector(".meter--away"), hFill = node.querySelector(".meter--home");
-    aFill.style.width = `${awayP * 100}%`; aFill.style.background = ac.primary;
-    hFill.style.width = `${homeP * 100}%`; hFill.style.background = hc.primary;
+    aFill.style.width = `${awayP * 100}%`;
+    hFill.style.width = `${homeP * 100}%`;
+    aFill.classList.add(homeFav ? "is-dim" : "is-pick");
+    hFill.classList.add(homeFav ? "is-pick" : "is-dim");
 
     node.querySelector(".pick-team").textContent = g.pick;
     const marketEl = node.querySelector(".market");
