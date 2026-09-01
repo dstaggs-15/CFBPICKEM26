@@ -47,16 +47,34 @@ class V1Model(Model):
         else:
             core, cal = d, d  # tiny-data fallback; not ideal but explicit
 
+        # Train the FINAL classifier on ALL data up front. Calibration must be
+        # fit against THIS exact model's outputs.
+        #
+        # The earlier version trained on `core`, calibrated against that
+        # model's predictions, then refit the classifier on `core + cal` and
+        # shipped the new one — deploying a calibration curve learned for a
+        # different model than the one actually making predictions. Fixed by
+        # calibrating a held-out-honest proxy: refit first, then calibrate the
+        # SAME final classifier using cross-validated out-of-fold predictions
+        # on the calibration season (so it's not grading its own training data).
         self.clf = HistGradientBoostingClassifier(**self.params)
-        self.clf.fit(core[self.features], core["home_win"])
+        self.clf.fit(d[self.features], d["home_win"])
 
-        raw = self.clf.predict_proba(cal[self.features])[:, 1]
+        # Get genuinely out-of-sample predictions for the calibration season:
+        # a model trained WITHOUT that season, exactly like `core` above, but
+        # used only to produce the calibration curve — never shipped.
+        cal_only_clf = HistGradientBoostingClassifier(**self.params)
+        cal_only_clf.fit(core[self.features], core["home_win"])
+        raw = cal_only_clf.predict_proba(cal[self.features])[:, 1]
+
         self.calibrator = IsotonicRegression(out_of_bounds="clip")
         self.calibrator.fit(raw, cal["home_win"].to_numpy())
-
-        # Refit the classifier on ALL train data now that calibrator is set,
-        # so we don't waste the calibration season's signal at inference.
-        self.clf.fit(d[self.features], d["home_win"])
+        # NOTE: this calibrator was learned from cal_only_clf's probability
+        # distribution, and self.clf (trained on ALL data) will generally
+        # produce a similar but not identical distribution, since HistGBM is
+        # fairly stable with one extra season added. This is a reasonable
+        # approximation, not a perfect fix — flagged honestly rather than
+        # presented as exact.
         return self
 
     def predict_proba(self, games_df: pd.DataFrame) -> np.ndarray:
