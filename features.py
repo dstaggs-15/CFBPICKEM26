@@ -79,42 +79,89 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 def _opponent_adjust(tg: pd.DataFrame, metric_roll: str) -> pd.Series:
     """
-    Adjust each team-game rolling metric by the quality of opponents faced.
-    Simple, robust scheme: adjusted = raw - mean(opponent_raw faced so far).
-    Iterated a couple times so opponents' own adjustments feed back in.
-    Everything stays prior-only because it's built from the shifted rolling
-    values. Returns a Series aligned to tg.index.
+    Adjust each team-game rolling metric by the quality of opponents faced
+    SO FAR — never opponents faced later in the season or in future years.
+
+    The earlier version used `.groupby("team")["opp_adj"].transform("mean")`,
+    which averages a team's opponent quality across EVERY row for that team in
+    the whole table — including games that hadn't happened yet relative to the
+    row being adjusted. That leaks future-schedule (and future-performance)
+    information into a feature that's supposed to be strictly pregame.
+
+    The fix: walk games in chronological order and, for each team, maintain a
+    running average of the opponent-quality values seen in games played
+    strictly before the current one. Nothing about a team's future schedule or
+    a future opponent's later performance can enter this calculation.
     """
-    adj = tg[metric_roll].copy()
-    # opponent's rolling value entering the same game
-    opp_lookup = tg.set_index(["game_id", "team"])[metric_roll]
-    # map opponent value per row
-    opp_vals = tg.apply(
-        lambda r: opp_lookup.get((r["game_id"], r["opponent"]), np.nan), axis=1
-    )
-    league_mean = tg[metric_roll].mean()
-    for _ in range(ADJUST_ITERS):
-        # strength of schedule = average opponent adjusted value so far
-        tmp = pd.DataFrame({"team": tg["team"], "opp_adj": opp_vals})
-        sos = tmp.groupby("team")["opp_adj"].transform("mean")
-        adj = tg[metric_roll] - (sos - league_mean)
-        # refresh opponent values using the new adjustment for next iter
-        row_adj = pd.Series(adj.values, index=pd.MultiIndex.from_frame(tg[["game_id", "team"]]))
-        opp_vals = tg.apply(
-            lambda r: row_adj.get((r["game_id"], r["opponent"]), np.nan), axis=1
-        )
-    return adj
+    tg_sorted = tg.sort_values(["season", "week", "date"])
+    orig_index = tg_sorted.index  # remember original index before reset
+    tg_s = tg_sorted.reset_index(drop=True)
+    opp_metric = tg_s.set_index(["game_id", "team"])[metric_roll]  # entering-value per team-game
+
+    running_sum: dict[str, float] = {}
+    running_n: dict[str, int] = {}
+    league_mean = tg_s[metric_roll].mean()
+
+    adj = np.full(len(tg_s), np.nan)
+    for i, row in tg_s.iterrows():
+        team = row["team"]
+        n = running_n.get(team, 0)
+        sos = (running_sum.get(team, 0.0) / n) if n > 0 else league_mean
+        base_val = row[metric_roll]
+        adj[i] = base_val - (sos - league_mean) if pd.notna(base_val) else np.nan
+
+        # update this team's running opponent-quality log using the OPPONENT's
+        # entering-value for this game (available before kickoff), for future rows.
+        opp_val = opp_metric.get((row["game_id"], row["opponent"]))
+        if pd.notna(opp_val):
+            running_sum[team] = running_sum.get(team, 0.0) + opp_val
+            running_n[team] = n + 1
+
+    # Map back to the ORIGINAL (pre-sort) index so the caller can assign this
+    # straight onto tg without any silent misalignment.
+    return pd.Series(adj, index=orig_index).reindex(tg.index)
 
 
 # ---------------------------------------------------------------------------
-# 3. Elo probabilities across full history
+# 3. Elo probabilities across full history — TRUE pregame only
 # ---------------------------------------------------------------------------
 def _elo_probs(base: pd.DataFrame) -> pd.Series:
-    played = base.dropna(subset=["home_points", "away_points"]).copy()
-    elo = EloModel().fit(played)  # fits ratings across history
-    # predict pregame prob for every game (played or not) in order
-    probs = elo.predict_proba(base.sort_values("date"))
-    return pd.Series(probs, index=base.sort_values("date").index).reindex(base.index)
+    """
+    For every game, the Elo probability must reflect ONLY games that happened
+    strictly before it — never the final, fully-history-informed ratings.
+
+    The earlier version called EloModel().fit(played) (which walks the whole
+    history and ends with final ratings) and then predict_proba(update=False)
+    (which uses whatever ratings are currently loaded). That combination
+    handed every historical game the FINAL ratings, i.e. answers that include
+    results from years after that game — a serious leak.
+
+    The fix: replay chronologically ourselves, computing each game's
+    probability from the ratings as they stood at that exact moment, then
+    updating. This is the only way to guarantee point-in-time correctness.
+    """
+    order = base.sort_values("date")
+    df = order.reset_index(drop=True)
+    elo = EloModel()
+    probs = np.full(len(df), np.nan)
+    for i, row in df.iterrows():
+        h, a = row["home_team"], row["away_team"]
+        eh = elo.ratings.get(h, elo.base)
+        ea = elo.ratings.get(a, elo.base)
+        eh_adj = eh + (0 if row["neutral_site"] else elo.hfa)
+        probs[i] = elo._p(eh_adj, ea)
+
+        if pd.notna(row.get("home_points")) and pd.notna(row.get("away_points")):
+            k = elo._k(int(row["week"]))
+            home_won = row["home_points"] > row["away_points"]
+            delta = k * ((1 if home_won else 0) - probs[i])
+            elo.ratings[h] = eh + delta
+            elo.ratings[a] = ea - delta
+
+    # df was built from `order` via reset_index, so df's row i corresponds to
+    # order's i-th row (in original-index order). Map probs back to base's index.
+    result = pd.Series(probs, index=order.index)
+    return result.reindex(base.index)
 
 
 # ---------------------------------------------------------------------------
@@ -164,7 +211,9 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     # elo + context
     df["elo_home_prob"] = _elo_probs(base).values
     df["rest_diff"] = _rest_diff(base).values
-    df["travel_diff_km"] = 0.0  # placeholder until venue coords wired; kept for schema
+    df["travel_diff_km"] = 0.0  # NOT a model feature (see schema.py note) — kept
+                                  # only so old data files don't break; real venue
+                                  # distance is a future addition, not faked here.
     df["is_postseason"] = df["is_postseason"].fillna(0).astype(int)
 
     # gate: null out strength diffs when either team lacks enough history,
