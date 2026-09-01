@@ -1,82 +1,22 @@
 {
-  "Arizona State": {
-    "primary": "#9d4725",
-    "text": "#ffffff"
-  },
-  "Baylor": {
-    "primary": "#67259d",
-    "text": "#ffffff"
-  },
-  "Duke": {
-    "primary": "#399d25",
-    "text": "#ffffff"
-  },
-  "Illinois": {
-    "primary": "#51259d",
-    "text": "#ffffff"
-  },
-  "Iowa": {
-    "primary": "#25279d",
-    "text": "#ffffff"
-  },
-  "Iowa State": {
-    "primary": "#519d25",
-    "text": "#ffffff"
-  },
-  "Kansas": {
-    "primary": "#89259d",
-    "text": "#ffffff"
-  },
-  "Michigan": {
-    "primary": "#99259d",
-    "text": "#ffffff"
-  },
-  "Mississippi State": {
-    "primary": "#9d2531",
-    "text": "#ffffff"
-  },
-  "Missouri": {
-    "primary": "#9d2d25",
-    "text": "#ffffff"
-  },
-  "NC State": {
-    "primary": "#43259d",
-    "text": "#ffffff"
-  },
-  "Ohio": {
-    "primary": "#259d39",
-    "text": "#ffffff"
-  },
-  "Oklahoma": {
-    "primary": "#319d25",
-    "text": "#ffffff"
-  },
-  "SMU": {
-    "primary": "#9d256b",
-    "text": "#ffffff"
-  },
-  "Syracuse": {
-    "primary": "#9d253f",
-    "text": "#ffffff"
-  },
-  "Uconn": {
-    "primary": "#25519d",
-    "text": "#ffffff"
-  },
-  "Vanderbilt": {
-    "primary": "#259d5b",
-    "text": "#ffffff"
-  },
-  "Virginia Cavaliers": {
-    "primary": "#259d6b",
-    "text": "#ffffff"
-  },
-  "Virginia Tech": {
-    "primary": "#9d2589",
-    "text": "#ffffff"
-  },
-  "West Virginia": {
-    "primary": "#9d5325",
-    "text": "#ffffff"
-  }
+  "Arizona State": { "primary": "#9d4725", "text": "#ffffff" },
+  "Baylor": { "primary": "#67259d", "text": "#ffffff" },
+  "Duke": { "primary": "#399d25", "text": "#ffffff" },
+  "Illinois": { "primary": "#51259d", "text": "#ffffff" },
+  "Iowa": { "primary": "#25279d", "text": "#ffffff" },
+  "Iowa State": { "primary": "#519d25", "text": "#ffffff" },
+  "Kansas": { "primary": "#89259d", "text": "#ffffff" },
+  "Michigan": { "primary": "#99259d", "text": "#ffffff" },
+  "Mississippi State": { "primary": "#9d2531", "text": "#ffffff" },
+  "Missouri": { "primary": "#9d2d25", "text": "#ffffff" },
+  "NC State": { "primary": "#43259d", "text": "#ffffff" },
+  "Ohio": { "primary": "#259d39", "text": "#ffffff" },
+  "Oklahoma": { "primary": "#319d25", "text": "#ffffff" },
+  "SMU": { "primary": "#9d256b", "text": "#ffffff" },
+  "Syracuse": { "primary": "#9d253f", "text": "#ffffff" },
+  "Uconn": { "primary": "#25519d", "text": "#ffffff" },
+  "Vanderbilt": { "primary": "#259d5b", "text": "#ffffff" },
+  "Virginia Cavaliers": { "primary": "#259d6b", "text": "#ffffff" },
+  "Virginia Tech": { "primary": "#9d2589", "text": "#ffffff" },
+  "West Virginia": { "primary": "#9d5325", "text": "#ffffff" }
 }
