@@ -1,18 +1,9 @@
 # CFB Pick'em Model
 
-A tool that predicts college football games for a weekly ESPN pick'em pool, shows a live website with the picks, and explains *why* it made each one in plain English. It runs entirely for free on GitHub — no server, no monthly cost.
-
-This README explains what it does and how, in plain language, from the ground up.
-
----
-
+A tool that predicts college football games for a weekly ESPN pick'em pool, shows a live website with the picks, and explains *why* it made each one in plain English.
 ## The one-sentence version
 
-Every week you type in your 10 ESPN games, click one button, and a few minutes later your website shows real predictions — with a confidence percentage, a comparison to the Vegas betting line, each team's stats, and news headlines — for all 10 games.
-
----
-
-## Why this exists (the honest backstory)
+## Why this exists 
 
 An earlier version of this looked done — website, percentages, the works — but it turned out to be quietly broken. It was supposed to use detailed team stats and betting lines, but those never actually loaded, and nothing told anyone. So it was making picks almost blind. When actually measured, it did *worse* than just picking whichever team was favored.
 
