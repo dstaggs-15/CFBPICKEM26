@@ -142,6 +142,7 @@ def main():
 
         games_out.append({
             "game_id": str(row["game_id"]),
+            "game_date": row["date"].date().isoformat() if pd.notna(row.get("date")) else None,
             "away_team": disp_away,
             "home_team": disp_home,
             "neutral": bool(row.get("neutral_site", False)),

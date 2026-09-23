@@ -31,6 +31,8 @@ h1 { font-family: "Oswald", sans-serif; font-weight: 700; letter-spacing: 0.02em
   border: 1px solid var(--line-strong); padding: 6px 14px; border-radius: 999px; transition: all 0.2s ease; white-space: nowrap;
 }
 .top-25-bubble:hover { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+.record-bubble { margin-left: auto; border-color: rgba(239,62,62,.5); }
+.record-bubble + .top-25-bubble { margin-left: 0; }
 .dek { color: var(--muted); margin: 8px 0 20px; font-size: 15px; }
 .controls { display: flex; flex-direction: column; gap: 12px; }
 #filter { width: 100%; padding: 12px 14px; background: var(--card); border: 1px solid var(--line-strong); border-radius: 10px; color: var(--text); font-size: 15px; font-family: inherit; }

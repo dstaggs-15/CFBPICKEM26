@@ -1,0 +1,41 @@
+.record-page { max-width: 960px; margin: 0 auto; padding: 28px 20px 52px; display: grid; gap: 24px; }
+.record-page h2 { font: 600 22px "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .02em; margin: 0 0 5px; }
+.record-page h3 { font: 600 17px "Oswald", sans-serif; margin: 0 0 6px; }
+.record-page p { margin: 0; }
+.record-intro { color: var(--muted); font-size: 14px; }
+.record-hero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.record-metric, .record-panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.record-metric .metric-label { display: block; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+.record-metric strong { display: block; margin-top: 5px; font: 700 clamp(27px,5vw,40px) "Oswald", sans-serif; }
+.record-metric small { color: var(--muted-dim); font-size: 12px; }
+.record-metric:first-child strong { color: var(--red); }
+.record-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+.record-panel .subtle { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+.chart-list { display: grid; gap: 16px; margin-top: 14px; }
+.chart-row { display: grid; grid-template-columns: minmax(95px,1fr) minmax(120px,2fr) auto; gap: 10px; align-items: center; font-size: 13px; }
+.chart-label { color: var(--text); }
+.chart-value { color: var(--muted); font: 12px "Roboto Mono", monospace; white-space: nowrap; text-align: right; }
+.chart-track { height: 12px; background: var(--dim); border-radius: 20px; overflow: hidden; }
+.chart-fill { height: 100%; background: var(--red); border-radius: inherit; }
+.chart-fill--alt { background: #8a8a96; }
+.chart-key { color: var(--muted-dim); font-size: 12px; margin-top: 16px; }
+.record-callout { background: var(--red-soft); border: 1px solid rgba(239,62,62,.25); border-radius: 10px; padding: 14px 16px; color: var(--text); font-size: 13px; }
+.record-callout.neutral { background: rgba(255,255,255,.04); border-color: var(--line-strong); color: var(--muted); }
+.record-table-wrap { overflow-x: auto; margin-top: 14px; }
+.record-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 730px; }
+.record-table th { text-align: left; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.record-table td, .record-table th { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.record-table td:first-child, .record-table th:first-child { padding-left: 0; }
+.record-table td:last-child, .record-table th:last-child { padding-right: 0; }
+.record-table .game-line { color: var(--muted); display: block; font-size: 11px; }
+.result-win { color: #7ed4a3; font-weight: 600; }
+.result-loss { color: #ff8484; font-weight: 600; }
+.record-table .muted { color: var(--muted-dim); }
+.coverage-note { margin-top: 12px !important; font-size: 12px; color: var(--muted-dim); }
+@media (max-width: 680px) {
+  .record-hero { grid-template-columns: 1fr 1fr; }
+  .record-hero .record-metric:last-child { grid-column: 1 / -1; }
+  .record-grid { grid-template-columns: 1fr; }
+  .chart-row { grid-template-columns: minmax(78px,1fr) minmax(100px,1.5fr) auto; gap: 6px; }
+  .record-page { padding-top: 20px; }
+}

@@ -24,6 +24,7 @@ def grade(picks, games):
     wins = losses = 0
     matched_weeks = set()
     used_ids = set()
+    details = []
     for pick in slate:
         if not pick.get("pick") or pick.get("error"):
             return None
@@ -52,9 +53,26 @@ def grade(picks, games):
             return None
         wins += winner == pick["pick"]
         losses += winner != pick["pick"]
+        spread = pick.get("spread_home")
+        favorite = (game.home_team if spread < 0 else game.away_team) if spread is not None and spread != 0 else None
+        probability = pick.get("model_prob_home")
+        game_date = pd.to_datetime(game.get("date"), utc=True, errors="coerce")
+        details.append({
+            "game_id": gid,
+            "game_date": game_date.date().isoformat() if pd.notna(game_date) else pick.get("game_date"),
+            "published_at": picks.get("generated_at"),
+            "away_team": str(game.away_team),
+            "home_team": str(game.home_team),
+            "away_points": int(game.away_points),
+            "home_points": int(game.home_points),
+            "pick": pick["pick"],
+            "model_confidence": round(max(probability, 1 - probability), 3) if probability is not None else None,
+            "market_favorite": favorite,
+            "winner": str(winner),
+        })
     if len(matched_weeks) != 1:
         return None
-    return {"week": matched_weeks.pop(), "wins": int(wins), "losses": int(losses), "source": "final scores"}
+    return {"week": matched_weeks.pop(), "wins": int(wins), "losses": int(losses), "source": "final scores", "picks": details}
 
 
 def main():

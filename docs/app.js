@@ -17,38 +17,6 @@ function showRank(team, element) {
   element.textContent = rankLabel(state.rankings[team]);
 }
 
-function renderRecord(data) {
-  if (!data || !Array.isArray(data.weeks) || !data.weeks.length) return;
-  const el = document.getElementById("record");
-  const weeks = data.weeks.filter(w => Number.isInteger(w.wins) && Number.isInteger(w.losses));
-  if (!weeks.length) return;
-  const total = weeks.reduce((sum, w) => ({ wins: sum.wins + w.wins, losses: sum.losses + w.losses }), { wins: 0, losses: 0 });
-  el.replaceChildren();
-  const label = document.createElement("strong");
-  label.textContent = `${data.season} model record: `;
-  el.append(label);
-  weeks.forEach((w, i) => {
-    if (i) el.append(document.createTextNode(" · "));
-    const item = document.createElement("span");
-    item.textContent = `Week ${w.week} ${w.wins}–${w.losses}`;
-    if (w.source === "reported") item.title = "Reported by the model owner; archived picks unavailable";
-    el.append(item);
-  });
-  el.append(document.createTextNode(` · Total ${total.wins}–${total.losses}`));
-  if (weeks.some(w => w.source === "reported")) {
-    const note = document.createElement("small");
-    note.textContent = "Weeks marked * were reported; archived picks unavailable.";
-    // Mark only the entries that could not be independently graded.
-    weeks.forEach((w, i) => {
-      if (w.source !== "reported") return;
-      const item = el.querySelectorAll("span")[i];
-      item.textContent += "*";
-    });
-    el.append(note);
-  }
-  el.hidden = false;
-}
-
 function ordinal(n) {
   const s = ["th", "st", "nd", "rd"], v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -185,12 +153,11 @@ function render() {
 async function main() {
   const dek = document.getElementById("dek");
   try {
-    const [preds, colors, news, ranks, results] = await Promise.all([
+    const [preds, colors, news, ranks] = await Promise.all([
       loadJSON("predictions.json"),
       loadJSON("team_colors.json", true),
       loadJSON("news.json", true),
       loadJSON(RANKINGS_URL, true),
-      loadJSON("results.json", true),
     ]);
     state.games = preds.games || [];
     state.colors = colors || {};
@@ -203,7 +170,6 @@ async function main() {
     const wk = preds.week ? `Week ${preds.week}` : "";
     dek.textContent = `${preds.season || ""} ${wk} — ${state.games.length} games`.trim();
     document.getElementById("stamp").textContent = preds.generated_at ? `Generated ${preds.generated_at}` : "";
-    if (results && results.season === preds.season) renderRecord(results);
     render();
   } catch (err) {
     document.getElementById("board").innerHTML =

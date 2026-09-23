@@ -1,8 +1,155 @@
 {
   "season": 2026,
   "weeks": [
-    {"week": 1, "wins": 7, "losses": 3, "source": "reported"},
-    {"week": 2, "wins": 5, "losses": 5, "source": "reported"},
-    {"week": 3, "wins": 7, "losses": 3, "source": "final scores"}
+    {
+      "week": 1,
+      "wins": 7,
+      "losses": 3,
+      "source": "reported"
+    },
+    {
+      "week": 2,
+      "wins": 5,
+      "losses": 5,
+      "source": "reported"
+    },
+    {
+      "week": 3,
+      "wins": 7,
+      "losses": 3,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "0",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "Arizona State",
+          "home_team": "Kansas",
+          "away_points": 24,
+          "home_points": 17,
+          "pick": "Arizona State",
+          "model_confidence": 0.619,
+          "market_favorite": "Arizona State",
+          "winner": "Arizona State"
+        },
+        {
+          "game_id": "1",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "North Carolina",
+          "home_team": "Clemson",
+          "away_points": 20,
+          "home_points": 28,
+          "pick": "Clemson",
+          "model_confidence": 0.759,
+          "market_favorite": "Clemson",
+          "winner": "Clemson"
+        },
+        {
+          "game_id": "2",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "NC State",
+          "home_team": "Vanderbilt",
+          "away_points": 31,
+          "home_points": 35,
+          "pick": "Vanderbilt",
+          "model_confidence": 0.721,
+          "market_favorite": "Vanderbilt",
+          "winner": "Vanderbilt"
+        },
+        {
+          "game_id": "3",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "SMU",
+          "home_team": "Louisville",
+          "away_points": 31,
+          "home_points": 41,
+          "pick": "Louisville",
+          "model_confidence": 0.585,
+          "market_favorite": "Louisville",
+          "winner": "Louisville"
+        },
+        {
+          "game_id": "4",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "Mississippi State",
+          "home_team": "South Carolina",
+          "away_points": 41,
+          "home_points": 34,
+          "pick": "South Carolina",
+          "model_confidence": 0.721,
+          "market_favorite": "South Carolina",
+          "winner": "Mississippi State"
+        },
+        {
+          "game_id": "5",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "Florida",
+          "home_team": "Auburn",
+          "away_points": 44,
+          "home_points": 39,
+          "pick": "Auburn",
+          "model_confidence": 0.721,
+          "market_favorite": "Florida",
+          "winner": "Florida"
+        },
+        {
+          "game_id": "6",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "LSU",
+          "home_team": "Ole Miss",
+          "away_points": 24,
+          "home_points": 32,
+          "pick": "Ole Miss",
+          "model_confidence": 0.759,
+          "market_favorite": "LSU",
+          "winner": "Ole Miss"
+        },
+        {
+          "game_id": "7",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "Colorado",
+          "home_team": "Northwestern",
+          "away_points": 7,
+          "home_points": 41,
+          "pick": "Northwestern",
+          "model_confidence": 0.721,
+          "market_favorite": "Northwestern",
+          "winner": "Northwestern"
+        },
+        {
+          "game_id": "8",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "Virginia Tech",
+          "home_team": "Maryland",
+          "away_points": 35,
+          "home_points": 26,
+          "pick": "Maryland",
+          "model_confidence": 0.721,
+          "market_favorite": "Virginia Tech",
+          "winner": "Virginia Tech"
+        },
+        {
+          "game_id": "9",
+          "game_date": null,
+          "published_at": "2026-09-17",
+          "away_team": "James Madison",
+          "home_team": "San Diego State",
+          "away_points": 26,
+          "home_points": 13,
+          "pick": "James Madison",
+          "model_confidence": 0.853,
+          "market_favorite": "San Diego State",
+          "winner": "James Madison"
+        }
+      ]
+    }
   ]
 }
