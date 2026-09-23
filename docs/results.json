@@ -20,8 +20,8 @@
       "source": "final scores",
       "picks": [
         {
-          "game_id": "0",
-          "game_date": null,
+          "game_id": "401856812",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "Arizona State",
           "home_team": "Kansas",
@@ -33,8 +33,8 @@
           "winner": "Arizona State"
         },
         {
-          "game_id": "1",
-          "game_date": null,
+          "game_id": "401858229",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "North Carolina",
           "home_team": "Clemson",
@@ -46,8 +46,8 @@
           "winner": "Clemson"
         },
         {
-          "game_id": "2",
-          "game_date": null,
+          "game_id": "401856695",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "NC State",
           "home_team": "Vanderbilt",
@@ -59,8 +59,8 @@
           "winner": "Vanderbilt"
         },
         {
-          "game_id": "3",
-          "game_date": null,
+          "game_id": "401858230",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "SMU",
           "home_team": "Louisville",
@@ -72,8 +72,8 @@
           "winner": "Louisville"
         },
         {
-          "game_id": "4",
-          "game_date": null,
+          "game_id": "401856691",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "Mississippi State",
           "home_team": "South Carolina",
@@ -85,8 +85,8 @@
           "winner": "Mississippi State"
         },
         {
-          "game_id": "5",
-          "game_date": null,
+          "game_id": "401856687",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "Florida",
           "home_team": "Auburn",
@@ -98,8 +98,8 @@
           "winner": "Florida"
         },
         {
-          "game_id": "6",
-          "game_date": null,
+          "game_id": "401856688",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "LSU",
           "home_team": "Ole Miss",
@@ -111,8 +111,8 @@
           "winner": "Ole Miss"
         },
         {
-          "game_id": "7",
-          "game_date": null,
+          "game_id": "401856796",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "Colorado",
           "home_team": "Northwestern",
@@ -124,8 +124,8 @@
           "winner": "Northwestern"
         },
         {
-          "game_id": "8",
-          "game_date": null,
+          "game_id": "401858232",
+          "game_date": "2026-09-19",
           "published_at": "2026-09-17",
           "away_team": "Virginia Tech",
           "home_team": "Maryland",
@@ -137,8 +137,8 @@
           "winner": "Virginia Tech"
         },
         {
-          "game_id": "9",
-          "game_date": null,
+          "game_id": "401860887",
+          "game_date": "2026-09-20",
           "published_at": "2026-09-17",
           "away_team": "James Madison",
           "home_team": "San Diego State",
