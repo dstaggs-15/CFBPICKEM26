@@ -9,9 +9,6 @@ on:
         description: "Seasons of data to train on"
         default: "2014-2026"
         required: true
-  push:
-    paths:
-      - .github/workflows/pipeline.yml
 
 permissions:
   contents: write   # lets the job commit predictions back to the repo
@@ -34,7 +31,7 @@ jobs:
       - name: Fetch data
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons || '2014-2026' }}"
+        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
 
       - name: Grade archived picks with final scores
         run: python grade_results.py
