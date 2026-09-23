@@ -142,8 +142,6 @@ function render(data) {
     splits.append(confidence);
     root.append(splits);
 
-    root.append(element("p", "record-callout neutral",
-      `These splits cover ${picks.length} saved picks across ${detailed.length} week${detailed.length === 1 ? "" : "s"}. There is not enough pick-level history yet to identify a dependable “trust it more” situation.`));
     for (const week of detailed.slice().reverse()) root.append(renderPickTable(week));
   }
   if (detailed.length !== weeks.length) {
