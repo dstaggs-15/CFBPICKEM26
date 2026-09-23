@@ -30,7 +30,9 @@
   </header>
   <main id="board" class="board" aria-live="polite"></main>
   <footer class="footer">
-    <p>Model probabilities are calibrated on a walk-forward backtest. The line is the benchmark, not an input.
+    <p class="ranking-note">Rankings shown beside teams are the <a href="https://dstaggs-15.github.io/cfbranking/">other model's computer rankings</a>, not official rankings. Only its Top 25 are numbered.</p>
+    <div class="record" id="record" hidden></div>
+    <p>Model probabilities are calibrated on a walk-forward backtest.
        <span class="mono" id="stamp"></span></p>
   </footer>
   <template id="card-tpl">

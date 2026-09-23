@@ -98,6 +98,11 @@ h1 { font-family: "Oswald", sans-serif; font-weight: 700; letter-spacing: 0.02em
 .empty, .error { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 15px; }
 .error { color: var(--red); }
 .footer { max-width: 820px; margin: 20px auto 0; padding: 20px; color: var(--muted-dim); font-size: 12.5px; border-top: 1px solid var(--line); }
+.footer a { color: var(--muted); }
+.ranking-note, .record { margin: 0 0 10px; }
+.record { color: var(--muted); }
+.record strong { color: var(--text); font-weight: 600; }
+.record small { display: block; margin-top: 3px; color: var(--muted-dim); }
 .mono { font-family: "Roboto Mono", monospace; }
 @media (max-width: 480px) {
   .statgrid { grid-template-columns: 1fr; gap: 4px; }

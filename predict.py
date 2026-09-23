@@ -18,6 +18,7 @@ efficiency, it says that. Honest by construction.
 from __future__ import annotations
 import json
 from datetime import date
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import joblib
@@ -113,6 +114,7 @@ def main():
 
     slate = load_slate()
     games_out = []
+    slate_weeks = set()
     for mu in slate:
         home = canon(mu.home_team, known)
         away = canon(mu.away_team, known)
@@ -126,6 +128,8 @@ def main():
             })
             continue
 
+        slate_weeks.add(int(row["week"]))
+
         X = pd.DataFrame([row])[feats]
         p_home = float(model.predict_proba(X)[0])
         # if schedule had sides swapped vs the slate, flip prob to slate orientation
@@ -137,6 +141,7 @@ def main():
             return {"name": name, "stats": s.get("stats", [])}
 
         games_out.append({
+            "game_id": str(row["game_id"]),
             "away_team": disp_away,
             "home_team": disp_home,
             "neutral": bool(row.get("neutral_site", False)),
@@ -153,11 +158,22 @@ def main():
 
     out = {
         "season": season,
+        "week": next(iter(slate_weeks)) if len(slate_weeks) == 1 else None,
         "generated_at": str(date.today()),
         "games": games_out,
     }
     with open(OUT_JSON, "w") as f:
         json.dump(out, f, indent=2)
+    # Save the first complete set of picks for later grading. Re-running a week
+    # cannot silently replace the picks that were already published.
+    if out["week"] is not None and len(games_out) == len(slate) and all(g.get("game_id") for g in games_out):
+        archive = Path(f"historicals/predictions/{season}-week-{out['week']}.json")
+        archive.parent.mkdir(parents=True, exist_ok=True)
+        if not archive.exists():
+            archive.write_text(json.dumps(out, indent=2) + "\n")
+            print(f"Archived first picks for week {out['week']} at {archive}")
+    else:
+        print("Slate has missing games or mixed weeks; no grading archive created.")
     print(f"Wrote {OUT_JSON} with {len(games_out)} games.")
 
 

@@ -1,5 +1,6 @@
 /* CFB Pick'em Model — board renderer with expandable per-game breakdown. */
-const state = { games: [], colors: {}, news: {}, filter: "" };
+const state = { games: [], colors: {}, news: {}, rankings: {}, filter: "" };
+const RANKINGS_URL = "https://dstaggs-15.github.io/cfbranking/data/rankings.json";
 
 async function loadJSON(path, optional = false) {
   try {
@@ -11,6 +12,42 @@ async function loadJSON(path, optional = false) {
 
 const pct = (p) => `${Math.round(p * 100)}%`;
 const rankLabel = (r) => (r === null || r === undefined) ? "" : `#${r}`;
+
+function showRank(team, element) {
+  element.textContent = rankLabel(state.rankings[team]);
+}
+
+function renderRecord(data) {
+  if (!data || !Array.isArray(data.weeks) || !data.weeks.length) return;
+  const el = document.getElementById("record");
+  const weeks = data.weeks.filter(w => Number.isInteger(w.wins) && Number.isInteger(w.losses));
+  if (!weeks.length) return;
+  const total = weeks.reduce((sum, w) => ({ wins: sum.wins + w.wins, losses: sum.losses + w.losses }), { wins: 0, losses: 0 });
+  el.replaceChildren();
+  const label = document.createElement("strong");
+  label.textContent = `${data.season} model record: `;
+  el.append(label);
+  weeks.forEach((w, i) => {
+    if (i) el.append(document.createTextNode(" · "));
+    const item = document.createElement("span");
+    item.textContent = `Week ${w.week} ${w.wins}–${w.losses}`;
+    if (w.source === "reported") item.title = "Reported by the model owner; archived picks unavailable";
+    el.append(item);
+  });
+  el.append(document.createTextNode(` · Total ${total.wins}–${total.losses}`));
+  if (weeks.some(w => w.source === "reported")) {
+    const note = document.createElement("small");
+    note.textContent = "Weeks marked * were reported; archived picks unavailable.";
+    // Mark only the entries that could not be independently graded.
+    weeks.forEach((w, i) => {
+      if (w.source !== "reported") return;
+      const item = el.querySelectorAll("span")[i];
+      item.textContent += "*";
+    });
+    el.append(note);
+  }
+  el.hidden = false;
+}
 
 function ordinal(n) {
   const s = ["th", "st", "nd", "rd"], v = n % 100;
@@ -51,6 +88,8 @@ function render() {
       node.querySelector(".pick-team").textContent = "—";
       node.querySelector(".team--away .name").textContent = g.away_team || "?";
       node.querySelector(".team--home .name").textContent = g.home_team || "?";
+      showRank(g.away_team, node.querySelector(".team--away .rank"));
+      showRank(g.home_team, node.querySelector(".team--home .rank"));
       node.querySelector(".market").textContent = g.error ? "not found" : "";
       board.appendChild(node);
       continue;
@@ -62,11 +101,11 @@ function render() {
     const ac = state.colors[g.away_team];
 
     const away = node.querySelector(".team--away");
-    away.querySelector(".rank").textContent = rankLabel(g.away_rank);
+    showRank(g.away_team, away.querySelector(".rank"));
     const awayName = away.querySelector(".name");
     awayName.textContent = g.away_team;
     const home = node.querySelector(".team--home");
-    home.querySelector(".rank").textContent = rankLabel(g.home_rank);
+    showRank(g.home_team, home.querySelector(".rank"));
     const homeName = home.querySelector(".name");
     homeName.textContent = g.home_team;
 
@@ -146,17 +185,25 @@ function render() {
 async function main() {
   const dek = document.getElementById("dek");
   try {
-    const [preds, colors, news] = await Promise.all([
+    const [preds, colors, news, ranks, results] = await Promise.all([
       loadJSON("predictions.json"),
       loadJSON("team_colors.json", true),
       loadJSON("news.json", true),
+      loadJSON(RANKINGS_URL, true),
+      loadJSON("results.json", true),
     ]);
     state.games = preds.games || [];
     state.colors = colors || {};
     state.news = (news && news.teams) || news || {};
+    // The other site publishes only a Top 25. Missing teams stay unnumbered.
+    state.rankings = Object.fromEntries(
+      ((ranks && ranks.season === preds.season && ranks.top25) || [])
+        .filter(t => t.team && Number.isInteger(t.rank) && t.rank >= 1 && t.rank <= 25)
+        .map(t => [t.team, t.rank]));
     const wk = preds.week ? `Week ${preds.week}` : "";
     dek.textContent = `${preds.season || ""} ${wk} — ${state.games.length} games`.trim();
     document.getElementById("stamp").textContent = preds.generated_at ? `Generated ${preds.generated_at}` : "";
+    if (results && results.season === preds.season) renderRecord(results);
     render();
   } catch (err) {
     document.getElementById("board").innerHTML =

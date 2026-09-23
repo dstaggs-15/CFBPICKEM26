@@ -1,0 +1,8 @@
+{
+  "season": 2026,
+  "weeks": [
+    {"week": 1, "wins": 7, "losses": 3, "source": "reported"},
+    {"week": 2, "wins": 5, "losses": 5, "source": "reported"},
+    {"week": 3, "wins": 7, "losses": 3, "source": "final scores"}
+  ]
+}

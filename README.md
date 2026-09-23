@@ -1,6 +1,24 @@
 # CFB Pick'em Model
 
 A tool that predicts college football games for a weekly ESPN pick'em pool, shows a live website with the picks, and explains *why* it made each one in plain English.
+
+## Weekly record on the site
+
+The site reads `docs/results.json`. Weeks 1 and 2 of 2026 use the owner's reported
+records (7–3 and 5–5); the Week 3 record (7–3) was checked against the final
+scores saved in `historicals/ESPN College Pick'em week3.pdf` and the picks in
+`historicals/CFB Pick'em Modelweek3.pdf`.
+
+Each successful `predict.py` run saves the first complete slate for a week in
+`historicals/predictions/`. Later runs in that week do not replace that snapshot.
+The weekly GitHub Action runs `grade_results.py` after fetching CFBD data and
+before producing new picks. It updates the record only after every archived
+game has a unique matching final score. For a week without an archived slate,
+add an entry to `docs/results.json` manually after checking the original picks.
+
+Team numbers on the site are fetched from the separate ranking site's public
+Top 25 JSON. They are display-only, and an unranked team has no number.
+
 ## The one-sentence version
 
 ## Why this exists 

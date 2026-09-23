@@ -1,0 +1,762 @@
+{
+  "season": 2026,
+  "generated_at": "2026-09-17",
+  "games": [
+    {
+      "away_team": "Arizona State",
+      "home_team": "Kansas",
+      "neutral": true,
+      "model_prob_home": 0.381,
+      "market_prob_home": 0.316,
+      "spread_home": 5.5,
+      "pick": "Arizona State",
+      "why": [
+        "Arizona State carries the stronger overall rating into this game.",
+        "Kansas has been more efficient on offense against comparable defenses.",
+        "Arizona State has the stronger defense by opponent-adjusted efficiency.",
+        "Neutral site \u2014 no home-field edge for either team."
+      ],
+      "teams": {
+        "away": {
+          "name": "Arizona State",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.162,
+              "rank": 101,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.059,
+              "rank": 66,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "46.1%",
+              "rank": 78,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.41,
+              "rank": 62,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Kansas",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.208,
+              "rank": 77,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.021,
+              "rank": 86,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "44.4%",
+              "rank": 95,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.55,
+              "rank": 26,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "North Carolina",
+      "home_team": "Clemson",
+      "neutral": false,
+      "model_prob_home": 0.759,
+      "market_prob_home": 0.612,
+      "spread_home": -3.25,
+      "pick": "Clemson",
+      "why": [
+        "Clemson carries the stronger overall rating into this game.",
+        "North Carolina has been more efficient on offense against comparable defenses.",
+        "Clemson is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "North Carolina",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.243,
+              "rank": 65,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.123,
+              "rank": 39,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "51.5%",
+              "rank": 36,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.02,
+              "rank": 268,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Clemson",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": -0.207,
+              "rank": 276,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.137,
+              "rank": 183,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "28.2%",
+              "rank": 279,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 0.97,
+              "rank": 281,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "NC State",
+      "home_team": "Vanderbilt",
+      "neutral": false,
+      "model_prob_home": 0.721,
+      "market_prob_home": 0.612,
+      "spread_home": -3.25,
+      "pick": "Vanderbilt",
+      "why": [
+        "Vanderbilt has been more efficient on offense against comparable defenses.",
+        "Vanderbilt has the stronger defense by opponent-adjusted efficiency.",
+        "Vanderbilt is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "NC State",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.225,
+              "rank": 73,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.052,
+              "rank": 68,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "49.5%",
+              "rank": 51,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 0.99,
+              "rank": 276,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Vanderbilt",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.089,
+              "rank": 149,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.105,
+              "rank": 45,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "42.6%",
+              "rank": 123,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.08,
+              "rank": 246,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "SMU",
+      "home_team": "Louisville",
+      "neutral": false,
+      "model_prob_home": 0.585,
+      "market_prob_home": 0.544,
+      "spread_home": -1.25,
+      "pick": "Louisville",
+      "why": [
+        "SMU has been more efficient on offense against comparable defenses.",
+        "SMU has the stronger defense by opponent-adjusted efficiency.",
+        "Louisville is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "SMU",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.469,
+              "rank": 10,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.09,
+              "rank": 54,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "55.8%",
+              "rank": 14,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.44,
+              "rank": 53,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Louisville",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.454,
+              "rank": 13,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.109,
+              "rank": 169,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "54.6%",
+              "rank": 18,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.36,
+              "rank": 83,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "Mississippi State",
+      "home_team": "South Carolina",
+      "neutral": false,
+      "model_prob_home": 0.721,
+      "market_prob_home": 0.636,
+      "spread_home": -4.0,
+      "pick": "South Carolina",
+      "why": [
+        "South Carolina carries the stronger overall rating into this game.",
+        "Mississippi State has been more efficient on offense against comparable defenses.",
+        "South Carolina has the stronger defense by opponent-adjusted efficiency.",
+        "South Carolina is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "Mississippi State",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.538,
+              "rank": 4,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.101,
+              "rank": 48,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "58.1%",
+              "rank": 9,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.28,
+              "rank": 130,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "South Carolina",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.428,
+              "rank": 14,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.09,
+              "rank": 53,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "58.7%",
+              "rank": 5,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.22,
+              "rank": 164,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "Florida",
+      "home_team": "Auburn",
+      "neutral": false,
+      "model_prob_home": 0.721,
+      "market_prob_home": 0.413,
+      "spread_home": 2.5,
+      "pick": "Auburn",
+      "why": [
+        "Florida has been more efficient on offense against comparable defenses.",
+        "Auburn has the stronger defense by opponent-adjusted efficiency.",
+        "Auburn is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "Florida",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.499,
+              "rank": 8,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.218,
+              "rank": 13,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "54.2%",
+              "rank": 23,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.37,
+              "rank": 81,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Auburn",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.125,
+              "rank": 120,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.122,
+              "rank": 40,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "45.2%",
+              "rank": 87,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.17,
+              "rank": 190,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "LSU",
+      "home_team": "Ole Miss",
+      "neutral": false,
+      "model_prob_home": 0.759,
+      "market_prob_home": 0.405,
+      "spread_home": 2.75,
+      "pick": "Ole Miss",
+      "why": [
+        "Ole Miss carries the stronger overall rating into this game.",
+        "Ole Miss has been more efficient on offense against comparable defenses.",
+        "LSU has the stronger defense by opponent-adjusted efficiency.",
+        "Ole Miss is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "LSU",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.198,
+              "rank": 86,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.455,
+              "rank": 1,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "49.8%",
+              "rank": 49,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.29,
+              "rank": 118,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Ole Miss",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.284,
+              "rank": 48,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.13,
+              "rank": 178,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "55.4%",
+              "rank": 16,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.14,
+              "rank": 209,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "Colorado",
+      "home_team": "Northwestern",
+      "neutral": false,
+      "model_prob_home": 0.721,
+      "market_prob_home": 0.62,
+      "spread_home": -3.5,
+      "pick": "Northwestern",
+      "why": [
+        "Northwestern carries the stronger overall rating into this game.",
+        "Northwestern has been more efficient on offense against comparable defenses.",
+        "Colorado has the stronger defense by opponent-adjusted efficiency.",
+        "Northwestern is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "Colorado",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.26,
+              "rank": 57,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.042,
+              "rank": 73,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "41.8%",
+              "rank": 134,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.36,
+              "rank": 84,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Northwestern",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.48,
+              "rank": 9,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.09,
+              "rank": 155,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "50.9%",
+              "rank": 42,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.49,
+              "rank": 37,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "Virginia Tech",
+      "home_team": "Maryland",
+      "neutral": false,
+      "model_prob_home": 0.721,
+      "market_prob_home": 0.397,
+      "spread_home": 3.0,
+      "pick": "Maryland",
+      "why": [
+        "Maryland carries the stronger overall rating into this game.",
+        "Virginia Tech has been more efficient on offense against comparable defenses.",
+        "Maryland is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "Virginia Tech",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.337,
+              "rank": 38,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.235,
+              "rank": 11,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "51.0%",
+              "rank": 40,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.29,
+              "rank": 121,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "Maryland",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.361,
+              "rank": 31,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.258,
+              "rank": 9,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "53.2%",
+              "rank": 28,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.28,
+              "rank": 124,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "away_team": "James Madison",
+      "home_team": "San Diego State",
+      "neutral": false,
+      "model_prob_home": 0.147,
+      "market_prob_home": 0.578,
+      "spread_home": -2.25,
+      "pick": "James Madison",
+      "why": [
+        "James Madison carries the stronger overall rating into this game.",
+        "James Madison has been more efficient on offense against comparable defenses.",
+        "James Madison has the stronger defense by opponent-adjusted efficiency.",
+        "San Diego State is at home, worth a few points of edge."
+      ],
+      "teams": {
+        "away": {
+          "name": "James Madison",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.459,
+              "rank": 11,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.272,
+              "rank": 7,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "52.3%",
+              "rank": 32,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.31,
+              "rank": 109,
+              "of": 299
+            }
+          ]
+        },
+        "home": {
+          "name": "San Diego State",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": -0.052,
+              "rank": 223,
+              "of": 299
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.016,
+              "rank": 102,
+              "of": 299
+            },
+            {
+              "label": "Success rate",
+              "value": "38.3%",
+              "rank": 176,
+              "of": 299
+            },
+            {
+              "label": "Explosiveness",
+              "value": 0.88,
+              "rank": 290,
+              "of": 299
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    }
+  ],
+  "week": 3
+}

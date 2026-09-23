@@ -33,6 +33,9 @@ jobs:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
 
+      - name: Grade archived picks with final scores
+        run: python grade_results.py
+
       - name: Build features
         run: python features.py
 
@@ -50,8 +53,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Stage only the files that were actually produced.
-          for f in docs/predictions.json docs/news.json docs/team_stats.json; do
+          for f in docs/predictions.json docs/news.json docs/team_stats.json docs/results.json; do
             [ -f "$f" ] && git add "$f"
           done
+          git add historicals/predictions/
           git commit -m "weekly update: predictions + news" || echo "nothing to commit"
           git push
