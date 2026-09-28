@@ -38,6 +38,7 @@ class FeatureAdjustmentTests(unittest.TestCase):
         ], columns=["date", "season", "home_team", "away_team", "home_points", "away_points"])
         base["date"] = pd.to_datetime(base["date"], utc=True)
         base["week"] = 1
+        base["game_id"] = ["2025-1", "2026-1"]
         base["neutral_site"] = True
         p = _elo_probs(base)
         self.assertEqual(p.iloc[0], 0.5)
