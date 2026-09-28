@@ -36,6 +36,21 @@ def report(label, df):
                            ("strength absent", games[games.off_ppa_adj_diff.isna()])]:
             m = _metrics(sub.home_win, sub.p_candidate)
             print(f"  {label:<17} n={m['n']:5d} accuracy={m['acc']:.4f}")
+    if "home_classification" in games:
+        fbs = (games.home_classification.str.lower().eq("fbs") &
+               games.away_classification.str.lower().eq("fbs"))
+        print(f"  Scoring this trained model on {fbs.sum()} FBS-vs-FBS games:")
+        for name in ("old_inputs", "candidate", "market"):
+            sub = games[fbs]
+            m = _metrics(sub.home_win, sub[f"p_{name}"])
+            print(f"    {name:<12} accuracy={m['acc']:.4f} Brier={m['brier']:.4f}")
+    if "spread_home" in games:
+        for label, sub in [("close lines (0-7)", games[games.spread_home.abs().le(7)]),
+                           ("large lines (14+)", games[games.spread_home.abs().ge(14)])]:
+            print(f"  {label} n={len(sub)}")
+            for name in ("candidate", "market"):
+                m = _metrics(sub.home_win, sub[f"p_{name}"])
+                print(f"    {name:<12} accuracy={m['acc']:.4f} Brier={m['brier']:.4f}")
 
 
 def main():
@@ -47,6 +62,8 @@ def main():
           f"other/unknown: {(~pair).sum()}")
     print(f"Advanced feature availability: all {df.off_ppa_adj_diff.notna().mean():.1%}; "
           f"FBS pairs {df.loc[pair, 'off_ppa_adj_diff'].notna().mean():.1%}")
+    classes = df[["home_classification", "away_classification"]].fillna("unknown")
+    print(classes.value_counts().head(12).to_string())
     report("All classifications", df)
     report("FBS-versus-FBS only (trained and tested on FBS)", df[pair])
 
