@@ -27,15 +27,17 @@ from baselines import Model
 class V1Model(Model):
     name = "model"
 
-    def __init__(self, l2=1.0, max_iter=300, lr=0.06, random_state=42):
+    def __init__(self, l2=1.0, max_iter=300, lr=0.06, random_state=42,
+                 features=None):
         self.params = dict(l2_regularization=l2, max_iter=max_iter,
                            learning_rate=lr, random_state=random_state)
         self.clf = None
         self.calibrator = None
-        self.features = schema.MODEL_FEATURES
+        self.features = list(features) if features is not None else schema.MODEL_FEATURES
 
     def fit(self, train_df: pd.DataFrame) -> "V1Model":
-        d = train_df.copy()
+        # Stable tie-breaking matters when many Saturday kickoffs share a time.
+        d = train_df.sort_values(["season", "week", "date", "game_id"]).copy()
         d["home_win"] = (d["home_points"] > d["away_points"]).astype(int)
 
         # Carve off the most recent season for HONEST calibration.

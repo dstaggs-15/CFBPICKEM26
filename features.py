@@ -33,6 +33,7 @@ OUT_PARQUET = "data/derived/training.parquet"
 
 ROLL_N = 8          # games of history to average over
 MIN_PRIOR = 3       # need at least this many prior games before a team's stats count
+PRIOR_WEIGHT = 2.0  # prior season starts at two games' worth and fades by game eight
 
 
 # ---------------------------------------------------------------------------
@@ -61,17 +62,36 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     a = adv[["game_id", "team", *metrics]]
     tg = tg.merge(a, on=["game_id", "team"], how="left")
 
-    tg = tg.sort_values(["team", "season", "week", "date"]).reset_index(drop=True)
+    tg = tg.sort_values(["team", "date", "game_id"]).reset_index(drop=True)
 
-    # rolling means using only PRIOR games (shift(1) before rolling)
+    # Current-season rolling form; the previous season provides a short-lived
+    # prior for the opener. Historical seasons are used to LEARN the mapping,
+    # never as a present-day team's raw form.
     for m in metrics:
-        shifted = tg.groupby("team")[m].shift(1)
-        tg[f"{m}_roll"] = (
-            shifted.groupby(tg["team"]).rolling(ROLL_N, min_periods=MIN_PRIOR).mean()
-            .reset_index(level=0, drop=True)
-        )
-    # count of prior games (for min-history gating)
-    tg["prior_games"] = tg.groupby("team").cumcount()
+        current = tg.groupby(["team", "season"])[m].shift(1)
+        groups = [tg["team"], tg["season"]]
+        recent_mean = (current.groupby(groups).rolling(ROLL_N, min_periods=1)
+                       .mean().reset_index(level=[0, 1], drop=True))
+        recent_n = (current.groupby(groups).rolling(ROLL_N, min_periods=1)
+                    .count().reset_index(level=[0, 1], drop=True).fillna(0))
+        # All of these games preceded the next season; no current-season
+        # result can affect its own or another game's pregame baseline.
+        previous = (tg.dropna(subset=[m]).groupby(["team", "season"])[m]
+                    .apply(lambda games: games.tail(ROLL_N).mean()).to_dict())
+        previous_mean = pd.Series(
+            [previous.get((team, season - 1), np.nan)
+             for team, season in zip(tg["team"], tg["season"])], index=tg.index)
+        weight = (PRIOR_WEIGHT * (1 - recent_n / ROLL_N)).clip(lower=0)
+        weight = weight.where(previous_mean.notna(), 0.0)
+        total = recent_n + weight
+        weighted = recent_mean.fillna(0) * recent_n + previous_mean.fillna(0) * weight
+        tg[f"{m}_roll"] = (weighted / total).where(total > 0)
+
+    # Count actual observed games, rather than scheduled games with no stats.
+    observed = tg.groupby("team")["off_ppa"].shift(1)
+    tg["prior_games"] = (observed.groupby(tg["team"])
+                         .rolling(ROLL_N, min_periods=1).count()
+                         .reset_index(level=0, drop=True).fillna(0))
     return tg
 
 
@@ -140,7 +160,7 @@ def _elo_probs(base: pd.DataFrame) -> pd.Series:
     probability from the ratings as they stood at that exact moment, then
     updating. This is the only way to guarantee point-in-time correctness.
     """
-    order = base.sort_values("date")
+    order = base.sort_values(["date", "game_id"])
     df = order.reset_index(drop=True)
     elo = EloModel()
     probs = np.full(len(df), np.nan)
@@ -216,6 +236,8 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     df["def_ppa_adj_diff"] = df["home_def_ppa_adj"] - df["away_def_ppa_adj"]
     df["success_rate_adj_diff"] = df["home_off_success_adj"] - df["away_off_success_adj"]
     df["explosiveness_adj_diff"] = df["home_off_explosive_adj"] - df["away_off_explosive_adj"]
+    df["home_off_vs_away_def_ppa"] = df["home_off_ppa_adj"] - df["away_def_ppa_adj"]
+    df["away_off_vs_home_def_ppa"] = df["away_off_ppa_adj"] - df["home_def_ppa_adj"]
 
     # elo + context
     df["elo_home_prob"] = _elo_probs(base).values
@@ -228,7 +250,9 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     # gate: null out strength diffs when either team lacks enough history,
     # so early-season rows don't pretend to know a team they haven't seen.
     enough = (df["home_prior_games"] >= MIN_PRIOR) & (df["away_prior_games"] >= MIN_PRIOR)
-    for c in ["off_ppa_adj_diff", "def_ppa_adj_diff", "success_rate_adj_diff", "explosiveness_adj_diff"]:
+    for c in ["off_ppa_adj_diff", "def_ppa_adj_diff", "success_rate_adj_diff",
+              "explosiveness_adj_diff", "home_off_vs_away_def_ppa",
+              "away_off_vs_home_def_ppa"]:
         df.loc[~enough, c] = np.nan
 
     return df

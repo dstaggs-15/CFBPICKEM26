@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from features import _elo_probs, _opponent_adjust
+from features import _elo_probs, _opponent_adjust, _team_game_long
 from ranking_signal import adjustment
 
 
@@ -38,6 +38,7 @@ class FeatureAdjustmentTests(unittest.TestCase):
         ], columns=["date", "season", "home_team", "away_team", "home_points", "away_points"])
         base["date"] = pd.to_datetime(base["date"], utc=True)
         base["week"] = 1
+        base["game_id"] = ["2025-1", "2026-1"]
         base["neutral_site"] = True
         p = _elo_probs(base)
         self.assertEqual(p.iloc[0], 0.5)
@@ -51,6 +52,32 @@ class FeatureAdjustmentTests(unittest.TestCase):
         self.assertAlmostEqual(adjustment("A", "B", kickoff, published, scores), 0.02)
         self.assertEqual(adjustment("A", "C", kickoff, published, scores), 0)
         self.assertEqual(adjustment("A", "B", kickoff, kickoff.to_pydatetime(), scores), 0)
+
+    def test_current_form_replaces_last_season_by_game_eight(self):
+        games, stats = [], []
+        for i in range(12):
+            season = 2025 if i < 3 else 2026
+            week = i + 1 if i < 3 else i - 2
+            gid = str(i)
+            games.append((gid, season, week, pd.Timestamp("2025-08-01", tz="UTC")
+                          + pd.Timedelta(days=7 * i), "A", "B", False,
+                          28 if i < 11 else np.nan, 7 if i < 11 else np.nan))
+            for team in ("A", "B"):
+                val = 0.1 if season == 2025 else 0.9
+                if i < 11:
+                    stats.append((gid, team, val, 0.4, 1.0, 0.1, 0.4, 1.0))
+        base = pd.DataFrame(games, columns=["game_id", "season", "week", "date",
+                                            "home_team", "away_team", "neutral_site",
+                                            "home_points", "away_points"])
+        adv = pd.DataFrame(stats, columns=["game_id", "team", "off_ppa",
+                                           "off_success", "off_explosive", "def_ppa",
+                                           "def_success", "def_explosive"])
+        tg = _team_game_long(base, adv)
+        team = tg[tg.team.eq("A")].set_index("game_id")
+        self.assertAlmostEqual(team.loc["3", "off_ppa_roll"], 0.1)
+        self.assertGreater(team.loc["5", "off_ppa_roll"], 0.1)
+        self.assertLess(team.loc["5", "off_ppa_roll"], 0.9)
+        self.assertAlmostEqual(team.loc["11", "off_ppa_roll"], 0.9)
 
 
 if __name__ == "__main__":

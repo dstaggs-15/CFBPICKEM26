@@ -97,6 +97,8 @@ def parse_games(raw, season):
             "date": _get_field(g, "startDate", "start_date"),
             "home_team": _get_field(g, "homeTeam", "home_team"),
             "away_team": _get_field(g, "awayTeam", "away_team"),
+            "home_classification": _get_field(g, "homeClassification", "home_classification"),
+            "away_classification": _get_field(g, "awayClassification", "away_classification"),
             "neutral_site": bool(_get_field(g, "neutralSite", "neutral_site", default=False)),
             "home_points": _get_field(g, "homePoints", "home_points"),
             "away_points": _get_field(g, "awayPoints", "away_points"),
