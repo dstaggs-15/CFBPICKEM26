@@ -1,0 +1,32 @@
+name: Evaluate matchup candidates
+on:
+  push:
+    branches:
+      - candidate/matchup-features-and-fbs-audit
+concurrency:
+  group: matchup-candidate
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - name: Fetch seasons
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python fetch_cfbd.py --seasons 2014-2026
+      - run: python features.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: candidate-training-data
+          path: data/derived/training.parquet
+          retention-days: 3
+      - run: python evaluate_candidates.py
+      - run: python train_and_backtest.py
