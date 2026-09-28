@@ -34,7 +34,7 @@ def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int
 
     Returns (per_fold_df, summary_df, disagreement_df).
     """
-    df = df.sort_values(["season", "week", "date"]).reset_index(drop=True)
+    df = df.sort_values(["season", "week", "date", "game_id"]).reset_index(drop=True)
     df["home_win"] = (df["home_points"] > df["away_points"]).astype(int)
     seasons = sorted(df["season"].unique())
 
