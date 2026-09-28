@@ -1,0 +1,29 @@
+name: Evaluate strength fixes
+on:
+  push:
+    branches:
+      - candidate/fix-strength-and-rankings-signal
+
+permissions:
+  contents: read
+
+jobs:
+  historical:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Focused checks
+        run: python -m unittest discover -s tests -v
+      - name: Fetch historical games
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python fetch_cfbd.py --seasons 2014-2026
+      - name: Build pregame features
+        run: python features.py
+      - name: Historical walk-forward report
+        run: python train_and_backtest.py
