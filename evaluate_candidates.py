@@ -44,6 +44,12 @@ def report(label, df):
             sub = games[fbs]
             m = _metrics(sub.home_win, sub[f"p_{name}"])
             print(f"    {name:<12} accuracy={m['acc']:.4f} Brier={m['brier']:.4f}")
+        for season, sub in games[fbs].groupby("season"):
+            old = _metrics(sub.home_win, sub.p_old_inputs)
+            new = _metrics(sub.home_win, sub.p_candidate)
+            print(f"    season {season}: n={len(sub):3d} "
+                  f"old={old['acc']:.3f} new={new['acc']:.3f} "
+                  f"Brier old={old['brier']:.3f} new={new['brier']:.3f}")
     if "spread_home" in games:
         for label, sub in [("close lines (0-7)", games[games.spread_home.abs().le(7)]),
                            ("large lines (14+)", games[games.spread_home.abs().ge(14)])]:
