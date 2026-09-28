@@ -30,7 +30,7 @@ MIN_PRIOR = 3
 def main():
     df = pd.read_parquet(TRAIN_PARQUET)
     played = df.dropna(subset=["home_points", "away_points"]).copy()
-    played = played.sort_values(["season", "week", "date"]).reset_index(drop=True)
+    played = played.sort_values(["season", "week", "date", "game_id"]).reset_index(drop=True)
 
     # The actual safety check, not a smaller stand-in. If travel_diff_km (or
     # anything else) is a dead constant, or a strength feature is silently
