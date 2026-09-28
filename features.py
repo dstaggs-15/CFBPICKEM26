@@ -160,7 +160,7 @@ def _elo_probs(base: pd.DataFrame) -> pd.Series:
     probability from the ratings as they stood at that exact moment, then
     updating. This is the only way to guarantee point-in-time correctness.
     """
-    order = base.sort_values("date")
+    order = base.sort_values(["date", "game_id"])
     df = order.reset_index(drop=True)
     elo = EloModel()
     probs = np.full(len(df), np.nan)
