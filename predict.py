@@ -85,13 +85,15 @@ def explain(row: pd.Series, p_home: float) -> list[str]:
     off = row.get("off_ppa_adj_diff")
     if pd.notna(off) and abs(off) > 0.02:
         better = row.home_team if off > 0 else row.away_team
-        why.append(f"{better} has been more efficient on offense against comparable defenses.")
+        if better == fav:
+            why.append(f"{better} has been more efficient on offense against comparable defenses.")
 
     dee = row.get("def_ppa_adj_diff")
     if pd.notna(dee) and abs(dee) > 0.02:
         # lower def PPA diff (home-away) means home defense better
         better = row.home_team if dee < 0 else row.away_team
-        why.append(f"{better} has the stronger defense by opponent-adjusted efficiency.")
+        if better == fav:
+            why.append(f"{better} has the stronger defense by opponent-adjusted efficiency.")
 
     if not row.get("neutral_site", False):
         why.append(f"{row.home_team} is at home, worth a few points of edge.")
@@ -152,6 +154,11 @@ def main():
             s = stats_by_team.get(name, {})
             return {"name": name, "stats": s.get("stats", [])}
 
+        reasons = explain(row, p_home)
+        if rank_delta:
+            ranked_side = disp_home if rank_delta > 0 else disp_away
+            reasons.insert(0, f"The separate computer rankings favor {ranked_side}; they shift the home win estimate by {rank_delta * 100:+.1f} percentage points.")
+
         games_out.append({
             "game_id": str(row["game_id"]),
             "game_date": row["date"].date().isoformat() if pd.notna(row.get("date")) else None,
@@ -166,7 +173,7 @@ def main():
             "spread_home": (float(row["spread_home"])
                             if pd.notna(row.get("spread_home")) else None),
             "pick": pick,
-            "why": explain(row, p_home),
+            "why": reasons,
             "teams": {"away": team_block(disp_away), "home": team_block(disp_home)},
             "ai_note": None,
         })
