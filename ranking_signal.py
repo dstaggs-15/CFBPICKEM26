@@ -5,6 +5,7 @@ teams when both have published composite scores; unranked does not mean #26.
 """
 
 from datetime import datetime, timedelta, timezone
+from math import isfinite
 
 RANKINGS_URL = "https://dstaggs-15.github.io/cfbranking/data/rankings.json"
 MAX_ADJUSTMENT = 0.02  # probability points: at most two percentage points
@@ -21,6 +22,8 @@ def load_rankings(season: int):
     if published.tzinfo is None or published > datetime.now(timezone.utc):
         raise ValueError("Rankings timestamp is invalid")
     scores = {entry["team"]: float(entry["score"]) for entry in payload["top25"]}
+    if not all(isfinite(score) for score in scores.values()):
+        raise ValueError("Ranking scores must be finite")
     return published, scores
 
 
