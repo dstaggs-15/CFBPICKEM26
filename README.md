@@ -34,6 +34,16 @@ and defensive efficiency, opponent quality at the time those games were
 played, pregame Elo, rest, and home site. Team names and betting lines are not
 classifier inputs. Elo regresses halfway toward average at each season change.
 
+The September 2026 feature audit compared the new matchup features with the
+previous seven inputs on the same held-out seasons (2017–2026). The model was
+trained on prior seasons only for each test season. On 7,015 FBS-versus-FBS
+games, accuracy rose from 69.00% to 69.61% and Brier score improved from
+0.2006 to 0.1992. The saved betting-line favorite won 73.66% on those games.
+This is a modest improvement, not a claim that the model beats the market.
+The separate ranking-site nudge is applied at prediction time and is not part
+of that historical comparison because dated ranking snapshots are unavailable
+for most of the backtest.
+
 ## The one-sentence version
 
 ## Why this exists 
