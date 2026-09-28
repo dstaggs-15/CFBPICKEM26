@@ -139,6 +139,8 @@ def parse_advanced(raw):
             "off_success": pd.to_numeric(_get_field(off, "successRate", "success_rate"), errors="coerce"),
             "off_explosive": pd.to_numeric(_get_field(off, "explosiveness"), errors="coerce"),
             "def_ppa": pd.to_numeric(_get_field(deff, "ppa"), errors="coerce"),
+            "def_success": pd.to_numeric(_get_field(deff, "successRate", "success_rate"), errors="coerce"),
+            "def_explosive": pd.to_numeric(_get_field(deff, "explosiveness"), errors="coerce"),
         })
     return pd.DataFrame(rows)
 
