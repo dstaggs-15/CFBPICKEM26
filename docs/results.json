@@ -150,6 +150,144 @@
           "winner": "James Madison"
         }
       ]
+    },
+    {
+      "week": 4,
+      "wins": 2,
+      "losses": 8,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "401856704",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Texas",
+          "home_team": "Tennessee",
+          "away_points": 20,
+          "home_points": 17,
+          "pick": "Tennessee",
+          "model_confidence": 0.695,
+          "market_favorite": "Texas",
+          "winner": "Texas"
+        },
+        {
+          "game_id": "401856699",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Ole Miss",
+          "home_team": "Florida",
+          "away_points": 28,
+          "home_points": 52,
+          "pick": "Ole Miss",
+          "model_confidence": 0.588,
+          "market_favorite": "Florida",
+          "winner": "Florida"
+        },
+        {
+          "game_id": "401858463",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Iowa",
+          "home_team": "Michigan",
+          "away_points": 20,
+          "home_points": 19,
+          "pick": "Michigan",
+          "model_confidence": 0.695,
+          "market_favorite": "Michigan",
+          "winner": "Iowa"
+        },
+        {
+          "game_id": "401860897",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Boise State",
+          "home_team": "Western Michigan",
+          "away_points": 32,
+          "home_points": 7,
+          "pick": "Western Michigan",
+          "model_confidence": 0.679,
+          "market_favorite": "Boise State",
+          "winner": "Boise State"
+        },
+        {
+          "game_id": "401858464",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Nebraska",
+          "home_team": "Michigan State",
+          "away_points": 31,
+          "home_points": 13,
+          "pick": "Michigan State",
+          "model_confidence": 0.65,
+          "market_favorite": "Nebraska",
+          "winner": "Nebraska"
+        },
+        {
+          "game_id": "401869961",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "James Madison",
+          "home_team": "Old Dominion",
+          "away_points": 46,
+          "home_points": 20,
+          "pick": "James Madison",
+          "model_confidence": 0.852,
+          "market_favorite": "James Madison",
+          "winner": "James Madison"
+        },
+        {
+          "game_id": "401856814",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Kansas State",
+          "home_team": "Cincinnati",
+          "away_points": 26,
+          "home_points": 31,
+          "pick": "Kansas State",
+          "model_confidence": 0.561,
+          "market_favorite": "Kansas State",
+          "winner": "Cincinnati"
+        },
+        {
+          "game_id": "401856881",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Oklahoma State",
+          "home_team": "West Virginia",
+          "away_points": 41,
+          "home_points": 24,
+          "pick": "West Virginia",
+          "model_confidence": 0.76,
+          "market_favorite": "West Virginia",
+          "winner": "Oklahoma State"
+        },
+        {
+          "game_id": "401858469",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Oregon",
+          "home_team": "USC",
+          "away_points": 41,
+          "home_points": 27,
+          "pick": "Oregon",
+          "model_confidence": 0.566,
+          "market_favorite": "Oregon",
+          "winner": "Oregon"
+        },
+        {
+          "game_id": "401856703",
+          "game_date": "2026-09-26",
+          "published_at": "2026-09-23",
+          "away_team": "Missouri",
+          "home_team": "Mississippi State",
+          "away_points": 24,
+          "home_points": 31,
+          "pick": "Missouri",
+          "model_confidence": 0.561,
+          "market_favorite": "Mississippi State",
+          "winner": "Mississippi State"
+        }
+      ]
     }
   ]
 }
