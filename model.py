@@ -36,7 +36,8 @@ class V1Model(Model):
         self.features = list(features) if features is not None else schema.MODEL_FEATURES
 
     def fit(self, train_df: pd.DataFrame) -> "V1Model":
-        d = train_df.copy()
+        # Stable tie-breaking matters when many Saturday kickoffs share a time.
+        d = train_df.sort_values(["season", "week", "date", "game_id"]).copy()
         d["home_win"] = (d["home_points"] > d["away_points"]).astype(int)
 
         # Carve off the most recent season for HONEST calibration.
