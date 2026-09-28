@@ -15,13 +15,13 @@ honest instead of fantasy.
 
 Opponent adjustment, in plain terms: raw PPA says "Team A averaged 0.55 per
 play." But 0.55 against elite defenses is very different from 0.55 against
-cupcakes. We adjust each team's number by the average strength of the defenses
-they actually faced, iterating a couple of times so the adjustment itself
-accounts for opponent quality. The result is a rating you can compare across
-schedules.
+cupcakes. Offensive numbers are adjusted for the defenses faced; defensive
+numbers are adjusted for the offenses faced. Only information available before
+each game enters the adjustment.
 """
 
 from __future__ import annotations
+from collections import deque
 import numpy as np
 import pandas as pd
 
@@ -33,7 +33,6 @@ OUT_PARQUET = "data/derived/training.parquet"
 
 ROLL_N = 8          # games of history to average over
 MIN_PRIOR = 3       # need at least this many prior games before a team's stats count
-ADJUST_ITERS = 2    # opponent-adjustment refinement passes
 
 
 # ---------------------------------------------------------------------------
@@ -46,7 +45,8 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     joined onto game order.
     """
     # game order key: season, week, date
-    order = base[["game_id", "season", "week", "date", "home_team", "away_team", "neutral_site"]].copy()
+    order = base[["game_id", "season", "week", "date", "home_team", "away_team",
+                  "neutral_site", "home_points", "away_points"]].copy()
 
     # map each game to its two teams + who the opponent is
     home = order.rename(columns={"home_team": "team", "away_team": "opponent"})
@@ -56,13 +56,14 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     tg = pd.concat([home, away], ignore_index=True)
 
     # attach raw efficiency for that team in that game
-    a = adv.rename(columns={})[["game_id", "team", "off_ppa", "off_success", "off_explosive", "def_ppa"]]
+    metrics = ["off_ppa", "off_success", "off_explosive", "def_ppa",
+               "def_success", "def_explosive"]
+    a = adv[["game_id", "team", *metrics]]
     tg = tg.merge(a, on=["game_id", "team"], how="left")
 
     tg = tg.sort_values(["team", "season", "week", "date"]).reset_index(drop=True)
 
     # rolling means using only PRIOR games (shift(1) before rolling)
-    metrics = ["off_ppa", "off_success", "off_explosive", "def_ppa"]
     for m in metrics:
         shifted = tg.groupby("team")[m].shift(1)
         tg[f"{m}_roll"] = (
@@ -77,45 +78,44 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # 2. Opponent adjustment: iterate team rating vs schedule faced
 # ---------------------------------------------------------------------------
-def _opponent_adjust(tg: pd.DataFrame, metric_roll: str) -> pd.Series:
+def _opponent_adjust(tg: pd.DataFrame, metric_roll: str,
+                     opponent_metric_roll: str) -> pd.Series:
     """
     Adjust each team-game rolling metric by the quality of opponents faced
     SO FAR — never opponents faced later in the season or in future years.
 
-    The earlier version used `.groupby("team")["opp_adj"].transform("mean")`,
-    which averages a team's opponent quality across EVERY row for that team in
-    the whole table — including games that hadn't happened yet relative to the
-    row being adjusted. That leaks future-schedule (and future-performance)
-    information into a feature that's supposed to be strictly pregame.
-
-    The fix: walk games in chronological order and, for each team, maintain a
-    running average of the opponent-quality values seen in games played
-    strictly before the current one. Nothing about a team's future schedule or
-    a future opponent's later performance can enter this calculation.
+    Compare a team's recent performance with the opposing *other-side* unit
+    faced in its last eight games. Each opposing rating is frozen at the time
+    of that game. Use only prior games to compute the reference league mean.
     """
-    tg_sorted = tg.sort_values(["season", "week", "date"])
+    tg_sorted = tg.sort_values(["date", "game_id", "is_home"])
     orig_index = tg_sorted.index  # remember original index before reset
     tg_s = tg_sorted.reset_index(drop=True)
-    opp_metric = tg_s.set_index(["game_id", "team"])[metric_roll]  # entering-value per team-game
+    opp_metric = tg_s.set_index(["game_id", "team"])[opponent_metric_roll]
 
-    running_sum: dict[str, float] = {}
-    running_n: dict[str, int] = {}
-    league_mean = tg_s[metric_roll].mean()
+    faced: dict[str, deque] = {}
+    league_sum = 0.0
+    league_n = 0
 
     adj = np.full(len(tg_s), np.nan)
-    for i, row in tg_s.iterrows():
-        team = row["team"]
-        n = running_n.get(team, 0)
-        sos = (running_sum.get(team, 0.0) / n) if n > 0 else league_mean
-        base_val = row[metric_roll]
-        adj[i] = base_val - (sos - league_mean) if pd.notna(base_val) else np.nan
-
-        # update this team's running opponent-quality log using the OPPONENT's
-        # entering-value for this game (available before kickoff), for future rows.
-        opp_val = opp_metric.get((row["game_id"], row["opponent"]))
-        if pd.notna(opp_val):
-            running_sum[team] = running_sum.get(team, 0.0) + opp_val
-            running_n[team] = n + 1
+    # Snapshot a whole kickoff time before updating any game at that time.
+    for _, at_kickoff in tg_s.groupby("date", sort=False, dropna=False):
+        reference = league_sum / league_n if league_n else None
+        updates = []
+        for i, row in at_kickoff.iterrows():
+            history = faced.get(row["team"])
+            base_val = row[metric_roll]
+            if pd.notna(base_val):
+                sos = np.mean(history) if history else reference
+                adj[i] = base_val - (sos - reference) if sos is not None and reference is not None else base_val
+            opp_val = opp_metric.get((row["game_id"], row["opponent"]))
+            if (pd.notna(opp_val) and pd.notna(row["home_points"])
+                    and pd.notna(row["away_points"])):
+                updates.append((row["team"], float(opp_val)))
+        for team, opp_val in updates:
+            faced.setdefault(team, deque(maxlen=ROLL_N)).append(opp_val)
+            league_sum += opp_val
+            league_n += 1
 
     # Map back to the ORIGINAL (pre-sort) index so the caller can assign this
     # straight onto tg without any silent misalignment.
@@ -144,7 +144,13 @@ def _elo_probs(base: pd.DataFrame) -> pd.Series:
     df = order.reset_index(drop=True)
     elo = EloModel()
     probs = np.full(len(df), np.nan)
+    previous_season = None
     for i, row in df.iterrows():
+        season = int(row["season"])
+        if previous_season is not None and season != previous_season:
+            for team, rating in elo.ratings.items():
+                elo.ratings[team] = (1 - elo.regress) * rating + elo.regress * elo.base
+        previous_season = season
         h, a = row["home_team"], row["away_team"]
         eh = elo.ratings.get(h, elo.base)
         ea = elo.ratings.get(a, elo.base)
@@ -191,8 +197,11 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     tg = _team_game_long(base, adv)
 
     # opponent-adjust each rolling metric
-    for m in ["off_ppa", "off_success", "off_explosive", "def_ppa"]:
-        tg[f"{m}_adj"] = _opponent_adjust(tg, f"{m}_roll")
+    for own, opposing in [("off_ppa", "def_ppa"),
+                           ("def_ppa", "off_ppa"),
+                           ("off_success", "def_success"),
+                           ("off_explosive", "def_explosive")]:
+        tg[f"{own}_adj"] = _opponent_adjust(tg, f"{own}_roll", f"{opposing}_roll")
 
     # pivot adjusted metrics back to home/away per game
     keep = ["game_id", "prior_games",
