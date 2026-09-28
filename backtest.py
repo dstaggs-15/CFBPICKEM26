@@ -25,7 +25,8 @@ def _metrics(y, p):
     }
 
 
-def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int = 2):
+def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int = 2,
+                 return_games: bool = False):
     """
     df: canonical, contract-validated, completed games only.
     model_factories: {name: callable() -> fresh Model}. A factory (not an
@@ -54,7 +55,10 @@ def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int
             m = _metrics(test["home_win"], preds[name])
             rows.append({"test_season": test_season, "model": name, **m})
 
-        fold = test[["season", "week", "home_team", "away_team", "home_win"]].copy()
+        context = [c for c in ("season", "week", "home_team", "away_team",
+                               "home_win", "home_classification", "away_classification",
+                               "off_ppa_adj_diff") if c in test.columns]
+        fold = test[context].copy()
         for name, p in preds.items():
             fold[f"p_{name}"] = p
         keep.append(fold)
@@ -68,6 +72,8 @@ def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int
     games = pd.concat(keep, ignore_index=True) if keep else pd.DataFrame()
 
     disagreement = _disagreement_analysis(games)
+    if return_games:
+        return per_fold, summary, disagreement, games
     return per_fold, summary, disagreement
 
 
