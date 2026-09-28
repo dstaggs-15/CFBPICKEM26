@@ -22,10 +22,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import joblib
+import requests
 
 import schema
 from weekly_input import load_slate
 import team_stats
+from ranking_signal import adjustment, load_rankings
 
 TRAIN_PARQUET = "data/derived/training.parquet"
 MODEL_FILE = "model.joblib"
@@ -111,6 +113,12 @@ def main():
     known = set(feat["home_team"]) | set(feat["away_team"])
     season = int(feat["season"].max())
     stats_by_team = team_stats.build_for_season(season)
+    try:
+        rankings_published, ranking_scores = load_rankings(season)
+        print(f"Using ranking snapshot published {rankings_published.isoformat()}")
+    except (ValueError, KeyError, requests.RequestException) as exc:
+        rankings_published, ranking_scores = None, {}
+        print(f"Rankings signal unavailable; no adjustments applied: {exc}")
 
     slate = load_slate()
     games_out = []
@@ -131,7 +139,11 @@ def main():
         slate_weeks.add(int(row["week"]))
 
         X = pd.DataFrame([row])[feats]
-        p_home = float(model.predict_proba(X)[0])
+        base_p_home = float(model.predict_proba(X)[0])
+        rank_delta = (adjustment(row.home_team, row.away_team, row["date"],
+                                 rankings_published, ranking_scores)
+                      if rankings_published else 0.0)
+        p_home = min(1.0, max(0.0, base_p_home + rank_delta))
         # if schedule had sides swapped vs the slate, flip prob to slate orientation
         disp_home, disp_away = row.home_team, row.away_team
         pick = disp_home if p_home >= 0.5 else disp_away
@@ -147,6 +159,8 @@ def main():
             "home_team": disp_home,
             "neutral": bool(row.get("neutral_site", False)),
             "model_prob_home": round(p_home, 3),
+            "base_model_prob_home": round(base_p_home, 3),
+            "ranking_adjustment_home": round(rank_delta, 4),
             "market_prob_home": (round(float(row["market_home_prob"]), 3)
                                  if pd.notna(row.get("market_home_prob")) else None),
             "spread_home": (float(row["spread_home"])
@@ -161,6 +175,8 @@ def main():
         "season": season,
         "week": next(iter(slate_weeks)) if len(slate_weeks) == 1 else None,
         "generated_at": str(date.today()),
+        "ranking_snapshot_utc": (rankings_published.isoformat()
+                                 if rankings_published else None),
         "games": games_out,
     }
     with open(OUT_JSON, "w") as f:
