@@ -20,7 +20,19 @@ the pick-level charts omit weeks with only reported totals. For a week without a
 add an entry to `docs/results.json` manually after checking the original picks.
 
 Team numbers on the site are fetched from the separate ranking site's public
-Top 25 JSON. They are display-only, and an unranked team has no number.
+Top 25 JSON. On a new pipeline run, the predictor also reads that JSON once.
+If both teams have published composite scores from before kickoff, it nudges
+the model's home-win estimate by 0.04 times their score difference, capped at
+two percentage points in either direction. Unranked teams receive no assumed
+score. The original estimate and the nudge are saved alongside the final one.
+The ranking site is read-only; its short snapshot history does not establish
+that this nudge improves accuracy yet.
+
+The classifier uses general examples from prior seasons to learn which team
+profiles beat which others. Current team inputs are rolling recent offensive
+and defensive efficiency, opponent quality at the time those games were
+played, pregame Elo, rest, and home site. Team names and betting lines are not
+classifier inputs. Elo regresses halfway toward average at each season change.
 
 ## The one-sentence version
 
