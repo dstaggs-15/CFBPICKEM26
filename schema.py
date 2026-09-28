@@ -35,6 +35,7 @@ TARGET = "home_win"  # 1 if home_points > away_points else 0
 CONTEXT_FEATURES = [
     "is_postseason",     # bool/int
     "rest_diff",         # home_rest_days - away_rest_days
+    "neutral_site",      # explicit home-field context beyond Elo's fixed adjustment
     # NOTE: travel_diff_km removed from MODEL_FEATURES on 2026-09-01. It was
     # being hardcoded to 0.0 for every game — a fake constant that the data
     # contract's check_no_constant_features() should have caught and would
@@ -52,7 +53,12 @@ STRENGTH_FEATURES = [
     "success_rate_adj_diff",  # opponent-adjusted success rate, home minus away
     "explosiveness_adj_diff", # opponent-adjusted explosiveness, home minus away
     "elo_home_prob",          # pregame Elo win prob for home team
+    "home_off_vs_away_def_ppa",  # home offense relative to the actual opposing defense
+    "away_off_vs_home_def_ppa",  # away offense relative to the actual opposing defense
 ]
+
+# Descriptive columns for apples-to-apples backtests. Never prediction inputs.
+EVALUATION_COLS = ["home_classification", "away_classification"]
 
 # Market features: the BENCHMARK, deliberately kept out of the v1 model.
 # We store them so the harness can score the model AGAINST the market,
@@ -67,7 +73,7 @@ MARKET_COLS = [
 MODEL_FEATURES = CONTEXT_FEATURES + STRENGTH_FEATURES
 
 # Convenience: every column the canonical table should carry.
-ALL_COLS = ID_COLS + OUTCOME_COLS + CONTEXT_FEATURES + STRENGTH_FEATURES + MARKET_COLS
+ALL_COLS = ID_COLS + OUTCOME_COLS + CONTEXT_FEATURES + STRENGTH_FEATURES + MARKET_COLS + EVALUATION_COLS
 
 # Expected dtypes for validation. Kept loose (family, not exact) on purpose.
 DTYPE_FAMILIES = {
