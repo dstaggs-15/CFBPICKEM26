@@ -1,0 +1,17 @@
+{
+  "season": 2026,
+  "week": 5,
+  "source": "ESPN College Pick'em Week 5 PDF supplied by the owner; percentages are a snapshot and can change before lock",
+  "games": [
+    {"away": "Alabama", "home": "Mississippi State", "away_picked_pct": 81, "home_picked_pct": 19},
+    {"away": "West Virginia", "home": "Iowa State", "away_picked_pct": 78, "home_picked_pct": 22},
+    {"away": "Michigan", "home": "Minnesota", "away_picked_pct": 81, "home_picked_pct": 19},
+    {"away": "Ohio State", "home": "Iowa", "away_picked_pct": 88, "home_picked_pct": 12},
+    {"away": "Florida", "home": "Missouri", "away_picked_pct": 95, "home_picked_pct": 5},
+    {"away": "Virginia", "home": "Florida State", "away_picked_pct": 72, "home_picked_pct": 28},
+    {"away": "Kentucky", "home": "South Carolina", "away_picked_pct": 82, "home_picked_pct": 18},
+    {"away": "BYU", "home": "TCU", "away_picked_pct": 97, "home_picked_pct": 3},
+    {"away": "Baylor", "home": "Arizona State", "away_picked_pct": 32, "home_picked_pct": 68},
+    {"away": "Cincinnati", "home": "Arizona", "away_picked_pct": 46, "home_picked_pct": 54}
+  ]
+}

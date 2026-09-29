@@ -1,0 +1,58 @@
+{
+  "season": 2026,
+  "week": 5,
+  "generated_at": "2026-09-28",
+  "crowd_source": "ESPN College Pick'em Week 5 PDF supplied by the owner; percentages are a snapshot and can change before lock",
+  "games": [
+    {
+      "game_id": "401856708",
+      "game_date": "2026-10-03",
+      "underdog": "Missouri",
+      "favorite": "Florida",
+      "away_team": "Florida",
+      "home_team": "Missouri",
+      "spread_for_underdog": 4.75,
+      "model_prob_underdog": 0.681,
+      "crowd_picked_pct": 5,
+      "model_vs_crowd_pp": 63.1,
+      "clues": [
+        "The current offense-versus-defense PPA comparison favors Florida (0.30 for Missouri vs 0.48 for Florida).",
+        "Pregame Elo favors Missouri (60% for Missouri).",
+        "Missouri is at home."
+      ],
+      "historical": {
+        "count": 513,
+        "dog_wins": 183,
+        "dog_win_rate": 0.357,
+        "criteria": "similar spread and underdog venue, and the same matchup-edge direction",
+        "spread_bucket": "3\u20137",
+        "bucket_count": 2325
+      }
+    },
+    {
+      "game_id": "401856709",
+      "game_date": "2026-10-03",
+      "underdog": "Kentucky",
+      "favorite": "South Carolina",
+      "away_team": "Kentucky",
+      "home_team": "South Carolina",
+      "spread_for_underdog": 2.5,
+      "model_prob_underdog": 0.559,
+      "crowd_picked_pct": 82,
+      "model_vs_crowd_pp": -26.1,
+      "clues": [
+        "The current offense-versus-defense PPA comparison favors South Carolina (0.32 for Kentucky vs 0.34 for South Carolina).",
+        "Pregame Elo favors South Carolina (46% for Kentucky).",
+        "South Carolina is at home."
+      ],
+      "historical": {
+        "count": 447,
+        "dog_wins": 211,
+        "dog_win_rate": 0.472,
+        "criteria": "similar spread and underdog venue, and the same matchup-edge direction",
+        "spread_bucket": "0\u20133",
+        "bucket_count": 1713
+      }
+    }
+  ]
+}

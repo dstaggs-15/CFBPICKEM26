@@ -45,6 +45,9 @@ jobs:
       - name: Predict this week's slate
         run: python predict.py
 
+      - name: Build upset watch from the same predictions
+        run: python upset_watch.py
+
       - name: Pull news headlines
         run: python news.py
 
@@ -53,7 +56,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Stage only the files that were actually produced.
-          for f in docs/predictions.json docs/news.json docs/team_stats.json docs/results.json; do
+          for f in docs/predictions.json docs/upset_watch.json docs/news.json docs/team_stats.json docs/results.json; do
             [ -f "$f" ] && git add "$f"
           done
           git add historicals/predictions/
