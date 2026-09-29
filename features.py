@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 
 from baselines import EloModel
+from schema import EXPERIMENTAL_MATCHUP_FEATURES
 
 BASE_PARQUET = "data/derived/games_base.parquet"
 ADV_PARQUET = "data/raw/advanced_raw.parquet"
@@ -39,7 +40,8 @@ PRIOR_WEIGHT = 2.0  # prior season starts at two games' worth and fades by game 
 # ---------------------------------------------------------------------------
 # 1. Long per-team-game efficiency table with PRIOR-ONLY rolling means
 # ---------------------------------------------------------------------------
-def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
+def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame,
+                    prior_weight: float = PRIOR_WEIGHT) -> pd.DataFrame:
     """
     One row per (game, team) with that team's rolling efficiency ENTERING the
     game (shifted), plus the opponent for adjustment. Built from adv stats
@@ -58,8 +60,9 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
 
     # attach raw efficiency for that team in that game
     metrics = ["off_ppa", "off_success", "off_explosive", "def_ppa",
-               "def_success", "def_explosive"]
-    a = adv[["game_id", "team", *metrics]]
+               "def_success", "def_explosive", "off_pass_ppa", "off_rush_ppa",
+               "def_pass_ppa", "def_rush_ppa"]
+    a = adv.reindex(columns=["game_id", "team", *metrics])
     tg = tg.merge(a, on=["game_id", "team"], how="left")
 
     tg = tg.sort_values(["team", "date", "game_id"]).reset_index(drop=True)
@@ -81,7 +84,7 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
         previous_mean = pd.Series(
             [previous.get((team, season - 1), np.nan)
              for team, season in zip(tg["team"], tg["season"])], index=tg.index)
-        weight = (PRIOR_WEIGHT * (1 - recent_n / ROLL_N)).clip(lower=0)
+        weight = (prior_weight * (1 - recent_n / ROLL_N)).clip(lower=0)
         weight = weight.where(previous_mean.notna(), 0.0)
         total = recent_n + weight
         weighted = recent_mean.fillna(0) * recent_n + previous_mean.fillna(0) * weight
@@ -92,6 +95,10 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     tg["prior_games"] = (observed.groupby(tg["team"])
                          .rolling(ROLL_N, min_periods=1).count()
                          .reset_index(level=0, drop=True).fillna(0))
+    same_season = tg.groupby(["team", "season"])["off_ppa"].shift(1)
+    tg["current_season_games"] = (same_season.groupby([tg["team"], tg["season"]])
+                                  .rolling(ROLL_N, min_periods=1).count()
+                                  .reset_index(level=[0, 1], drop=True).fillna(0))
     return tg
 
 
@@ -145,7 +152,7 @@ def _opponent_adjust(tg: pd.DataFrame, metric_roll: str,
 # ---------------------------------------------------------------------------
 # 3. Elo probabilities across full history — TRUE pregame only
 # ---------------------------------------------------------------------------
-def _elo_probs(base: pd.DataFrame) -> pd.Series:
+def _elo_probs(base: pd.DataFrame, regress: float | None = None) -> pd.Series:
     """
     For every game, the Elo probability must reflect ONLY games that happened
     strictly before it — never the final, fully-history-informed ratings.
@@ -163,6 +170,8 @@ def _elo_probs(base: pd.DataFrame) -> pd.Series:
     order = base.sort_values(["date", "game_id"])
     df = order.reset_index(drop=True)
     elo = EloModel()
+    if regress is not None:
+        elo.regress = regress
     probs = np.full(len(df), np.nan)
     previous_season = None
     for i, row in df.iterrows():
@@ -210,22 +219,28 @@ def _rest_diff(base: pd.DataFrame) -> pd.Series:
 # ---------------------------------------------------------------------------
 # Orchestration
 # ---------------------------------------------------------------------------
-def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
+def build(base: pd.DataFrame, adv: pd.DataFrame,
+          prior_weight: float = PRIOR_WEIGHT, elo_regress: float | None = None) -> pd.DataFrame:
     base = base.copy()
     base["date"] = pd.to_datetime(base["date"], utc=True, errors="coerce")
 
-    tg = _team_game_long(base, adv)
+    tg = _team_game_long(base, adv, prior_weight=prior_weight)
 
     # opponent-adjust each rolling metric
     for own, opposing in [("off_ppa", "def_ppa"),
                            ("def_ppa", "off_ppa"),
                            ("off_success", "def_success"),
-                           ("off_explosive", "def_explosive")]:
+                           ("off_explosive", "def_explosive"),
+                           ("off_pass_ppa", "def_pass_ppa"),
+                           ("def_pass_ppa", "off_pass_ppa"),
+                           ("off_rush_ppa", "def_rush_ppa"),
+                           ("def_rush_ppa", "off_rush_ppa")]:
         tg[f"{own}_adj"] = _opponent_adjust(tg, f"{own}_roll", f"{opposing}_roll")
 
     # pivot adjusted metrics back to home/away per game
-    keep = ["game_id", "prior_games",
-            "off_ppa_adj", "off_success_adj", "off_explosive_adj", "def_ppa_adj"]
+    keep = ["game_id", "prior_games", "current_season_games",
+            "off_ppa_adj", "off_success_adj", "off_explosive_adj", "def_ppa_adj",
+            "off_pass_ppa_adj", "def_pass_ppa_adj", "off_rush_ppa_adj", "def_rush_ppa_adj"]
     home = tg[tg.is_home][keep].add_prefix("home_").rename(columns={"home_game_id": "game_id"})
     away = tg[~tg.is_home][keep].add_prefix("away_").rename(columns={"away_game_id": "game_id"})
 
@@ -238,9 +253,14 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     df["explosiveness_adj_diff"] = df["home_off_explosive_adj"] - df["away_off_explosive_adj"]
     df["home_off_vs_away_def_ppa"] = df["home_off_ppa_adj"] - df["away_def_ppa_adj"]
     df["away_off_vs_home_def_ppa"] = df["away_off_ppa_adj"] - df["home_def_ppa_adj"]
+    for kind in ("pass", "rush"):
+        df[f"home_{kind}_vs_away_{kind}_def_ppa"] = (
+            df[f"home_off_{kind}_ppa_adj"] - df[f"away_def_{kind}_ppa_adj"])
+        df[f"away_{kind}_vs_home_{kind}_def_ppa"] = (
+            df[f"away_off_{kind}_ppa_adj"] - df[f"home_def_{kind}_ppa_adj"])
 
     # elo + context
-    df["elo_home_prob"] = _elo_probs(base).values
+    df["elo_home_prob"] = _elo_probs(base, regress=elo_regress).values
     df["rest_diff"] = _rest_diff(base).values
     df["travel_diff_km"] = 0.0  # NOT a model feature (see schema.py note) — kept
                                   # only so old data files don't break; real venue
@@ -252,7 +272,7 @@ def build(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
     enough = (df["home_prior_games"] >= MIN_PRIOR) & (df["away_prior_games"] >= MIN_PRIOR)
     for c in ["off_ppa_adj_diff", "def_ppa_adj_diff", "success_rate_adj_diff",
               "explosiveness_adj_diff", "home_off_vs_away_def_ppa",
-              "away_off_vs_home_def_ppa"]:
+              "away_off_vs_home_def_ppa", *EXPERIMENTAL_MATCHUP_FEATURES]:
         df.loc[~enough, c] = np.nan
 
     return df
