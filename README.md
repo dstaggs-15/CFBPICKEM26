@@ -69,6 +69,11 @@ research-only: the weekly picks and their displayed confidence are unchanged.
 See `ENSEMBLE_AUDIT.md` for the results and why it has not replaced the live
 model.
 
+`drive_challenger.py` separately tests whether prior-game scoring drives and
+starting field position improve those pregame predictions. See
+`DRIVE_AUDIT.md` for its season-forward result; the weekly pipeline does not
+use this research-only candidate.
+
 ## The one-sentence version
 
 ## Why this exists 
