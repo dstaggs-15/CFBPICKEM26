@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upset Watch · CFB Pick'em Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="upsets.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>
+        <h1>Upset Watch</h1><a class="top-25-bubble" href="index.html">← Picks board</a></div>
+      <p class="dek" id="week">Loading this week's underdog picks…</p>
+    </div>
+  </header>
+  <main class="upset-page">
+    <section class="upset-intro">
+      <h2>Where the model breaks from the favorite</h2>
+      <p>These are games where the model chose the underdog. The matchup notes show pregame team stats and how similar broad situations ended in earlier seasons. They do not add confidence to the model's percentage.</p>
+      <p>ESPN “picked” percentages are the share of pool entries choosing a team, not that team's chance to win. They appear only when a matching weekly snapshot is available.</p>
+    </section>
+    <div id="watches" class="watch-list" aria-live="polite"></div>
+    <p id="source" class="watch-source"></p>
+  </main>
+  <script src="upsets.js"></script>
+</body>
+</html>
