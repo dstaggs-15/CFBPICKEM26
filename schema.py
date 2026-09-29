@@ -57,6 +57,15 @@ STRENGTH_FEATURES = [
     "away_off_vs_home_def_ppa",  # away offense relative to the actual opposing defense
 ]
 
+# Tested separately before inclusion in MODEL_FEATURES. The game feed supplies
+# passing/rushing offense and defense; each is shifted and opponent-adjusted.
+EXPERIMENTAL_MATCHUP_FEATURES = [
+    "home_pass_vs_away_pass_def_ppa",
+    "away_pass_vs_home_pass_def_ppa",
+    "home_rush_vs_away_rush_def_ppa",
+    "away_rush_vs_home_rush_def_ppa",
+]
+
 # Descriptive columns for apples-to-apples backtests. Never prediction inputs.
 EVALUATION_COLS = ["home_classification", "away_classification"]
 
