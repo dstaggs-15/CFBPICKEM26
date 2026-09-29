@@ -5,9 +5,21 @@ import pandas as pd
 
 from features import _elo_probs, _opponent_adjust, _team_game_long
 from ranking_signal import adjustment
+from fetch_cfbd import parse_advanced
 
 
 class FeatureAdjustmentTests(unittest.TestCase):
+    def test_passing_and_rushing_stats_use_correct_units(self):
+        game = {"gameId": 1, "team": "A", "offense": {
+            "passingPlays": {"ppa": 0.4}, "rushingPlays": {"ppa": -0.1}},
+            "defense": {"passingPlays": {"ppa": 0.2},
+                        "rushingPlays": {"ppa": -0.3}}}
+        parsed = parse_advanced([game]).iloc[0]
+        self.assertEqual(parsed.off_pass_ppa, 0.4)
+        self.assertEqual(parsed.off_rush_ppa, -0.1)
+        self.assertEqual(parsed.def_pass_ppa, 0.2)
+        self.assertEqual(parsed.def_rush_ppa, -0.3)
+
     def test_offense_faces_defense_and_ignores_future_rows(self):
         # Team A faces a strong defense (low defensive PPA). Team B's offense
         # is deliberately high: using the wrong side would reverse the boost.
