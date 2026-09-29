@@ -44,6 +44,21 @@ The separate ranking-site nudge is applied at prediction time and is not part
 of that historical comparison because dated ranking snapshots are unavailable
 for most of the backtest.
 
+## Upset watch
+
+`docs/upsets.html` lists the week's games where the independent model picks
+the line underdog. The weekly workflow runs `upset_watch.py` immediately after
+`predict.py` and publishes `docs/upset_watch.json`. It shows the current
+offense-versus-defense matchup comparison, Elo, home field, and outcomes for a
+broad comparable group from **earlier seasons only**. The comparison does not
+change the model's pick or percentage. See `UPSET_AUDIT.md` for the held-out
+upset tests and their limits.
+
+For optional ESPN pick-share comparisons, put the week's teams and picked
+percentages in `docs/input/crowd_picks.json` and set its `season` and `week`.
+The pipeline ignores a snapshot from an older week, so it remains safe to
+update only `docs/input/games.txt` when crowd numbers are unavailable.
+
 ## The one-sentence version
 
 ## Why this exists 
