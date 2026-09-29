@@ -55,7 +55,7 @@ def walk_forward(df: pd.DataFrame, model_factories: dict, min_train_seasons: int
             m = _metrics(test["home_win"], preds[name])
             rows.append({"test_season": test_season, "model": name, **m})
 
-        context = [c for c in ("season", "week", "home_team", "away_team",
+        context = [c for c in ("season", "week", "home_team", "away_team", "neutral_site",
                                "home_win", "home_classification", "away_classification",
                                "off_ppa_adj_diff", "spread_home") if c in test.columns]
         fold = test[context].copy()
