@@ -1,0 +1,38 @@
+name: Research prior-game drives
+
+on:
+  push:
+    branches: [research/drive-challenger]
+    paths:
+      - drive_challenger.py
+      - .github/workflows/drive_challenger.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Fetch historical games and build pregame features
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python fetch_cfbd.py --seasons 2014-2026
+          python features.py
+      - name: Fetch historical drives and compare on later seasons
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: python drive_challenger.py --fetch --seasons 2014-2026 | tee drive_audit.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: drive-challenger-results
+          path: drive_audit.log
+          if-no-files-found: ignore
