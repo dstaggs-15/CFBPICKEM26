@@ -134,6 +134,10 @@ def parse_advanced(raw):
     for s in raw:
         off = _get_field(s, "offense", default={}) or {}
         deff = _get_field(s, "defense", default={}) or {}
+        off_pass = _get_field(off, "passingPlays", default={}) or {}
+        off_rush = _get_field(off, "rushingPlays", default={}) or {}
+        def_pass = _get_field(deff, "passingPlays", default={}) or {}
+        def_rush = _get_field(deff, "rushingPlays", default={}) or {}
         rows.append({
             "game_id": str(_get_field(s, "gameId", "game_id")),
             "team": _get_field(s, "team"),
@@ -143,6 +147,10 @@ def parse_advanced(raw):
             "def_ppa": pd.to_numeric(_get_field(deff, "ppa"), errors="coerce"),
             "def_success": pd.to_numeric(_get_field(deff, "successRate", "success_rate"), errors="coerce"),
             "def_explosive": pd.to_numeric(_get_field(deff, "explosiveness"), errors="coerce"),
+            "off_pass_ppa": pd.to_numeric(_get_field(off_pass, "ppa"), errors="coerce"),
+            "off_rush_ppa": pd.to_numeric(_get_field(off_rush, "ppa"), errors="coerce"),
+            "def_pass_ppa": pd.to_numeric(_get_field(def_pass, "ppa"), errors="coerce"),
+            "def_rush_ppa": pd.to_numeric(_get_field(def_rush, "ppa"), errors="coerce"),
         })
     return pd.DataFrame(rows)
 
