@@ -59,6 +59,16 @@ percentages in `docs/input/crowd_picks.json` and set its `season` and `week`.
 The pipeline ignores a snapshot from an older week, so it remains safe to
 update only `docs/input/games.txt` when crowd numbers are unavailable.
 
+## Multi-view challenger experiment
+
+Run `python ensemble_challenger.py` after building the historical features to
+test a combined model using the existing predictor, offense/defense matchup,
+projected margin, Elo, and the saved spread. Its combination is fitted on
+earlier seasons' held-out forecasts and scored on later seasons. It is
+research-only: the weekly picks and their displayed confidence are unchanged.
+See `ENSEMBLE_AUDIT.md` for the results and why it has not replaced the live
+model.
+
 ## The one-sentence version
 
 ## Why this exists 
