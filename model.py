@@ -19,6 +19,8 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.isotonic import IsotonicRegression
+from sklearn.linear_model import LogisticRegression
+from scipy.special import logit
 
 import schema
 from baselines import Model
@@ -28,12 +30,15 @@ class V1Model(Model):
     name = "model"
 
     def __init__(self, l2=1.0, max_iter=300, lr=0.06, random_state=42,
-                 features=None):
+                 features=None, calibration="isotonic"):
         self.params = dict(l2_regularization=l2, max_iter=max_iter,
                            learning_rate=lr, random_state=random_state)
         self.clf = None
         self.calibrator = None
         self.features = list(features) if features is not None else schema.MODEL_FEATURES
+        if calibration not in ("isotonic", "sigmoid", "none"):
+            raise ValueError("calibration must be isotonic, sigmoid, or none")
+        self.calibration = calibration
 
     def fit(self, train_df: pd.DataFrame) -> "V1Model":
         # Stable tie-breaking matters when many Saturday kickoffs share a time.
@@ -69,8 +74,13 @@ class V1Model(Model):
         cal_only_clf.fit(core[self.features], core["home_win"])
         raw = cal_only_clf.predict_proba(cal[self.features])[:, 1]
 
-        self.calibrator = IsotonicRegression(out_of_bounds="clip")
-        self.calibrator.fit(raw, cal["home_win"].to_numpy())
+        if self.calibration == "isotonic":
+            self.calibrator = IsotonicRegression(out_of_bounds="clip")
+            self.calibrator.fit(raw, cal["home_win"].to_numpy())
+        elif self.calibration == "sigmoid":
+            self.calibrator = LogisticRegression()
+            self.calibrator.fit(logit(np.clip(raw, 1e-6, 1 - 1e-6)).reshape(-1, 1),
+                                cal["home_win"].to_numpy())
         # NOTE: this calibrator was learned from cal_only_clf's probability
         # distribution, and self.clf (trained on ALL data) will generally
         # produce a similar but not identical distribution, since HistGBM is
@@ -81,4 +91,9 @@ class V1Model(Model):
 
     def predict_proba(self, games_df: pd.DataFrame) -> np.ndarray:
         raw = self.clf.predict_proba(games_df[self.features])[:, 1]
+        if self.calibration == "none":
+            return raw
+        if self.calibration == "sigmoid":
+            return self.calibrator.predict_proba(
+                logit(np.clip(raw, 1e-6, 1 - 1e-6)).reshape(-1, 1))[:, 1]
         return self.calibrator.predict(raw)
