@@ -23,7 +23,7 @@ Team numbers on the site are fetched from the separate ranking site's public
 Top 25 JSON. On a new pipeline run, the predictor also reads that JSON once.
 If both teams have published composite scores from before kickoff, it nudges
 the model's home-win estimate by 0.04 times their score difference, capped at
-two percentage points in either direction. Unranked teams receive no assumed
+0.05 percentage points in either direction. Unranked teams receive no assumed
 score. The original estimate and the nudge are saved alongside the final one.
 The ranking site is read-only; its short snapshot history does not establish
 that this nudge improves accuracy yet.
@@ -34,15 +34,24 @@ and defensive efficiency, opponent quality at the time those games were
 played, pregame Elo, rest, and home site. Team names and betting lines are not
 classifier inputs. Elo regresses halfway toward average at each season change.
 
-The September 2026 feature audit compared the new matchup features with the
-previous seven inputs on the same held-out seasons (2017–2026). The model was
-trained on prior seasons only for each test season. On 7,015 FBS-versus-FBS
-games, accuracy rose from 69.00% to 69.61% and Brier score improved from
-0.2006 to 0.1992. The saved betting-line favorite won 73.66% on those games.
-This is a modest improvement, not a claim that the model beats the market.
-The separate ranking-site nudge is applied at prediction time and is not part
-of that historical comparison because dated ranking snapshots are unavailable
-for most of the backtest.
+The September 30 update uses regularized logistic regression trained on completed
+FBS-versus-FBS games. On 6,800 held-out FBS games from 2017–2025, winner accuracy
+was 70.44% versus 69.60% for the original boosted model; Brier improved from
+0.19878 to 0.19370. This is exploratory evidence, not a 73–75% pool accuracy
+claim. The most recent three seasons were nearly tied in winner accuracy.
+See [PROFILE_RESEARCH.md](PROFILE_RESEARCH.md) for candidate comparisons,
+research references, reproducible tests and the limits of the pool replay.
+
+The updated cards show actual fitted supporting inputs and three historical
+matchup examples chosen by pregame efficiency profiles. Neighbor outcomes are
+descriptive context; they do not change the forecast. Future scheduled games
+cannot evict observed form, and the opponent schedule resets each season.
+
+First picks for the revised model are also frozen under
+`historicals/model_versions/statistical-logistic-v2/`. The record page reads
+`docs/model_version_results.json` to track the updated model prospectively while
+preserving the original published weekly record. The ranking-site nudge is
+applied separately and remains unvalidated against historical outcomes.
 
 ## Upset watch
 
