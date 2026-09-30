@@ -1,195 +1,143 @@
 # CFB Pick'em Model
 
-A tool that predicts college football games for a weekly ESPN pick'em pool, shows a live website with the picks, and explains *why* it made each one in plain English.
+This project picks the winners of the ten games in my weekly ESPN college football pool. The site shows the pick, estimated win probability, team stats and the reasons behind it.
 
-## Weekly record on the site
+[View the picks](https://dstaggs-15.github.io/CFBPICKEM26/) · [Season record](https://dstaggs-15.github.io/CFBPICKEM26/record.html) · [Separate rankings](https://dstaggs-15.github.io/cfbranking/)
 
-The dedicated `docs/record.html` page reads `docs/results.json`. Weeks 1 and 2 of 2026 use the owner's reported
-records (7–3 and 5–5); the Week 3 record (7–3) was checked against the final
-scores saved in `historicals/ESPN College Pick'em week3.pdf` and the picks in
-`historicals/CFB Pick'em Modelweek3.pdf`.
+## How a pick gets made
 
-Each successful `predict.py` run saves the first complete slate for a week in
-`historicals/predictions/`. Later runs in that week do not replace that snapshot.
-The weekly GitHub Action runs `grade_results.py` after fetching CFBD data and
-before producing new picks. It updates the record only after every archived
-game has a unique matching final score, saving the game date, score, winner,
-model pick, confidence, and betting favorite for the record page. The baseline
-uses the favorite on exactly the games with an archived pick and a saved line;
-the pick-level charts omit weeks with only reported totals. For a week without an archived slate,
-add an entry to `docs/results.json` manually after checking the original picks.
+The model learns from past FBS games. For each historical game, its inputs describe what was known before kickoff. The final score tells it which side won. It learns how strongly each input tends to be associated with winning, then applies those weights to the current matchup.
 
-Team numbers on the site are fetched from the separate ranking site's public
-Top 25 JSON. On a new pipeline run, the predictor also reads that JSON once.
-If both teams have published composite scores from before kickoff, it nudges
-the model's home-win estimate by 0.04 times their score difference, capped at
-0.05 percentage points in either direction. Unranked teams receive no assumed
-score. The original estimate and the nudge are saved alongside the final one.
-The ranking site is read-only; its short snapshot history does not establish
-that this nudge improves accuracy yet.
+The current predictor is regularized logistic regression. In plain English, it is a learned scorecard: each input adds or subtracts from a score, and that score becomes a win probability. Regularization keeps the fitted weights from growing too large just to explain a few unusual games.
 
-The classifier uses general examples from prior seasons to learn which team
-profiles beat which others. Current team inputs are rolling recent offensive
-and defensive efficiency, opponent quality at the time those games were
-played, pregame Elo, rest, and home site. Team names and betting lines are not
-classifier inputs. Elo regresses halfway toward average at each season change.
+It does not have a rule that says Alabama gets extra points because it is Alabama. Team names and betting lines are not prediction inputs. It does use Elo, a rating updated from earlier wins and losses. That is still a history-based signal, and it currently has the largest fitted weight. Each offseason, rating gaps are cut in half toward an average team.
 
-The September 30 update uses regularized logistic regression trained on completed
-FBS-versus-FBS games. On 6,800 held-out FBS games from 2017–2025, winner accuracy
-was 70.44% versus 69.60% for the original boosted model; Brier improved from
-0.19878 to 0.19370. This is exploratory evidence, not a 73–75% pool accuracy
-claim. The most recent three seasons were nearly tied in winner accuracy.
-See [PROFILE_RESEARCH.md](PROFILE_RESEARCH.md) for candidate comparisons,
-research references, reproducible tests and the limits of the pool replay.
+The model picks the home team at 50% or higher; otherwise it picks the away team. The separate rankings can make a very small adjustment afterward.
 
-The updated cards show actual fitted supporting inputs and three historical
-matchup examples chosen by pregame efficiency profiles. Neighbor outcomes are
-descriptive context; they do not change the forecast. Future scheduled games
-cannot evict observed form, and the opponent schedule resets each season.
+## What it looks at
 
-First picks for the revised model are also frozen under
-`historicals/model_versions/statistical-logistic-v2/`. The record page reads
-`docs/model_version_results.json` to track the updated model prospectively while
-preserving the original published weekly record. The ranking-site nudge is
-applied separately and remains unvalidated against historical outcomes.
+| Input | What it tells the model |
+| --- | --- |
+| Offensive efficiency | How productive each offense has been per play, adjusted for opponents faced |
+| Defensive efficiency | How much each defense allows per play, adjusted for opponents faced; lower is better |
+| Success rate | How consistently an offense produces successful plays |
+| Explosiveness | How productive its successful plays are |
+| Offense/defense matchup terms | Comparisons between each offense and the defense it is about to face |
+| Elo | A pregame strength estimate updated from wins and losses, with an offseason reset toward average |
+| Venue | Whether the game is at a home stadium or a neutral site |
+| Rest | The difference in days since each team's previous scheduled game |
+| Postseason | Whether this is a postseason game |
 
-## Upset watch
+PPA is the efficiency measure used here. It estimates how much a play changes expected scoring value. It helps distinguish productive play from simply running up yardage.
 
-`docs/upsets.html` lists the week's games where the independent model picks
-the line underdog. The weekly workflow runs `upset_watch.py` immediately after
-`predict.py` and publishes `docs/upset_watch.json`. It shows the current
-offense-versus-defense matchup comparison, Elo, home field, and outcomes for a
-broad comparable group from **earlier seasons only**. The comparison does not
-change the model's pick or percentage. See `UPSET_AUDIT.md` for the held-out
-upset tests and their limits.
+## The weights
 
-For optional ESPN pick-share comparisons, put the week's teams and picked
-percentages in `docs/input/crowd_picks.json` and set its `season` and `week`.
-The pipeline ignores a snapshot from an older week, so it remains safe to
-update only `docs/input/games.txt` when crowd numbers are unavailable.
+There is no fixed recipe like “40% offense, 30% defense, 30% history.” The model learns its weights when it trains. They can change on the next run.
 
-## Multi-view challenger experiment
+These are the fitted weights from the September 30, 2026 model. Inputs are first put on a common scale. A weight describes the change in the model's score for a one-standard-deviation increase in that input. **These are not percentage-point changes in win probability.**
 
-Run `python ensemble_challenger.py` after building the historical features to
-test a combined model using the existing predictor, offense/defense matchup,
-projected margin, Elo, and the saved spread. Its combination is fitted on
-earlier seasons' held-out forecasts and scored on later seasons. It is
-research-only: the weekly picks and their displayed confidence are unchanged.
-See `ENSEMBLE_AUDIT.md` for the results and why it has not replaced the live
-model.
+| Input | Fitted weight | Size relative to Elo |
+| --- | ---: | ---: |
+| Home team's Elo win estimate | +0.7583 | 1.00 |
+| Home minus away success rate | +0.2734 | 0.36 |
+| Home minus away defensive PPA allowed | −0.2641 | 0.35 |
+| Home minus away offensive PPA | +0.1846 | 0.24 |
+| Neutral-site indicator | +0.0937 | 0.12 |
+| Away offense minus home defense PPA | +0.0436 | 0.06 |
+| Home minus away explosiveness | +0.0226 | 0.03 |
+| Home minus away rest days | −0.0189 | 0.02 |
+| Postseason indicator | +0.0115 | 0.02 |
+| Home offense minus away defense PPA | −0.0105 | 0.01 |
 
-`drive_challenger.py` separately tests whether prior-game scoring drives and
-starting field position improve those pregame predictions. See
-`DRIVE_AUDIT.md` for its season-forward result; the weekly pipeline does not
-use this research-only candidate.
+A positive term pushes the score toward the home team; a negative term pushes it toward the away team. The defense weight is negative because allowing less PPA is better. These inputs overlap, so a coefficient should be read alongside the others. For example, the rest coefficient does not prove that extra rest hurts a team.
 
-## The one-sentence version
+The score also includes a starting value of 0.4055 and small terms for missing efficiency inputs. Missing values are filled using training-data averages, with flags that tell the model the original value was unavailable. Those flags each have a fitted weight of about +0.0033 in this snapshot.
 
-## Why this exists 
+The “relative to Elo” column compares coefficient sizes, not shares of the final pick. It does not add up to 100%. A large weight contributes little when the teams are close on that input; a smaller weight can matter when the gap is large.
 
-An earlier version of this looked done — website, percentages, the works — but it turned out to be quietly broken. It was supposed to use detailed team stats and betting lines, but those never actually loaded, and nothing told anyone. So it was making picks almost blind. When actually measured, it did *worse* than just picking whichever team was favored.
+For anyone checking the math: the model sums the starting value and all weighted, scaled inputs into a score `z`, then calculates `P(home win) = 1 / (1 + exp(-z))`. The card's supporting inputs come from the actual fitted terms for that game.
 
-This version is built around one rule: **if data is missing, stop and say so loudly, instead of quietly guessing.** Every piece described below follows that rule.
+## How much of last season carries over?
 
----
+Efficiency uses up to eight observed games from the current season. Last season's final eight observed games provide a small starting prior that fades as new stats arrive.
 
-## The pieces, in plain English
+| Observed current-season games | Last season's remaining weight | Last season's share of the efficiency average |
+| --- | ---: | ---: |
+| 3 | 1.25 games | 29.4% |
+| 4 | 1 game | 20.0% |
+| 8 or more | 0 games | 0% |
 
-Think of this as a factory line. Each station does one job and hands off to the next.
+Before both teams have three observed games, the six efficiency comparison inputs are left missing on purpose. Elo, venue and the other context inputs still work. The table above describes the rolling efficiency average, not the share of the entire prediction.
 
-**1. Get the data.** A script reaches out to a college football data service and downloads years of game results, betting lines, and detailed team stats (how efficient each team's offense and defense are, not just win/loss).
+Future scheduled games do not count as observations. They cannot push real games out of the window. The opponent-strength window also resets each season.
 
-**2. Check the data.** Before anything is trusted, an "inspector" checks it — is anything suspiciously missing? Is any column just one repeated value (a sign something broke)? If so, it stops and names the exact problem instead of quietly continuing. This is the safeguard the old version never had.
+## The similar historical games on each card
 
-**3. Turn stats into "who's actually better."** Raw stats aren't fair on their own — a team that scores a lot against weak opponents isn't the same as a team that scores a lot against strong ones. This step adjusts every team's numbers for *who they actually played*, so the comparisons are fair.
+This is the “these teams look like past teams” part.
 
-**4. Set the bar to beat.** Two simple, honest predictors are built first: one based on a power-rating system (Elo, like chess rankings), and one based on the Vegas betting line. These aren't fancy, but they're a fair baseline. The real model isn't allowed to call itself "good" unless it beats both of these.
+The site compares both teams' pregame offense, opposing defense, success rate and explosiveness with earlier-season FBS matchups at the same home/neutral venue type. It finds 75 similar profiles, shows how often the matching side won, and lists the three closest games with their final scores.
 
-**5. Train the actual model.** A machine-learning model studies years of past games — using the fair, adjusted stats — and learns the patterns that lead to wins.
+Team names, Elo, betting lines and game results are not used to decide which profiles are similar. Results are checked after the similar games have been selected.
 
-**6. Grade it honestly.** The model is tested the fair way: it only ever predicts games it hasn't seen the result of yet (like predicting next season using only past seasons). It's scored against the two baselines from step 4. Most importantly, it's split into two groups: games where it *agrees* with Vegas, and games where it *disagrees*. Agreeing with Vegas is easy — anyone can do that. The only place this model can prove it's actually smart is in the disagreements. That number is the real report card.
+That historical win rate is context, not a second prediction added to the model. We tested a nearest-neighbor predictor, and it performed worse than the chosen statistical model. A card can therefore show a model pick that disagrees with its historical comparison sample. That disagreement is useful to see rather than hide.
 
-**7. You type in this week's games.** Each week you edit one small text file with the 10 games from your ESPN pool (just team names, like `LSU @ Vanderbilt`).
+## What changed on September 30
 
-**8. It makes the picks.** The trained model looks at exactly those 10 games and predicts a winner and a confidence percentage for each.
+- Replaced the boosted-tree predictor with the tested logistic model, trained on completed FBS-versus-FBS games.
+- Fixed rolling windows so future scheduled games cannot erase observed form.
+- Reset opponent-strength history each season and made history counts reflect the current season.
+- Added historical matchup examples and explanations based on the fitted model's actual terms.
+- Kept early-season missing inputs separate from a broken data feed. Mature profiles must pass the coverage checks.
+- Reduced the separate rankings adjustment from a maximum of two percentage points to **0.05 percentage points**. The rankings site itself was not changed.
+- Added a separate frozen archive and record for the updated model's picks.
 
-**9. It explains itself.** For every pick, it writes a short, plain-English reason — like "Tulane has been more efficient on offense against similar defenses" or "Vanderbilt is at home, which is worth a few points." It's built from the model's real inputs, not made up after the fact.
+## What the testing showed
 
-**10. It gathers news.** For each of the 20 teams playing this week, it searches for a few recent headlines (injuries, roster news, storylines) and attaches them to that game.
+Each test season was predicted using a model trained only on earlier seasons. On the same 6,800 FBS games from 2017–2025:
 
-**11. It builds the website.** All of this — picks, percentages, stats, explanations, news — gets written into your live website automatically.
+| Model | Winner accuracy | Brier score, lower is better |
+| --- | ---: | ---: |
+| Previous boosted model | 69.60% | 0.19878 |
+| Updated statistical model | 70.44% | 0.19370 |
 
----
+Brier score measures how far the probabilities were from the results, including how costly confident mistakes were. Both overall measures improved. The most recent three seasons were nearly tied in winner accuracy: 70.48% before and 70.60% after.
 
-## What the website actually shows you
+The original pool record is 21–19 through four weeks. The historical replay of the twenty archived, completed pool games did not show an accuracy improvement. These tests do not establish a 73–75% hit rate for the ten-game pool. The updated model's future frozen picks will give us that report card.
 
-Each game is a card. Tap it and it expands to show:
+The [research notes](PROFILE_RESEARCH.md) cover the other models tested, repositories reviewed and the limits of these comparisons.
 
-- **The pick and the percentage** — a bar that fills with each team's real school colors, showing how confident the model is.
-- **Whether it agrees with Vegas** — an AGREE or DISAGREE tag next to the betting line.
-- **Why it picked that team** — a few plain-English bullet points.
-- **Each team's season stats** — offense, defense, and how they rank nationally (e.g. "7th out of 134").
-- **Recent news** — a few headlines about each team.
-- An **AI take** slot, currently empty — reserved for a second, independent AI opinion (not built yet, see below).
+## The separate rankings and betting line
 
-If a game can't be matched to the schedule (usually because of a small spelling difference), the card says "not found" honestly instead of pretending to have an answer.
+The ranking numbers beside teams come from the separate computer-ranking site, not an official poll. A prediction can use its scores only when both teams appear in a valid, recent snapshot published before kickoff. Missing teams are not assigned an invented rank.
 
----
+The adjustment is `0.04 × (home score − away score)`, capped at `±0.0005` probability, or **±0.05 percentage points**. A 60.00% estimate can move at most to 60.05% or 59.95%. Its predictive value has not been established by a historical test.
 
-## How it knows anything before the season starts
+Betting lines are used for comparison and the upset-watch page. They do not choose the model's winner. News headlines appear on the cards but do not change the probability. Injuries and roster news are not yet trained prediction inputs.
 
-Fair question — if no games have been played yet, what is a "68% chance" even based on? Three things:
+## Updating a week
 
-1. **How each team finished last season** — a power rating that carries over and fades slowly, not a full reset.
-2. **How good each program usually is** — a blue-blood program gets more benefit of the doubt than a team that's usually rebuilding.
-3. **Home field** — playing at home is worth real points; a neutral-site game removes that edge.
+1. Edit `docs/input/games.txt` with the ten ESPN matchups, one per line. Use `Away @ Home` or `Team A vs Team B` for a neutral-site game.
+2. In GitHub Actions, open **Run weekly pipeline** and select **Run workflow**. The normal season range is `2014-2026`.
+3. The job runs the tests, fetches CFBD data, grades completed archives, builds features, trains and tests the model, then publishes the picks and news.
 
-As real games get played, the model leans more and more on *this season's* actual performance and less on last year's memory. By midseason, it's mostly grounded in games you've actually watched happen.
+The CFBD key stays in the repository's `CFBD_API_KEY` secret. Predictions are refused after kickoff. A rerun can refresh the board before kickoff, but it does not replace a version's first archived picks for grading.
 
----
+The original weekly archives live in `historicals/predictions/`. Updated-model archives live in `historicals/model_versions/statistical-logistic-v2/`. The record page shows both records; results are graded once every game in the archived slate has a final score. Weeks 1–2 have reported totals without individual archived picks.
 
-## Where your data comes from and where it goes
+Optional ESPN crowd shares go in `docs/input/crowd_picks.json`. A stale snapshot is ignored. **Refresh news** can run separately without rebuilding predictions.
 
-- **Game results, stats, and betting lines**: pulled from a service called CollegeFootballData, using your personal API key (kept private as a GitHub "secret," never visible in the code).
-- **News headlines**: pulled from Google News' public feed for each team.
-- **Everything runs on GitHub's computers**, not your own — you just click "Run workflow" in the Actions tab and it does the work in the cloud.
-- **Your website**: a set of plain files (`docs/` folder) that GitHub hosts for free and updates every time the pipeline runs.
+## Running locally
 
----
+```sh
+pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python fetch_cfbd.py --seasons 2014-2026
+python grade_results.py
+python pool_diagnostics.py
+python features.py
+python train_and_backtest.py
+python predict.py
+python upset_watch.py
+```
 
-## The weekly routine
-
-1. Edit the games file with this week's 10 ESPN matchups.
-2. Go to the Actions tab, click **Run weekly pipeline**, click Run.
-3. Wait a few minutes.
-4. Your website updates itself with real picks, stats, and news for all 10 games.
-
-Optionally, run **Refresh news** on its own (like Friday night) to get updated headlines without redoing the whole model.
-
----
-
-## Honest status — what's real right now vs. what's still coming
-
-**Actually working today:**
-- Real data pulled from 2021-2025+ (tens of thousands of real games)
-- The safety-check system that stops on bad data
-- Fair, opponent-adjusted team stats
-- A trained model, graded against Elo and the betting line
-- The weekly picks pipeline, fully automated
-- The live website with real team colors, expandable explanations, stats, and news
-
-**Known rough edges:**
-- A few teams occasionally show "not found" if their name doesn't exactly match the schedule's spelling
-- Not every team has its exact brand color dialed in perfectly yet (falls back to a red/gray theme when unknown, so nothing looks broken)
-- The full "does it actually beat Vegas" grade has only been checked on a shorter data window so far — a full-history check is the next big milestone, and the honest result so far shows the model doing well overall but not yet consistently beating Vegas when it disagrees with the line
-
-**Not built yet:**
-- Turnover stats (interceptions/fumbles) in the dropdown — currently only shows offense/defense efficiency
-- The second, independent AI opinion next to the model's pick
-- The Kalshi trading-focused version of this tool (a separate, future project)
-
----
-
-## The one rule this whole project follows
-
-**Never show a number without a real basis behind it.** If something can't be explained, measured, or verified, it doesn't go on the site. That discipline — not fancier math — is the actual difference between this version and the one that came before it.
+Set `CFBD_API_KEY` in your environment before fetching. The audit commands and results are in [PROFILE_RESEARCH.md](PROFILE_RESEARCH.md). The drive and ensemble experiments remain research-only; they do not feed the live picks.
