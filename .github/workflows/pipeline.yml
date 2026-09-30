@@ -3,6 +3,12 @@ name: Run weekly pipeline
 # Does everything: fetch data -> build features -> train + backtest ->
 # predict this week's games.txt -> pull news -> publish results to the site.
 on:
+  push:
+    branches: [release/accuracy-policy]
+    paths:
+      - .github/workflows/pipeline.yml
+      - prediction_policy.py
+      - predict.py
   workflow_dispatch:
     inputs:
       seasons:
@@ -28,16 +34,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Validate prediction and archival policy
+        run: python -m unittest discover -s tests -v
+
       - name: Fetch data
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
-        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
+        run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons || '2014-2026' }}"
 
       - name: Grade archived picks with final scores
         run: python grade_results.py
 
       - name: Build features
         run: python features.py
+
+      - name: Test final blend on season-forward FBS forecasts
+        run: python policy_audit.py
 
       - name: Train + backtest (prints the report card)
         run: python train_and_backtest.py
@@ -51,6 +63,12 @@ jobs:
       - name: Pull news headlines
         run: python news.py
 
+      - name: Save measured policy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-policy-audit
+          path: data/derived/policy_audit.json
+
       - name: Publish results to the site
         run: |
           git config user.name "github-actions[bot]"
@@ -60,5 +78,6 @@ jobs:
             [ -f "$f" ] && git add "$f"
           done
           git add historicals/predictions/
+          [ ! -d historicals/revisions ] || git add historicals/revisions/
           git commit -m "weekly update: predictions + news" || echo "nothing to commit"
           git push
