@@ -1,5 +1,5 @@
 """
-model.py — the v1 predictor.
+model.py — live joint statistical predictor and reproducible research baselines.
 
 Gradient boosting over the schema's MODEL_FEATURES only. Two disciplines baked
 in, both scars from last year:
@@ -97,11 +97,11 @@ class StatisticalModel(Model):
     """
     name = "model"
 
-    def __init__(self):
+    def __init__(self, features=None):
         from sklearn.impute import SimpleImputer
         from sklearn.pipeline import make_pipeline
         from sklearn.preprocessing import StandardScaler
-        self.features = list(schema.MODEL_FEATURES)
+        self.features = list(features if features is not None else schema.MODEL_FEATURES)
         self.pipeline = make_pipeline(
             SimpleImputer(add_indicator=True, keep_empty_features=True),
             StandardScaler(), LogisticRegression(C=0.1, max_iter=2000))
@@ -124,3 +124,13 @@ class StatisticalModel(Model):
         names = list(imputer[1].get_feature_names_out(self.features))
         return pd.DataFrame(values * classifier[1].coef_[0], columns=names,
                             index=games_df.index)
+
+
+class JointStatisticalModel(StatisticalModel):
+    """One fitted model combines Elo and current-season matchup statistics.
+
+    Elo is a predictor alongside opponent-adjusted efficiency and scoring,
+    rather than a separate forecast or a manually weighted percentage.
+    """
+    def __init__(self):
+        super().__init__(features=schema.JOINT_MODEL_FEATURES)

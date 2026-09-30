@@ -4,127 +4,114 @@ This project picks the winners of the ten games in my weekly ESPN college footba
 
 [View the picks](https://dstaggs-15.github.io/CFBPICKEM26/) · [Season record](https://dstaggs-15.github.io/CFBPICKEM26/record.html) · [Separate rankings](https://dstaggs-15.github.io/cfbranking/)
 
-## How a pick gets made
+## How the model decides
 
-The model learns from past FBS games. For each historical game, its inputs describe what was known before kickoff. The final score tells it which side won. It learns how strongly each input tends to be associated with winning, then applies those weights to the current matchup.
+The live model is `joint-stats-elo-v3`. **Current-season stats and Elo work together in one fitted model.** There isn't an Elo pick followed by a separate stats vote. Both enter the same calculation, and historical game outcomes determine their weights.
 
-The current predictor is regularized logistic regression. In plain English, it is a learned scorecard: each input adds or subtracts from a score, and that score becomes a win probability. Regularization keeps the fitted weights from growing too large just to explain a few unusual games.
+First, the model estimates every team's offense and defense from the current season's completed FBS games. It solves those ratings together, accounting for each team's opponents and home field. A good offensive game against a strong defense means more than the same performance against a weak defense. Ridge regression keeps small samples from producing extreme ratings.
 
-It does not have a rule that says Alabama gets extra points because it is Alabama. Team names and betting lines are not prediction inputs. It does use Elo, a rating updated from earlier wins and losses. That is still a history-based signal, and it currently has the largest fitted weight. Each offseason, rating gaps are cut in half toward an average team.
+For an upcoming game, it compares the home offense against the away defense and the away offense against the home defense. It makes these comparisons for PPA, success rate, explosiveness and scoring. These are matchup edges, not a team's raw national rank.
 
-The model picks the home team at 50% or higher; otherwise it picks the away team. The separate rankings can make a very small adjustment afterward.
+Next, regularized logistic regression combines those four edges with pregame Elo, venue, rest and postseason context. It learns from historical games whose inputs were built using information available before those games. The final scores are the training labels; they never enter their own pregame profiles.
 
-## What it looks at
+The result is one probability. The model picks the home team at 50% or higher; otherwise it picks the away team. Your separate rankings can make the tiny adjustment described below.
+
+## The inputs
 
 | Input | What it tells the model |
 | --- | --- |
-| Offensive efficiency | How productive each offense has been per play, adjusted for opponents faced |
-| Defensive efficiency | How much each defense allows per play, adjusted for opponents faced; lower is better |
-| Success rate | How consistently an offense produces successful plays |
-| Explosiveness | How productive its successful plays are |
-| Offense/defense matchup terms | Comparisons between each offense and the defense it is about to face |
-| Elo | A pregame strength estimate updated from wins and losses, with an offseason reset toward average |
+| PPA matchup edge | Expected difference in play efficiency after accounting for both offenses, both defenses and venue |
+| Success-rate matchup edge | Difference in how consistently the two offenses should succeed against these defenses |
+| Explosiveness matchup edge | Difference in productive big-play performance against these opponents |
+| Scoring matchup edge | Difference in scoring performance after accounting for opponents and venue |
+| Elo | Strength estimated from earlier wins and losses, with rating gaps cut in half each offseason |
 | Venue | Whether the game is at a home stadium or a neutral site |
-| Rest | The difference in days since each team's previous scheduled game |
+| Rest | Difference in days since each team's previous scheduled game |
 | Postseason | Whether this is a postseason game |
 
-PPA is the efficiency measure used here. It estimates how much a play changes expected scoring value. It helps distinguish productive play from simply running up yardage.
+PPA estimates how much a play changes expected scoring value. The scoring edge is a statistical input, not a published point-spread forecast. Scoring includes all points in the final score; it isn't a play-level offense-only measure.
+
+There is no Alabama bonus, team-name feature or betting-line input in the winner model. Team names connect games inside the current season's opponent-adjustment equations, but the model that learns historical winners doesn't receive those names.
 
 ## The weights
 
-There is no fixed recipe like “40% offense, 30% defense, 30% history.” The model learns its weights when it trains. They can change on the next run.
+The model learns the weights together. It doesn't use a manually assigned recipe such as 60% Elo and 40% stats.
 
-These are the fitted weights from the September 30, 2026 model. Inputs are first put on a common scale. A weight describes the change in the model's score for a one-standard-deviation increase in that input. **These are not percentage-point changes in win probability.**
+This is the September 30, 2026 fit. Inputs are scaled using the training data. A coefficient is the score change for a one-standard-deviation increase in an input. **It is not a percentage of the prediction or a percentage-point change in win probability.**
 
-| Input | Fitted weight | Size relative to Elo |
+| Input | Fitted coefficient |
+| --- | ---: |
+| Elo home win estimate | +0.6499 |
+| Success-rate matchup edge | +0.4520 |
+| Scoring matchup edge | +0.3630 |
+| Neutral-site indicator | +0.1049 |
+| Explosiveness matchup edge | +0.1033 |
+| PPA matchup edge | −0.0979 |
+| Rest-day difference | −0.0278 |
+| Postseason indicator | +0.0237 |
+
+Elo has the largest individual coefficient. The statistical inputs have their own fitted contributions and can collectively outweigh it. The size of each contribution also depends on that game's input: a large coefficient does little when the matchup is close on that measure.
+
+The inputs overlap. The negative PPA coefficient does **not** mean better efficiency is bad. It is the remaining association after the model also accounts for success, explosiveness, scoring and Elo. The weights describe a prediction formula, not cause and effect.
+
+The model starts with an intercept of +0.4091, then adds its weighted inputs. Missing statistical inputs are filled using training-data averages and get explicit missingness flags. Each flag has a coefficient of about +0.0071 in this fit.
+
+The total is a score `z`. The model converts it to a probability using `P(home win) = 1 / (1 + exp(-z))`. The card's explanations identify actual fitted terms supporting the pick and terms pulling toward the other team. The prediction JSON includes those terms, the intercept and the input values so the calculation can be checked.
+
+## What carries over from last season?
+
+**The four statistical profiles use the current season only.** They restart each season. No previous-season efficiency prior feeds v3.
+
+Elo still carries earlier results, with its rating gaps halved each offseason. That makes it useful when the current season has little data, but it can also favor a team whose current stats are less convincing. Its contribution is visible in the explanation.
+
+Statistical snapshots use completed FBS games before the upcoming game's week begins on Monday at 00:00 UTC. Both teams need at least two earlier FBS games. Before that, statistical edges are marked missing. Training learns how to handle missing profiles alongside Elo and context.
+
+Future games aren't observations. Neither the current game's score nor another result later that week can change its stored pregame profile. Mature profiles must pass coverage checks so a broken stats feed can't quietly become an average team.
+
+## Historical comparisons
+
+Historical outcomes affect the prediction by training the combined model's weights across all eligible training games.
+
+The 75 similar games on a card are examples of comparable pregame profiles. They now use the four joint statistical edges **and Elo**, with the same home/neutral venue type. Team names, betting lines and outcomes don't determine similarity. Outcomes are counted after the neighbors are chosen, and the three closest games are shown.
+
+Their win rate is still descriptive. It isn't added to the prediction as another vote. The tested 75-neighbor classifier was less accurate than the joint model. A selected sample can disagree with the fitted forecast; the model learns from more than those 75 games.
+
+## What testing showed
+
+Each tested season's winner model was trained only on older seasons. On 6,800 FBS games from 2017–2025:
+
+| Model | Correct winners | Brier error, lower is better |
 | --- | ---: | ---: |
-| Home team's Elo win estimate | +0.7583 | 1.00 |
-| Home minus away success rate | +0.2734 | 0.36 |
-| Home minus away defensive PPA allowed | −0.2641 | 0.35 |
-| Home minus away offensive PPA | +0.1846 | 0.24 |
-| Neutral-site indicator | +0.0937 | 0.12 |
-| Away offense minus home defense PPA | +0.0436 | 0.06 |
-| Home minus away explosiveness | +0.0226 | 0.03 |
-| Home minus away rest days | −0.0189 | 0.02 |
-| Postseason indicator | +0.0115 | 0.02 |
-| Home offense minus away defense PPA | −0.0105 | 0.01 |
+| Previous statistical model, v2 | 70.44% | 0.19370 |
+| Current joint stats-and-Elo model | 70.31% | 0.19103 |
+| Joint stats without Elo | 68.68% | 0.19899 |
+| 75 similar joint profiles, without Elo | 68.00% | 0.20411 |
 
-A positive term pushes the score toward the home team; a negative term pushes it toward the away team. The defense weight is negative because allowing less PPA is better. These inputs overlap, so a coefficient should be read alongside the others. For example, the rest coefficient does not prove that extra rest hurts a team.
+The joint model improved probability error but was nearly tied, slightly lower, in winner accuracy. A second comparison selected shrinkage using only earlier held-out seasons and showed the same tradeoff. We promoted the joint model to make the current-season matchup statistics and Elo work together as requested, supported by its better probability scores. **We are not claiming it improved the number of correct picks.**
 
-The score also includes a starting value of 0.4055 and small terms for missing efficiency inputs. Missing values are filled using training-data averages, with flags that tell the model the original value was unavailable. Those flags each have a fitted weight of about +0.0033 in this snapshot.
+The original pool record is 21–19 through four weeks. These all-FBS tests do not establish 73–75% accuracy on the ten-game ESPN pool. The research is retrospective and has been used during development; future frozen picks remain the prospective test.
 
-The “relative to Elo” column compares coefficient sizes, not shares of the final pick. It does not add up to 100%. A large weight contributes little when the teams are close on that input; a smaller weight can matter when the gap is large.
+[Full joint-model research and results](JOINT_PROFILE_RESEARCH.md) · [Earlier research](PROFILE_RESEARCH.md)
 
-For anyone checking the math: the model sums the starting value and all weighted, scaled inputs into a score `z`, then calculates `P(home win) = 1 / (1 + exp(-z))`. The card's supporting inputs come from the actual fitted terms for that game.
+## Rankings, betting lines and news
 
-## How much of last season carries over?
+The numbers beside teams come from your separate computer-ranking site, not an official poll. Its scores can adjust a prediction only when both teams appear in a valid, recent snapshot published before kickoff. Missing teams aren't assigned an invented rank.
 
-Efficiency uses up to eight observed games from the current season. Last season's final eight observed games provide a small starting prior that fades as new stats arrive.
+The adjustment is `0.04 × (home score − away score)`, capped at `±0.0005` probability: **±0.05 percentage points**. A 60.00% estimate can move at most to 60.05% or 59.95%. This small adjustment hasn't been validated historically. The rankings website itself was not changed, and its statistical tables do not feed the model.
 
-| Observed current-season games | Last season's remaining weight | Last season's share of the efficiency average |
-| --- | ---: | ---: |
-| 3 | 1.25 games | 29.4% |
-| 4 | 1 game | 20.0% |
-| 8 or more | 0 games | 0% |
-
-Before both teams have three observed games, the six efficiency comparison inputs are left missing on purpose. Elo, venue and the other context inputs still work. The table above describes the rolling efficiency average, not the share of the entire prediction.
-
-Future scheduled games do not count as observations. They cannot push real games out of the window. The opponent-strength window also resets each season.
-
-## The similar historical games on each card
-
-This is the “these teams look like past teams” part.
-
-The site compares both teams' pregame offense, opposing defense, success rate and explosiveness with earlier-season FBS matchups at the same home/neutral venue type. It finds 75 similar profiles, shows how often the matching side won, and lists the three closest games with their final scores.
-
-Team names, Elo, betting lines and game results are not used to decide which profiles are similar. Results are checked after the similar games have been selected.
-
-That historical win rate is context, not a second prediction added to the model. We tested a nearest-neighbor predictor, and it performed worse than the chosen statistical model. A card can therefore show a model pick that disagrees with its historical comparison sample. That disagreement is useful to see rather than hide.
-
-## What changed on September 30
-
-- Replaced the boosted-tree predictor with the tested logistic model, trained on completed FBS-versus-FBS games.
-- Fixed rolling windows so future scheduled games cannot erase observed form.
-- Reset opponent-strength history each season and made history counts reflect the current season.
-- Added historical matchup examples and explanations based on the fitted model's actual terms.
-- Kept early-season missing inputs separate from a broken data feed. Mature profiles must pass the coverage checks.
-- Reduced the separate rankings adjustment from a maximum of two percentage points to **0.05 percentage points**. The rankings site itself was not changed.
-- Added a separate frozen archive and record for the updated model's picks.
-
-## What the testing showed
-
-Each test season was predicted using a model trained only on earlier seasons. On the same 6,800 FBS games from 2017–2025:
-
-| Model | Winner accuracy | Brier score, lower is better |
-| --- | ---: | ---: |
-| Previous boosted model | 69.60% | 0.19878 |
-| Updated statistical model | 70.44% | 0.19370 |
-
-Brier score measures how far the probabilities were from the results, including how costly confident mistakes were. Both overall measures improved. The most recent three seasons were nearly tied in winner accuracy: 70.48% before and 70.60% after.
-
-The original pool record is 21–19 through four weeks. The historical replay of the twenty archived, completed pool games did not show an accuracy improvement. These tests do not establish a 73–75% hit rate for the ten-game pool. The updated model's future frozen picks will give us that report card.
-
-The [research notes](PROFILE_RESEARCH.md) cover the other models tested, repositories reviewed and the limits of these comparisons.
-
-## The separate rankings and betting line
-
-The ranking numbers beside teams come from the separate computer-ranking site, not an official poll. A prediction can use its scores only when both teams appear in a valid, recent snapshot published before kickoff. Missing teams are not assigned an invented rank.
-
-The adjustment is `0.04 × (home score − away score)`, capped at `±0.0005` probability, or **±0.05 percentage points**. A 60.00% estimate can move at most to 60.05% or 59.95%. Its predictive value has not been established by a historical test.
-
-Betting lines are used for comparison and the upset-watch page. They do not choose the model's winner. News headlines appear on the cards but do not change the probability. Injuries and roster news are not yet trained prediction inputs.
+Betting lines are comparisons and inputs to the upset-watch display. They don't enter the winner model. News doesn't change the probability. Injuries and roster news aren't trained prediction inputs yet. The card's raw team-stat ranks are descriptive CFBD averages; the model uses adjusted pregame matchup edges.
 
 ## Updating a week
 
-1. Edit `docs/input/games.txt` with the ten ESPN matchups, one per line. Use `Away @ Home` or `Team A vs Team B` for a neutral-site game.
+1. Edit `docs/input/games.txt` with the ten ESPN matchups, one per line: `Away @ Home` or `Team A vs Team B` for a neutral-site game.
 2. In GitHub Actions, open **Run weekly pipeline** and select **Run workflow**. The normal season range is `2014-2026`.
-3. The job runs the tests, fetches CFBD data, grades completed archives, builds features, trains and tests the model, then publishes the picks and news.
+3. The job tests, fetches CFBD data, grades completed archives, builds profiles, trains and backtests the joint model, then publishes picks and news.
 
-The CFBD key stays in the repository's `CFBD_API_KEY` secret. Predictions are refused after kickoff. A rerun can refresh the board before kickoff, but it does not replace a version's first archived picks for grading.
+The CFBD key stays in the repository's `CFBD_API_KEY` secret. Predictions are refused after kickoff. Rerunning before kickoff can refresh the board but can't replace a version's first archived picks.
 
-The original weekly archives live in `historicals/predictions/`. Updated-model archives live in `historicals/model_versions/statistical-logistic-v2/`. The record page shows both records; results are graded once every game in the archived slate has a final score. Weeks 1–2 have reported totals without individual archived picks.
+Original archives remain in `historicals/predictions/`. Each model's archive lives under `historicals/model_versions/`, including `statistical-logistic-v2` and `joint-stats-elo-v3`. The record page grades them separately once every game on a slate has finished. Original results aren't rewritten by a model change. Weeks 1–2 have reported totals without individual archived picks.
 
-Optional ESPN crowd shares go in `docs/input/crowd_picks.json`. A stale snapshot is ignored. **Refresh news** can run separately without rebuilding predictions.
+Optional ESPN crowd shares go in `docs/input/crowd_picks.json`; stale snapshots are ignored. **Refresh news** can run separately.
 
 ## Running locally
 
@@ -140,15 +127,6 @@ python predict.py
 python upset_watch.py
 ```
 
-Set `CFBD_API_KEY` in your environment before fetching. The audit commands and results are in [PROFILE_RESEARCH.md](PROFILE_RESEARCH.md). The drive and ensemble experiments remain research-only; they do not feed the live picks.
-## Follow-up: are the historical examples actually driving picks?
+Set `CFBD_API_KEY` before fetching. `joint_profile_audit.py` reproduces the research comparison. Older drive, boosted-tree and ensemble candidates remain available for audits; they don't feed the live v3 picks.
 
-The 75 similar games shown on a card are context. They don't change the live
-pick. That distinction matters, especially when they disagree with the model.
-
-I also tested a new model that builds current-season offense and defense ratings
-together, then learns how those matchup profiles translated into historical
-wins. Its stats-only version reached 68.68% on 6,800 held-out FBS games from
-2017–2025, versus 70.44% for the current model. Adding Elo improved its probability
-error, but didn't improve winner accuracy. The live picks haven't changed from
-this experiment. [The full test and decision are here](JOINT_PROFILE_RESEARCH.md).
+The weekly build writes `data/derived/joint_training.parquet`. Older research scripts use `training.parquet`, so rerunning an old audit doesn't replace the live model's input table.

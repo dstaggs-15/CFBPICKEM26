@@ -2,6 +2,13 @@
   "season": 2026,
   "versions": [
     {
+      "model_version": "joint-stats-elo-v3",
+      "weeks": [],
+      "pending_weeks": [
+        5
+      ]
+    },
+    {
       "model_version": "statistical-logistic-v2",
       "weeks": [],
       "pending_weeks": [

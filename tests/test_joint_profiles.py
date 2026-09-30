@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 import pandas as pd
-from joint_profile_audit import build_profiles, PROFILE
+from joint_profiles import build_profiles, PROFILE
 
 
 class JointProfileTests(unittest.TestCase):

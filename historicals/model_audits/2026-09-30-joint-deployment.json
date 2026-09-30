@@ -1,0 +1,32 @@
+{
+  "model_version": "joint-stats-elo-v3",
+  "feature_columns": [
+    "joint_off_ppa_edge",
+    "joint_off_success_edge",
+    "joint_off_explosive_edge",
+    "joint_points_edge",
+    "neutral_site",
+    "rest_diff",
+    "is_postseason",
+    "elo_home_prob"
+  ],
+  "trained_through": 2026,
+  "fitted_coefficients": {
+    "joint_off_ppa_edge": -0.09790112078272807,
+    "joint_off_success_edge": 0.4519603356628115,
+    "joint_off_explosive_edge": 0.10325355966758748,
+    "joint_points_edge": 0.3629683358929231,
+    "neutral_site": 0.10493368244542196,
+    "rest_diff": -0.027804529219185355,
+    "is_postseason": 0.02373168661214444,
+    "elo_home_prob": 0.6498679200216171,
+    "missingindicator_joint_off_ppa_edge": 0.007075399319692639,
+    "missingindicator_joint_off_success_edge": 0.007075399319692639,
+    "missingindicator_joint_off_explosive_edge": 0.007075399319692639,
+    "missingindicator_joint_points_edge": 0.007075399319692639
+  },
+  "intercept": 0.4091391616239288,
+  "ridge_alpha": 1.0,
+  "profile_cutoff": "Monday 00:00 UTC before game week",
+  "promotion_reason": "Requested joint stats-and-Elo model; better historical probability scores, no demonstrated winner-accuracy gain"
+}

@@ -72,6 +72,15 @@ MARKET_COLS = [
 # The exact feature list the v1 model trains on.
 MODEL_FEATURES = CONTEXT_FEATURES + STRENGTH_FEATURES
 
+# Live v3 model. Legacy MODEL_FEATURES remain available for reproducible audits.
+JOINT_PROFILE_FEATURES = [
+    'joint_off_ppa_edge', 'joint_off_success_edge',
+    'joint_off_explosive_edge', 'joint_points_edge',
+]
+JOINT_MODEL_FEATURES = JOINT_PROFILE_FEATURES + [
+    'neutral_site', 'rest_diff', 'is_postseason', 'elo_home_prob',
+]
+
 # Convenience: every column the canonical table should carry.
 ALL_COLS = ID_COLS + OUTCOME_COLS + CONTEXT_FEATURES + STRENGTH_FEATURES + MARKET_COLS + EVALUATION_COLS
 

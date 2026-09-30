@@ -1,7 +1,7 @@
 """
 train_and_backtest.py — train the model on real football and grade it honestly.
 
-Reads data/derived/training.parquet (from features.py), runs the walk-forward
+Reads data/derived/joint_training.parquet (from features.py), runs the walk-forward
 backtest (model vs Elo vs market, plus the agree/disagree split), then trains a
 final model on all played games and saves it to model.joblib for predict.py.
 
@@ -19,9 +19,9 @@ import schema
 import contract
 from backtest import walk_forward, format_report
 from baselines import EloModel, MarketModel
-from model import V1Model, StatisticalModel
+from model import V1Model, StatisticalModel, JointStatisticalModel
 
-TRAIN_PARQUET = "data/derived/training.parquet"
+TRAIN_PARQUET = "data/derived/joint_training.parquet"
 MODEL_OUT = "model.joblib"
 MIN_PRIOR = 3
 
@@ -39,12 +39,14 @@ def main():
     contract.validate(played, require_market=False, strength_min_coverage=0.30, stage="training",
                       strength_history_min=MIN_PRIOR)
     print(contract.report(played))
+    contract.validate_joint(played)
 
     print(f"Training on {len(played)} completed games, "
           f"seasons {int(played['season'].min())}-{int(played['season'].max())}.\n")
 
     factories = {
-        "model": lambda: StatisticalModel(),
+        "model": lambda: JointStatisticalModel(),
+        "previous_v2": lambda: StatisticalModel(),
         "boosted_fbs": lambda: V1Model(),
         "elo": lambda: EloModel(),
         "market": lambda: MarketModel(),
@@ -53,10 +55,10 @@ def main():
     print(format_report(summary, disagree))
 
     # Train final model on everything and persist.
-    final = StatisticalModel().fit(played)
-    joblib.dump({"model": final, "features": schema.MODEL_FEATURES,
+    final = JointStatisticalModel().fit(played)
+    joblib.dump({"model": final, "features": final.features,
                  "trained_through": int(played["season"].max()),
-                 "model_version": "statistical-logistic-v2"}, MODEL_OUT)
+                 "model_version": "joint-stats-elo-v3"}, MODEL_OUT)
     print(f"\nSaved final model -> {MODEL_OUT}")
 
 

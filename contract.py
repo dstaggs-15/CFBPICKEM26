@@ -179,3 +179,25 @@ def report(df: pd.DataFrame) -> str:
         if col in df.columns:
             lines.append(f"{col:<26}{df[col].notna().mean():>9.1%}")
     return "\n".join(lines)
+
+
+def validate_joint(df: pd.DataFrame) -> pd.DataFrame:
+    """Reject missing or constant joint inputs; allow intentional early gating."""
+    required = schema.JOINT_MODEL_FEATURES + ['joint_min_games', 'season']
+    missing = [c for c in required if c not in df]
+    if missing:
+        raise DataContractError('Missing joint-model columns: ' + ', '.join(missing))
+    eligible = df.joint_min_games.ge(2)
+    problems = check_coverage(df, ['elo_home_prob'] + schema.CONTEXT_FEATURES, .99)
+    problems += check_no_constant_features(df, schema.JOINT_MODEL_FEATURES)
+    for season, sub in df.groupby('season'):
+        mature = sub[sub.joint_min_games.ge(2)]
+        if sub.week.max() >= 5 and mature.empty:
+            problems.append(f'No eligible joint profiles in season {season}')
+        if not mature.empty:
+            problems += check_coverage(mature, schema.JOINT_PROFILE_FEATURES, .95)
+    if eligible.any() and problems:
+        raise DataContractError('\n'.join(problems))
+    if not eligible.any():
+        raise DataContractError('No eligible joint profiles in training data')
+    return df

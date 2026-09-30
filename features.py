@@ -6,7 +6,7 @@ was completely missing last year. It reads what fetch_cfbd.py landed:
     data/derived/games_base.parquet   (games + market)
     data/raw/advanced_raw.parquet     (per-game team efficiency)
 and produces:
-    data/derived/training.parquet     (one row per game, schema-compliant)
+    data/derived/joint_training.parquet (one row per game, joint and legacy inputs)
 
 The cardinal rule enforced everywhere below: a game's features may only use
 information from BEFORE that game. Every rolling number is shifted so the
@@ -29,7 +29,7 @@ from baselines import EloModel
 
 BASE_PARQUET = "data/derived/games_base.parquet"
 ADV_PARQUET = "data/raw/advanced_raw.parquet"
-OUT_PARQUET = "data/derived/training.parquet"
+OUT_PARQUET = "data/derived/joint_training.parquet"
 
 ROLL_N = 8          # games of history to average over
 MIN_PRIOR = 3       # need at least this many prior games before a team's stats count
@@ -268,10 +268,12 @@ def main():
     base = pd.read_parquet(BASE_PARQUET)
     adv = pd.read_parquet(ADV_PARQUET)
     df = build(base, adv)
+    from joint_profiles import build_profiles
+    df = build_profiles(df, adv, alpha=1.0)
     df.to_parquet(OUT_PARQUET, index=False)
 
     # coverage report on the model features (post gating)
-    from schema import MODEL_FEATURES
+    from schema import JOINT_MODEL_FEATURES as MODEL_FEATURES
     print("=" * 52)
     print(f"FEATURES BUILT — {len(df)} games")
     print("=" * 52)

@@ -28,7 +28,7 @@ import team_stats
 from ranking_signal import adjustment, load_rankings
 from profile_analogs import ProfileAnalogs
 
-TRAIN_PARQUET = "data/derived/training.parquet"
+TRAIN_PARQUET = "data/derived/joint_training.parquet"
 MODEL_FILE = "model.joblib"
 OUT_JSON = "docs/predictions.json"
 
@@ -115,7 +115,8 @@ def main():
     known = set(feat["home_team"]) | set(feat["away_team"])
     season = int(feat["season"].max())
     stats_by_team = team_stats.build_for_season(season)
-    analogs = ProfileAnalogs(feat)
+    joint = payload.get('model_version') == 'joint-stats-elo-v3'
+    analogs = ProfileAnalogs(feat, features=(schema.JOINT_PROFILE_FEATURES + ['elo_home_prob']) if joint else None)
     try:
         rankings_published, ranking_scores = load_rankings(season)
         print(f"Using ranking snapshot published {rankings_published.isoformat()}")
@@ -157,12 +158,27 @@ def main():
             s = stats_by_team.get(name, {})
             return {"name": name, "stats": s.get("stats", [])}
 
-        reasons = explain(row, p_home)
+        if joint:
+            cutoff = row['date'].normalize() - pd.Timedelta(days=row['date'].weekday())
+            count = int(row.get('joint_min_games', 0))
+            reasons = [
+                f"One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. "
+                f"The statistical profile uses completed FBS games before {cutoff.date()}, with at least {count} games per team."
+            ]
+            if count < 2:
+                reasons.append('The current-season statistical profile has too few FBS games; those inputs are marked missing, so Elo and context have more influence.')
+        else:
+            cutoff = None
+            reasons = explain(row, p_home)
         model_terms = {}
         if hasattr(model, "contributions"):
             terms = model.contributions(X).iloc[0]
             model_terms = {str(k): round(float(v), 5) for k, v in terms.items()}
             labels = {
+                "joint_off_ppa_edge": "the opponent-adjusted PPA matchup",
+                "joint_off_success_edge": "the opponent-adjusted success-rate matchup",
+                "joint_off_explosive_edge": "the opponent-adjusted explosiveness matchup",
+                "joint_points_edge": "the opponent-adjusted scoring matchup",
                 "elo_home_prob": "pregame Elo, with annual regression toward average",
                 "off_ppa_adj_diff": "the opponent-adjusted offensive efficiency gap",
                 "def_ppa_adj_diff": "the opponent-adjusted defensive efficiency gap",
@@ -178,13 +194,16 @@ def main():
             drivers = [labels.get(k, "the availability of pregame efficiency data") for k in strongest]
             if drivers:
                 reasons.insert(0, "The fitted statistical model's strongest supporting inputs are " + "; ".join(drivers) + ".")
+            opposing = support[support < 0].sort_values().head(2).index
+            if joint and len(opposing):
+                reasons.append("Inputs pulling toward " + (disp_away if base_p_home >= .5 else disp_home) + ": " + "; ".join(labels.get(k, 'pregame data availability') for k in opposing) + ".")
         historical_profile = analogs.describe(row)
         if historical_profile["available"]:
             n = historical_profile["n"]
             wins = historical_profile["home_wins"]
             chosen_wins = wins if p_home >= .5 else n - wins
             reasons.append(
-                f"In {n} similar earlier-season FBS matchup profiles, the side matching "
+                f"In {n} similar earlier-season FBS {'stats-and-Elo ' if joint else ''}matchup profiles, the side matching "
                 f"{pick}'s role won {chosen_wins}/{n}. This is historical context, "
                 "not an additional forecast probability.")
         if rank_delta:
@@ -208,6 +227,9 @@ def main():
             "why": reasons,
             "historical_profile": historical_profile,
             "model_log_odds_terms": model_terms,
+            "model_log_odds_intercept": (round(float(model.pipeline.steps[-1][1].intercept_[0]), 8) if hasattr(model, 'pipeline') else None),
+            "model_input_values": {c: (round(float(row[c]), 6) if pd.notna(row[c]) else None) for c in feats},
+            "profile_snapshot_utc": cutoff.isoformat() if cutoff is not None else None,
             "teams": {"away": team_block(disp_away), "home": team_block(disp_home)},
             "ai_note": None,
         })

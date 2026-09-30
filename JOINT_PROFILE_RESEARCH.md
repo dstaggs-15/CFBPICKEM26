@@ -1,6 +1,14 @@
 # Testing whether current stats should outweigh Elo
 
-The historical examples on the cards do not drive the live prediction. That
+**Deployment update:** The user requested the joint stats-and-Elo model as one
+coherent live predictor. It is now promoted as `joint-stats-elo-v3`, with ridge
+shrinkage 1 (the setting selected for 2026 using earlier seasons). The experiment
+below documents why: improved probability error, nearly tied winner accuracy.
+This promotion does not establish a gain in correct picks or a 73–75% pool rate.
+The earlier recommendation to retain v2 appears below as the research decision
+before that request; README describes the current deployment.
+
+At the start of this audit, the historical examples on the cards did not drive the prediction. That
 doesn't fully deliver the original request for a model built around comparable
 statistical profiles. Historical game outcomes train the live model, but that
 is different from using the displayed 75-game sample as its prediction.
@@ -78,7 +86,7 @@ real. These challenger probabilities are research output, not replacement
 published picks. The displayed 37% Alabama comparison sample uses a different
 distance definition and should not be described as the challenger forecast.
 
-## Decision
+## Initial research decision (before deployment request)
 
 Keep the live predictions unchanged for now. Removing Elo or promoting the
 neighbor vote would reduce historical winner accuracy in these tests. The joint
