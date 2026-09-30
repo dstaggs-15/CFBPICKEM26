@@ -1,0 +1,114 @@
+[
+  {
+    "season": 2020,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2020,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2020,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.4
+  },
+  {
+    "season": 2021,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2021,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2021,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  },
+  {
+    "season": 2022,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2022,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2022,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  },
+  {
+    "season": 2023,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2023,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2023,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  },
+  {
+    "season": 2024,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2024,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2024,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  },
+  {
+    "season": 2025,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2025,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2025,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  },
+  {
+    "season": 2026,
+    "family": "stats",
+    "chosen": "p_stats_1"
+  },
+  {
+    "season": 2026,
+    "family": "stats_elo",
+    "chosen": "p_stats_elo_1"
+  },
+  {
+    "season": 2026,
+    "family": "blend",
+    "stats_column": "p_stats_1",
+    "stats_weight": 0.30000000000000004
+  }
+]

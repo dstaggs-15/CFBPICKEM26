@@ -141,3 +141,14 @@ python upset_watch.py
 ```
 
 Set `CFBD_API_KEY` in your environment before fetching. The audit commands and results are in [PROFILE_RESEARCH.md](PROFILE_RESEARCH.md). The drive and ensemble experiments remain research-only; they do not feed the live picks.
+## Follow-up: are the historical examples actually driving picks?
+
+The 75 similar games shown on a card are context. They don't change the live
+pick. That distinction matters, especially when they disagree with the model.
+
+I also tested a new model that builds current-season offense and defense ratings
+together, then learns how those matchup profiles translated into historical
+wins. Its stats-only version reached 68.68% on 6,800 held-out FBS games from
+2017–2025, versus 70.44% for the current model. Adding Elo improved its probability
+error, but didn't improve winner accuracy. The live picks haven't changed from
+this experiment. [The full test and decision are here](JOINT_PROFILE_RESEARCH.md).
