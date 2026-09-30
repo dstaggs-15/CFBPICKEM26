@@ -64,34 +64,34 @@ def _team_game_long(base: pd.DataFrame, adv: pd.DataFrame) -> pd.DataFrame:
 
     tg = tg.sort_values(["team", "date", "game_id"]).reset_index(drop=True)
 
-    # Current-season rolling form; the previous season provides a short-lived
-    # prior for the opener. Historical seasons are used to LEARN the mapping,
-    # never as a present-day team's raw form.
+    # Only observed completed games occupy the window. A scheduled game is
+    # a query of the current state, never a missing observation that evicts it.
+    completed = tg.home_points.notna() & tg.away_points.notna()
     for m in metrics:
-        current = tg.groupby(["team", "season"])[m].shift(1)
-        groups = [tg["team"], tg["season"]]
-        recent_mean = (current.groupby(groups).rolling(ROLL_N, min_periods=1)
-                       .mean().reset_index(level=[0, 1], drop=True))
-        recent_n = (current.groupby(groups).rolling(ROLL_N, min_periods=1)
-                    .count().reset_index(level=[0, 1], drop=True).fillna(0))
-        # All of these games preceded the next season; no current-season
-        # result can affect its own or another game's pregame baseline.
-        previous = (tg.dropna(subset=[m]).groupby(["team", "season"])[m]
+        previous = (tg.loc[completed].dropna(subset=[m])
+                    .groupby(["team", "season"])[m]
                     .apply(lambda games: games.tail(ROLL_N).mean()).to_dict())
-        previous_mean = pd.Series(
-            [previous.get((team, season - 1), np.nan)
-             for team, season in zip(tg["team"], tg["season"])], index=tg.index)
-        weight = (PRIOR_WEIGHT * (1 - recent_n / ROLL_N)).clip(lower=0)
-        weight = weight.where(previous_mean.notna(), 0.0)
-        total = recent_n + weight
-        weighted = recent_mean.fillna(0) * recent_n + previous_mean.fillna(0) * weight
-        tg[f"{m}_roll"] = (weighted / total).where(total > 0)
+        values = pd.Series(np.nan, index=tg.index)
+        for (team, season), group in tg.groupby(["team", "season"], sort=False):
+            history = deque(maxlen=ROLL_N)
+            prior = previous.get((team, season - 1), np.nan)
+            for _, kickoff in group.groupby("date", sort=False, dropna=False):
+                n = len(history)
+                weight = PRIOR_WEIGHT * (1 - n / ROLL_N) if pd.notna(prior) else 0
+                total = n + weight
+                value = (sum(history) + (prior * weight if weight else 0)) / total if total else np.nan
+                values.loc[kickoff.index] = value
+                for i, row in kickoff.iterrows():
+                    if completed.loc[i] and pd.notna(row[m]):
+                        history.append(float(row[m]))
+        tg[f"{m}_roll"] = values
 
-    # Count actual observed games, rather than scheduled games with no stats.
-    observed = tg.groupby("team")["off_ppa"].shift(1)
-    tg["prior_games"] = (observed.groupby(tg["team"])
-                         .rolling(ROLL_N, min_periods=1).count()
-                         .reset_index(level=0, drop=True).fillna(0))
+    tg["prior_games"] = 0.0
+    for _, group in tg.groupby(["team", "season"], sort=False):
+        n = 0
+        for _, kickoff in group.groupby("date", sort=False, dropna=False):
+            tg.loc[kickoff.index, "prior_games"] = min(n, ROLL_N)
+            n += int((completed.loc[kickoff.index] & kickoff.off_ppa.notna()).sum())
     return tg
 
 
@@ -119,7 +119,13 @@ def _opponent_adjust(tg: pd.DataFrame, metric_roll: str,
 
     adj = np.full(len(tg_s), np.nan)
     # Snapshot a whole kickoff time before updating any game at that time.
+    previous_season = None
     for _, at_kickoff in tg_s.groupby("date", sort=False, dropna=False):
+        season = int(at_kickoff.iloc[0]["season"]) if "season" in tg_s else None
+        if season != previous_season:
+            faced.clear()
+            league_sum, league_n = 0.0, 0
+            previous_season = season
         reference = league_sum / league_n if league_n else None
         updates = []
         for i, row in at_kickoff.iterrows():
