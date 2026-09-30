@@ -46,7 +46,13 @@ for most of the backtest.
 
 ## Upset watch
 
-`docs/upsets.html` lists the week's games where the independent model picks
+The live final winner estimate uses a 25% independent football / 75%
+spread-derived probability blend, with independent fallback when no spread is
+available. The rankings signal contributes at most 0.5 final percentage
+points with a spread. See `LIVE_POLICY.md` for measured accuracy, limits and
+the recorded pregame policy revision procedure.
+
+`docs/upsets.html` lists the week's games where the final model picks
 the line underdog. The weekly workflow runs `upset_watch.py` immediately after
 `predict.py` and publishes `docs/upset_watch.json`. It shows the current
 offense-versus-defense matchup comparison, Elo, home field, and outcomes for a
