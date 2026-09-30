@@ -87,7 +87,7 @@ function render() {
 
     const pctAway = node.querySelector(".pct--away");
     const pctHome = node.querySelector(".pct--home");
-    pctAway.textContent = pct(awayP);
+    pctAway.textContent = `${100 - Math.round(homeP * 100)}%`;
     pctHome.textContent = pct(homeP);
     (homeFav ? pctHome : pctAway).classList.add("lead");
 
