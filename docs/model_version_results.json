@@ -1,0 +1,12 @@
+{
+  "season": 2026,
+  "versions": [
+    {
+      "model_version": "statistical-logistic-v2",
+      "weeks": [],
+      "pending_weeks": [
+        5
+      ]
+    }
+  ]
+}

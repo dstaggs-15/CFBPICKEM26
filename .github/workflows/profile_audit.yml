@@ -1,0 +1,41 @@
+name: Audit current team profiles
+on:
+  push:
+    branches: [research/current-profiles]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - name: Fetch data and freeze original feature builder
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python fetch_cfbd.py --seasons 2014-2026
+          git show 722046606b7214fc6630068158203f9ccc430db2:features.py > data/original_features.py
+      - name: Evaluate on later seasons
+        run: python profile_audit.py | tee profile_audit.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: profile-audit-results
+          path: |
+            profile_audit.log
+            data/derived/profile_metrics.json
+            data/derived/profile_oos.parquet
+            data/derived/training.parquet
+            data/derived/games_base.parquet
+            data/raw/advanced_raw.parquet

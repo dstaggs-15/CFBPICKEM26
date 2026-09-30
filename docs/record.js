@@ -153,3 +153,28 @@ fetch("results.json", { cache: "no-store" })
   .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
   .then(render)
   .catch(() => { root.replaceChildren(element("p", "error", "Couldn't load the model record. Please try again shortly.")); });
+
+
+// Prospective records for revised models preserve the original weekly archive.
+fetch("model_version_results.json", { cache: "no-store" })
+  .then(response => response.ok ? response.json() : null)
+  .then(data => {
+    if (!data || !(data.versions || []).length) return;
+    const panel = section("Updated model record", "Frozen picks from each model version, graded after every game on its slate finishes.");
+    for (const version of data.versions) {
+      const weeks = version.weeks || [];
+      const wins = weeks.reduce((n,w) => n+w.wins,0);
+      const losses = weeks.reduce((n,w) => n+w.losses,0);
+      panel.append(element("p", "chart-key", `${version.model_version}: ${wins}–${losses} · ${rate(wins,wins+losses)}`));
+      if ((version.pending_weeks || []).length) panel.append(element("p", "subtle", `Waiting for complete results: Week ${version.pending_weeks.join(", ")}.`));
+    }
+    // Wait for the main record renderer before appending this independent view.
+    const attach = () => root.append(panel);
+    if (root.querySelector(".record-hero")) attach();
+    else {
+      const observer = new MutationObserver(() => {
+        if (root.querySelector(".record-hero")) { observer.disconnect(); attach(); }
+      });
+      observer.observe(root, { childList: true });
+    }
+  }).catch(() => {});

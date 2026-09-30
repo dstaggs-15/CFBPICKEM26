@@ -113,6 +113,15 @@ function render() {
     const whyUl = node.querySelector(".why-list");
     (g.why || []).forEach((w) => { const li = document.createElement("li"); li.textContent = w; whyUl.appendChild(li); });
 
+    const historical = g.historical_profile;
+    if (historical && historical.available) {
+      (historical.examples || []).forEach((example) => {
+        const li = document.createElement("li");
+        li.textContent = `Similar profile: ${example.season} ${example.away_team} at ${example.home_team}, ` +
+          `${example.away_points}–${example.home_points}. Profile distance ${example.distance} (lower is closer).`;
+        whyUl.appendChild(li);
+      });
+    }
     const teams = g.teams || {};
     node.querySelector(".statcol--away .statcol-team").textContent = g.away_team;
     node.querySelector(".statcol--home .statcol-team").textContent = g.home_team;

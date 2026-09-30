@@ -93,6 +93,24 @@ def main():
             print(f"Waiting for complete results: {archive}")
     results["weeks"] = [by_week[w] for w in sorted(by_week)]
     RESULTS.write_text(json.dumps(results, indent=2) + "\n")
+    versions = []
+    for directory in sorted(Path("historicals/model_versions").glob("*")):
+        if not directory.is_dir():
+            continue
+        weeks = []
+        pending = []
+        for archive in sorted(directory.glob("*.json")):
+            picks = json.loads(archive.read_text())
+            if picks["season"] != results["season"]:
+                continue
+            scored = grade(picks, games)
+            if scored:
+                weeks.append(scored)
+            else:
+                pending.append(picks.get("week"))
+        versions.append({"model_version": directory.name, "weeks": weeks, "pending_weeks": pending})
+    Path("docs/model_version_results.json").write_text(json.dumps(
+        {"season": results["season"], "versions": versions}, indent=2) + "\n")
 
 
 if __name__ == "__main__":

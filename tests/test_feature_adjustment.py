@@ -49,7 +49,7 @@ class FeatureAdjustmentTests(unittest.TestCase):
         kickoff = pd.Timestamp("2026-10-03T17:00:00Z")
         published = pd.Timestamp("2026-09-27T12:00:00Z").to_pydatetime()
         scores = {"A": 0.9, "B": 0.3}
-        self.assertAlmostEqual(adjustment("A", "B", kickoff, published, scores), 0.02)
+        self.assertAlmostEqual(adjustment("A", "B", kickoff, published, scores), 0.0005)
         self.assertEqual(adjustment("A", "C", kickoff, published, scores), 0)
         self.assertEqual(adjustment("A", "B", kickoff, kickoff.to_pydatetime(), scores), 0)
 

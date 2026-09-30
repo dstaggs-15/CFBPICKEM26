@@ -40,6 +40,7 @@ class V1Model(Model):
         self.calibration = calibration
 
     def fit(self, train_df: pd.DataFrame) -> "V1Model":
+        self.calibrator = None
         # Stable tie-breaking matters when many Saturday kickoffs share a time.
         d = train_df.sort_values(["season", "week", "date", "game_id"]).copy()
         d["home_win"] = (d["home_points"] > d["away_points"]).astype(int)
@@ -85,3 +86,41 @@ class V1Model(Model):
             return self.calibrator.predict_proba(
                 logit(np.clip(raw, 1e-6, 1 - 1e-6)).reshape(-1, 1))[:, 1]
         return self.calibrator.predict(raw)
+
+
+class StatisticalModel(Model):
+    """Regularized, interpretable FBS predictor validated season by season.
+
+    Matches the profile audit's logistic candidate exactly. Imputation, scaling
+    and weights are learned on training games only. No team identity or market
+    column enters the fitted mapping.
+    """
+    name = "model"
+
+    def __init__(self):
+        from sklearn.impute import SimpleImputer
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+        self.features = list(schema.MODEL_FEATURES)
+        self.pipeline = make_pipeline(
+            SimpleImputer(add_indicator=True, keep_empty_features=True),
+            StandardScaler(), LogisticRegression(C=0.1, max_iter=2000))
+
+    def fit(self, train_df):
+        d = train_df.dropna(subset=["home_points", "away_points"]).copy()
+        if {"home_classification", "away_classification"}.issubset(d.columns):
+            d = d[d.home_classification.str.lower().eq("fbs") &
+                  d.away_classification.str.lower().eq("fbs")]
+        self.pipeline.fit(d[self.features], d.home_points.gt(d.away_points).astype(int))
+        return self
+
+    def predict_proba(self, games_df):
+        return self.pipeline.predict_proba(games_df[self.features])[:, 1]
+
+    def contributions(self, games_df):
+        """Exact additive log-odds terms of this fitted logistic predictor."""
+        imputer, scaler, classifier = self.pipeline.steps
+        values = scaler[1].transform(imputer[1].transform(games_df[self.features]))
+        names = list(imputer[1].get_feature_names_out(self.features))
+        return pd.DataFrame(values * classifier[1].coef_[0], columns=names,
+                            index=games_df.index)

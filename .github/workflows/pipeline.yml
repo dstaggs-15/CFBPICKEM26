@@ -16,6 +16,9 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -28,13 +31,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Test pregame data invariants
+        run: python -m unittest discover -s tests -v
+
       - name: Fetch data
         env:
           CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
         run: python fetch_cfbd.py --seasons "${{ github.event.inputs.seasons }}"
 
       - name: Grade archived picks with final scores
-        run: python grade_results.py
+        run: |
+          python grade_results.py
+          python pool_diagnostics.py
 
       - name: Build features
         run: python features.py
@@ -56,9 +64,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Stage only the files that were actually produced.
-          for f in docs/predictions.json docs/upset_watch.json docs/news.json docs/team_stats.json docs/results.json; do
+          for f in docs/predictions.json docs/upset_watch.json docs/news.json docs/team_stats.json docs/results.json docs/model_diagnostics.json docs/model_version_results.json; do
             [ -f "$f" ] && git add "$f"
           done
           git add historicals/predictions/
+          [ ! -d historicals/model_versions ] || git add historicals/model_versions/
           git commit -m "weekly update: predictions + news" || echo "nothing to commit"
           git push

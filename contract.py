@@ -118,6 +118,7 @@ def validate(
     require_market: bool = False,
     strength_min_coverage: float = 0.95,
     stage: str = "training",
+    strength_history_min: int | None = None,
 ) -> pd.DataFrame:
     """
     Run the full contract. Raise DataContractError listing EVERY problem found
@@ -132,7 +133,22 @@ def validate(
     # If core columns are missing there's no point checking the rest.
     if not any(p.startswith("MISSING COLUMN") for p in problems):
         problems += check_dtypes(df)
-        problems += check_coverage(df, schema.STRENGTH_FEATURES, strength_min_coverage)
+        if strength_history_min is None:
+            problems += check_coverage(df, schema.STRENGTH_FEATURES, strength_min_coverage)
+        else:
+            counts = ["home_prior_games", "away_prior_games"]
+            if not set(counts).issubset(df.columns):
+                problems.append("MISSING HISTORY COUNTS: cannot distinguish early-season gating from missing data")
+            else:
+                eligible = df[counts].ge(strength_history_min).all(axis=1)
+                efficiency = [c for c in schema.STRENGTH_FEATURES if c != "elo_home_prob"]
+                # Gated rows deliberately contain no efficiency. Check the
+                # eligible population rigorously, never replace nulls with zero.
+                problems += check_coverage(df[eligible], efficiency, 0.95)
+                for season, sub in df.groupby("season"):
+                    if sub.week.max() >= strength_history_min + 2 and not eligible.loc[sub.index].any():
+                        problems.append(f"COVERAGE: no history-eligible games in season {season}; inspect advanced-stat feed")
+                problems += check_coverage(df, ["elo_home_prob"], strength_min_coverage)
         problems += check_coverage(df, schema.CONTEXT_FEATURES, 0.99)
         problems += check_no_constant_features(df, schema.MODEL_FEATURES)
         if require_market:

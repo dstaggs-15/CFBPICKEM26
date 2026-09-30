@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from math import isfinite
 
 RANKINGS_URL = "https://dstaggs-15.github.io/cfbranking/data/rankings.json"
-MAX_ADJUSTMENT = 0.02  # probability points: at most two percentage points
+MAX_ADJUSTMENT = 0.0005  # unvalidated context: at most 0.05 percentage points
 
 
 def load_rankings(season: int):

@@ -10,14 +10,12 @@ Steps:
   5. attach each team's current-season stat ranks (team_stats)
   6. write docs/predictions.json for the website
 
-The "why" is generated from the actual feature values that moved the pick, not
-canned text — if the model leaned on Elo, the why says so; if it leaned on
-efficiency, it says that. Honest by construction.
+The "why" describes observed pregame evidence and historical profile examples.
+It does not attribute a boosted-tree decision to an individual feature.
 """
 
 from __future__ import annotations
 import json
-from datetime import date
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -28,6 +26,7 @@ import schema
 from weekly_input import load_slate
 import team_stats
 from ranking_signal import adjustment, load_rankings
+from profile_analogs import ProfileAnalogs
 
 TRAIN_PARQUET = "data/derived/training.parquet"
 MODEL_FILE = "model.joblib"
@@ -65,14 +64,15 @@ def find_game(feat: pd.DataFrame, away: str, home: str):
     if m.empty:
         return None, False
     unplayed = m[m["home_points"].isna()]
-    row = (unplayed.sort_values("date").iloc[0] if not unplayed.empty
-           else m.sort_values("date").iloc[-1])
+    if unplayed.empty:
+        return None, False
+    row = unplayed.sort_values("date").iloc[0]
     swapped = not (row.home_team == home and row.away_team == away)
     return row, swapped
 
 
 def explain(row: pd.Series, p_home: float) -> list[str]:
-    """Plain-English drivers of the pick from real feature values."""
+    """Pregame evidence, not a claim of causal feature attribution."""
     why = []
     fav_home = p_home >= 0.5
     fav = row.home_team if fav_home else row.away_team
@@ -86,7 +86,7 @@ def explain(row: pd.Series, p_home: float) -> list[str]:
     if pd.notna(off) and abs(off) > 0.02:
         better = row.home_team if off > 0 else row.away_team
         if better == fav:
-            why.append(f"{better} has been more efficient on offense against comparable defenses.")
+            why.append(f"{better} has higher opponent-adjusted offensive PPA in its recent pregame profile.")
 
     dee = row.get("def_ppa_adj_diff")
     if pd.notna(dee) and abs(dee) > 0.02:
@@ -96,12 +96,12 @@ def explain(row: pd.Series, p_home: float) -> list[str]:
             why.append(f"{better} has the stronger defense by opponent-adjusted efficiency.")
 
     if not row.get("neutral_site", False):
-        why.append(f"{row.home_team} is at home, worth a few points of edge.")
+        why.append(f"{row.home_team} is at home; venue is an input to the forecast.")
     else:
         why.append("Neutral site — no home-field edge for either team.")
 
     if pd.isna(off) or pd.isna(dee):
-        why.append("Early season: this leans on preseason ratings until more games are played.")
+        why.append("Efficiency inputs are incomplete; the forecast also uses pregame Elo and game context.")
 
     return why[:4] or ["Too close to call — essentially a coin flip."]
 
@@ -115,6 +115,7 @@ def main():
     known = set(feat["home_team"]) | set(feat["away_team"])
     season = int(feat["season"].max())
     stats_by_team = team_stats.build_for_season(season)
+    analogs = ProfileAnalogs(feat)
     try:
         rankings_published, ranking_scores = load_rankings(season)
         print(f"Using ranking snapshot published {rankings_published.isoformat()}")
@@ -138,6 +139,8 @@ def main():
             })
             continue
 
+        if pd.isna(row["date"]) or row["date"] <= pd.Timestamp.now(tz="UTC"):
+            raise ValueError("Refusing to publish a new forecast after kickoff")
         slate_weeks.add(int(row["week"]))
 
         X = pd.DataFrame([row])[feats]
@@ -155,9 +158,38 @@ def main():
             return {"name": name, "stats": s.get("stats", [])}
 
         reasons = explain(row, p_home)
+        model_terms = {}
+        if hasattr(model, "contributions"):
+            terms = model.contributions(X).iloc[0]
+            model_terms = {str(k): round(float(v), 5) for k, v in terms.items()}
+            labels = {
+                "elo_home_prob": "pregame Elo, with annual regression toward average",
+                "off_ppa_adj_diff": "the opponent-adjusted offensive efficiency gap",
+                "def_ppa_adj_diff": "the opponent-adjusted defensive efficiency gap",
+                "success_rate_adj_diff": "the opponent-adjusted success-rate gap",
+                "explosiveness_adj_diff": "the opponent-adjusted explosiveness gap",
+                "home_off_vs_away_def_ppa": "the home offense / away defense matchup",
+                "away_off_vs_home_def_ppa": "the away offense / home defense matchup",
+                "rest_diff": "the rest-day difference", "neutral_site": "venue context",
+                "is_postseason": "postseason context",
+            }
+            support = terms * (1 if base_p_home >= .5 else -1)
+            strongest = support[support > 0].sort_values(ascending=False).head(3).index
+            drivers = [labels.get(k, "the availability of pregame efficiency data") for k in strongest]
+            if drivers:
+                reasons.insert(0, "The fitted statistical model's strongest supporting inputs are " + "; ".join(drivers) + ".")
+        historical_profile = analogs.describe(row)
+        if historical_profile["available"]:
+            n = historical_profile["n"]
+            wins = historical_profile["home_wins"]
+            chosen_wins = wins if p_home >= .5 else n - wins
+            reasons.append(
+                f"In {n} similar earlier-season FBS matchup profiles, the side matching "
+                f"{pick}'s role won {chosen_wins}/{n}. This is historical context, "
+                "not an additional forecast probability.")
         if rank_delta:
             ranked_side = disp_home if rank_delta > 0 else disp_away
-            reasons.insert(0, f"The separate computer rankings favor {ranked_side}; they shift the home win estimate by {rank_delta * 100:+.1f} percentage points.")
+            reasons.insert(0, f"The separate computer rankings favor {ranked_side}; they shift the home win estimate by {rank_delta * 100:+.2f} percentage points.")
 
         games_out.append({
             "game_id": str(row["game_id"]),
@@ -174,6 +206,8 @@ def main():
                             if pd.notna(row.get("spread_home")) else None),
             "pick": pick,
             "why": reasons,
+            "historical_profile": historical_profile,
+            "model_log_odds_terms": model_terms,
             "teams": {"away": team_block(disp_away), "home": team_block(disp_home)},
             "ai_note": None,
         })
@@ -181,7 +215,8 @@ def main():
     out = {
         "season": season,
         "week": next(iter(slate_weeks)) if len(slate_weeks) == 1 else None,
-        "generated_at": str(date.today()),
+        "generated_at": pd.Timestamp.now(tz="UTC").isoformat(),
+        "model_version": payload.get("model_version", "boosted-v1"),
         "ranking_snapshot_utc": (rankings_published.isoformat()
                                  if rankings_published else None),
         "games": games_out,
@@ -196,6 +231,11 @@ def main():
         if not archive.exists():
             archive.write_text(json.dumps(out, indent=2) + "\n")
             print(f"Archived first picks for week {out['week']} at {archive}")
+        version_archive = Path(f"historicals/model_versions/{out['model_version']}/{season}-week-{out['week']}.json")
+        version_archive.parent.mkdir(parents=True, exist_ok=True)
+        if not version_archive.exists():
+            version_archive.write_text(json.dumps(out, indent=2) + "\n")
+            print(f"Archived first picks for model version at {version_archive}")
     else:
         print("Slate has missing games or mixed weeks; no grading archive created.")
     print(f"Wrote {OUT_JSON} with {len(games_out)} games.")
