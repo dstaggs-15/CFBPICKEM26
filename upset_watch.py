@@ -11,9 +11,11 @@ import json
 from pathlib import Path
 
 import pandas as pd
+from upset_policy import assess
+import schema
 
 PREDICTIONS = Path("docs/predictions.json")
-TRAINING = Path("data/derived/training.parquet")
+TRAINING = Path("data/derived/joint_training.parquet")
 CROWD = Path("docs/input/crowd_picks.json")
 OUTPUT = Path("docs/upset_watch.json")
 
@@ -69,7 +71,7 @@ def historical_group(df: pd.DataFrame, current_season: int, line_abs: float,
             "bucket_count": bucket_count}
 
 
-def build(predictions: dict, features: pd.DataFrame, crowd: dict, source: str | None) -> dict:
+def build(predictions: dict, features: pd.DataFrame, crowd: dict, source: str | None, policy=None) -> dict:
     lookup = features.set_index("game_id")
     watches = []
     for g in predictions.get("games", []):
@@ -87,7 +89,13 @@ def build(predictions: dict, features: pd.DataFrame, crowd: dict, source: str | 
         edge = bool(dog_matchup > fav_matchup) if pd.notna(dog_matchup) and pd.notna(fav_matchup) else None
         dog_elo = row["elo_home_prob"] if dog_home else 1 - row["elo_home_prob"]
         clues = []
-        if edge is not None:
+        joint=predictions.get('model_version')=='joint-stats-elo-v3'
+        stat_terms=g.get('model_log_odds_terms',{})
+        complete=all(pd.notna(row.get(c)) for c in schema.JOINT_PROFILE_FEATURES)
+        stats_support=bool(sum(stat_terms.get(c,0.) for c in schema.JOINT_PROFILE_FEATURES)*(1 if dog_home else -1)>0) if complete and all(c in stat_terms for c in schema.JOINT_PROFILE_FEATURES) else None
+        if joint and stats_support is not None:
+            clues.append(f"The combined fitted statistical contributions favor {dog if stats_support else favorite}; Elo is evaluated separately in the screen.")
+        elif edge is not None:
             leader = dog if edge else favorite
             clues.append(f"The current offense-versus-defense PPA comparison favors {leader} "
                          f"({dog_matchup:.2f} for {dog} vs {fav_matchup:.2f} for {favorite}).")
@@ -98,19 +106,25 @@ def build(predictions: dict, features: pd.DataFrame, crowd: dict, source: str | 
             clues.append(f"{dog if dog_home else favorite} is at home.")
         picked = crowd.get((g["away_team"], g["home_team"]), {}).get(dog)
         dog_p = g["model_prob_home"] if dog_home else 1 - g["model_prob_home"]
+        min_games=int(row.get('joint_min_games',0)) if pd.notna(row.get('joint_min_games')) else 0
+        screening=assess(dog_p,abs(line),stats_support,bool(dog_elo>.5) if pd.notna(dog_elo) else None,min_games,policy)
         watches.append({"game_id": g["game_id"], "game_date": g.get("game_date"),
                         "underdog": dog, "favorite": favorite, "away_team": g["away_team"],
                         "home_team": g["home_team"], "spread_for_underdog": abs(line),
                         "model_prob_underdog": round(dog_p, 3),
+                        "screening": screening, "prior_fbs_games_min": min_games,
                         "crowd_picked_pct": picked,
                         "model_vs_crowd_pp": round(dog_p * 100 - picked, 1) if picked is not None else None,
                         "clues": clues,
                         "historical": historical_group(features, int(predictions["season"]),
-                                                        abs(line), dog_home, edge)})
+                                                        abs(line), dog_home, None if joint else edge)})
     watches.sort(key=lambda x: (x["crowd_picked_pct"] is None,
                                 x["crowd_picked_pct"] if x["crowd_picked_pct"] is not None else 101))
     return {"season": predictions["season"], "week": predictions["week"],
+            "model_version": predictions.get('model_version'),
             "generated_at": predictions.get("generated_at"), "crowd_source": source,
+            "upset_screen": policy,
+            "qualified_count": sum(g['screening']['status']=='qualified' for g in watches),
             "games": watches}
 
 
@@ -118,8 +132,17 @@ def main():
     predictions = json.loads(PREDICTIONS.read_text())
     crowd, source = crowd_lookup(predictions)
     features = pd.read_parquet(TRAINING)
-    payload = build(predictions, features, crowd, source)
+    path=Path(f"historicals/model_audits/{predictions['season']}-upset-policy.json")
+    policy=json.loads(path.read_text()) if path.exists() else None
+    if policy and (policy.get('season')!=predictions['season'] or policy.get('model_version')!=predictions.get('model_version')):
+        policy=None
+    payload = build(predictions, features, crowd, source, policy)
     OUTPUT.write_text(json.dumps(payload, indent=2) + "\n")
+    if predictions.get('week') is not None and predictions.get('games') and all(g.get('game_id') and not g.get('error') for g in predictions['games']):
+        archive=Path(f"historicals/upset_watch/{predictions.get('model_version','unknown')}/{predictions['season']}-week-{predictions['week']}.json")
+        archive.parent.mkdir(parents=True,exist_ok=True)
+        if not archive.exists():
+            archive.write_text(json.dumps(payload,indent=2)+'\n')
     print(f"Wrote {OUTPUT} with {len(payload['games'])} model-picked underdogs.")
 
 

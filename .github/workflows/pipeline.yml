@@ -53,6 +53,9 @@ jobs:
       - name: Predict this week's slate
         run: python predict.py
 
+      - name: Create a frozen season upset screen if missing
+        run: python upset_audit.py --if-missing
+
       - name: Build upset watch from the same predictions
         run: python upset_watch.py
 
@@ -69,5 +72,7 @@ jobs:
           done
           git add historicals/predictions/
           [ ! -d historicals/model_versions ] || git add historicals/model_versions/
+          git add historicals/model_audits/*-upset-*.json
+          [ ! -d historicals/upset_watch ] || git add historicals/upset_watch/
           git commit -m "weekly update: predictions + news" || echo "nothing to commit"
           git push

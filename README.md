@@ -103,6 +103,13 @@ Betting lines are comparisons and inputs to the upset-watch display. They don't 
 
 ## Updating a week
 
+Upset Watch now tests each model-picked underdog against a historical research
+screen. The 2026 conditions are at least 55% model probability, a spread of 3
+points or less, and five prior FBS games per team. **This screen is not proven:**
+choosing rules on older seasons and testing the next season returned 46.7% on
+272 picks. Matching it gets a research label, not a strong recommendation.
+The main pick remains unchanged. [Upset test details](UPSET_RESEARCH.md).
+
 1. Edit `docs/input/games.txt` with the ten ESPN matchups, one per line: `Away @ Home` or `Team A vs Team B` for a neutral-site game.
 2. In GitHub Actions, open **Run weekly pipeline** and select **Run workflow**. The normal season range is `2014-2026`.
 3. The job tests, fetches CFBD data, grades completed archives, builds profiles, trains and backtests the joint model, then publishes picks and news.

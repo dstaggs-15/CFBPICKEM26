@@ -1,0 +1,290 @@
+{
+  "season": 2026,
+  "model_version": "joint-stats-elo-v3",
+  "selected": {
+    "rule": {
+      "min_probability": 0.55,
+      "max_spread": 3.0,
+      "support": "any",
+      "min_games": 5
+    },
+    "selection_evidence": {
+      "n": 149,
+      "wins": 81,
+      "win_rate": 0.5436241610738255,
+      "confidence_interval": [
+        0.4635544689137371,
+        0.6215009872452554
+      ],
+      "seasons": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    }
+  },
+  "validation": {
+    "n": 272,
+    "wins": 127,
+    "win_rate": 0.46691176470588236,
+    "confidence_interval": [
+      0.40849516833836036,
+      0.5262499563540791
+    ],
+    "seasons": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "supported": false
+  },
+  "folds": [
+    {
+      "season": 2020,
+      "selected": {
+        "rule": {
+          "min_probability": 0.5,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 0
+        },
+        "selection_evidence": {
+          "n": 143,
+          "wins": 73,
+          "win_rate": 0.5104895104895105,
+          "confidence_interval": [
+            0.42936125706586803,
+            0.5910689404007974
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 48,
+        "wins": 20,
+        "win_rate": 0.4166666666666667,
+        "confidence_interval": [
+          0.2884966777841157,
+          0.5571866771602373
+        ],
+        "seasons": [
+          2020
+        ]
+      }
+    },
+    {
+      "season": 2021,
+      "selected": {
+        "rule": {
+          "min_probability": 0.5,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 0
+        },
+        "selection_evidence": {
+          "n": 191,
+          "wins": 93,
+          "win_rate": 0.4869109947643979,
+          "confidence_interval": [
+            0.4169861267854814,
+            0.557351983644079
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019,
+            2020
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 58,
+        "wins": 27,
+        "win_rate": 0.46551724137931033,
+        "confidence_interval": [
+          0.3433202232528626,
+          0.5919982495600479
+        ],
+        "seasons": [
+          2021
+        ]
+      }
+    },
+    {
+      "season": 2022,
+      "selected": {
+        "rule": {
+          "min_probability": 0.5,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 0
+        },
+        "selection_evidence": {
+          "n": 249,
+          "wins": 120,
+          "win_rate": 0.4819277108433735,
+          "confidence_interval": [
+            0.4206116916731203,
+            0.5437928801009159
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019,
+            2020,
+            2021
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 60,
+        "wins": 21,
+        "win_rate": 0.35,
+        "confidence_interval": [
+          0.24167774406017556,
+          0.47637381158245135
+        ],
+        "seasons": [
+          2022
+        ]
+      }
+    },
+    {
+      "season": 2023,
+      "selected": {
+        "rule": {
+          "min_probability": 0.5,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 0
+        },
+        "selection_evidence": {
+          "n": 309,
+          "wins": 141,
+          "win_rate": 0.4563106796116505,
+          "confidence_interval": [
+            0.401650571516323,
+            0.512043731975993
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 61,
+        "wins": 34,
+        "win_rate": 0.5573770491803278,
+        "confidence_interval": [
+          0.4330336769314388,
+          0.6749219447851712
+        ],
+        "seasons": [
+          2023
+        ]
+      }
+    },
+    {
+      "season": 2024,
+      "selected": {
+        "rule": {
+          "min_probability": 0.55,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 5
+        },
+        "selection_evidence": {
+          "n": 104,
+          "wins": 56,
+          "win_rate": 0.5384615384615384,
+          "confidence_interval": [
+            0.44299302025822307,
+            0.6311899524823574
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 19,
+        "wins": 9,
+        "win_rate": 0.47368421052631576,
+        "confidence_interval": [
+          0.2732980516117956,
+          0.6829219075488682
+        ],
+        "seasons": [
+          2024
+        ]
+      }
+    },
+    {
+      "season": 2025,
+      "selected": {
+        "rule": {
+          "min_probability": 0.55,
+          "max_spread": 3.0,
+          "support": "any",
+          "min_games": 5
+        },
+        "selection_evidence": {
+          "n": 123,
+          "wins": 65,
+          "win_rate": 0.5284552845528455,
+          "confidence_interval": [
+            0.44071658306887596,
+            0.6144704201797648
+          ],
+          "seasons": [
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024
+          ]
+        }
+      },
+      "later_season_results": {
+        "n": 26,
+        "wins": 16,
+        "win_rate": 0.6153846153846154,
+        "confidence_interval": [
+          0.4253485008511553,
+          0.7757140556428721
+        ],
+        "seasons": [
+          2025
+        ]
+      }
+    }
+  ],
+  "note": "Screen settings are selected only from older season-held-out predictions. Retrospective research; frozen future picks remain the prospective test."
+}

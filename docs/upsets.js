@@ -18,7 +18,24 @@ async function main() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     document.getElementById("week").textContent =
-      `${data.season} Week ${data.week} · ${data.games.length} model-picked underdogs`;
+      `${data.season} Week ${data.week} · ${data.games.length} model-picked underdogs · ${data.qualified_count || 0} pass a supported screen`;
+    const policy = data.upset_screen;
+    if (policy && policy.validation) {
+      const validation = policy.validation;
+      board.append(el("p", "watch-history",
+        `Later-season test of the upset-screen selection: ${validation.wins}/${validation.n} wins ` +
+        `(${Math.round(validation.win_rate * 100)}%). ` +
+        (validation.supported ? "The screen has historical support; future results still need tracking." :
+          "It has not shown that picking these underdogs beats picking the favorites. No strong upset recommendation is established.")));
+      if (policy.selected) {
+        const r = policy.selected.rule;
+        board.append(el("p", "watch-history",
+          `Research screen for this season: model probability at least ${Math.round(r.min_probability*100)}%, ` +
+          `underdog spread at most ${r.max_spread} points, at least ${r.min_games} earlier FBS games per team. ` +
+          `Statistical support requirement: ${r.support === "any" ? "none" : r.support === "stats" ? "stats favor the underdog" : "stats and Elo favor the underdog"}. ` +
+          "These conditions are a research filter, not a proven picking rule."));
+      }
+    }
     if (!data.games.length) {
       board.append(el("p", "empty", "The model did not pick an underdog on this slate."));
     }
@@ -30,6 +47,10 @@ async function main() {
         head.append(el("span", "watch-pill", "Against the crowd"));
       card.append(head, el("p", "watch-line",
         `${game.away_team} @ ${game.home_team} · ${game.underdog} +${game.spread_for_underdog}`));
+      if (game.screening) {
+        card.append(el("p", "watch-history", game.screening.label));
+        for (const reason of game.screening.reasons || []) card.append(el("p", "watch-line", reason));
+      }
       const numbers = el("div", "watch-numbers");
       numbers.append(numberBox(`${Math.round(game.model_prob_underdog * 100)}%`, "Model's underdog win estimate"));
       numbers.append(numberBox(game.crowd_picked_pct == null ? "—" : `${game.crowd_picked_pct}%`,
