@@ -23,11 +23,13 @@ import numpy as np
 import pandas as pd
 import joblib
 import requests
+import hashlib
 
 import schema
 from weekly_input import load_slate
 import team_stats
 from ranking_signal import adjustment, load_rankings
+from prediction_policy import combine, POLICY
 
 TRAIN_PARQUET = "data/derived/training.parquet"
 MODEL_FILE = "model.joblib"
@@ -106,6 +108,31 @@ def explain(row: pd.Series, p_home: float) -> list[str]:
     return why[:4] or ["Too close to call — essentially a coin flip."]
 
 
+def save_archive(out, root=Path("historicals"), today=None):
+    """Preserve first picks; allow a recorded policy revision before game day."""
+    today = today or date.today()
+    archive = root / "predictions" / f"{out['season']}-week-{out['week']}.json"
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    if archive.exists():
+        old_text = archive.read_text()
+        old = json.loads(old_text)
+        policy_changed = old.get("prediction_policy") != out.get("prediction_policy")
+        future = all(g.get("game_date") and date.fromisoformat(g["game_date"]) > today
+                     for g in out["games"] + old["games"])
+        same_games = {g.get("game_id") for g in old["games"]} == {
+            g.get("game_id") for g in out["games"]}
+        if not (policy_changed and future and same_games):
+            return
+        revision = root / "revisions" / (f"{out['season']}-week-{out['week']}-"
+                    f"{hashlib.sha256(old_text.encode()).hexdigest()[:12]}.json")
+        revision.parent.mkdir(parents=True, exist_ok=True)
+        if not revision.exists():
+            revision.write_text(old_text)
+        print(f"Preserved previous pregame policy picks at {revision}")
+    archive.write_text(json.dumps(out, indent=2) + "\n")
+    print(f"Archived picks for week {out['week']} at {archive}")
+
+
 def main():
     payload = joblib.load(MODEL_FILE)
     model, feats = payload["model"], payload["features"]
@@ -145,7 +172,10 @@ def main():
         rank_delta = (adjustment(row.home_team, row.away_team, row["date"],
                                  rankings_published, ranking_scores)
                       if rankings_published else 0.0)
-        p_home = min(1.0, max(0.0, base_p_home + rank_delta))
+        independent_p_home = min(1.0, max(0.0, base_p_home + rank_delta))
+        market_p_home = (float(row["market_home_prob"])
+                         if pd.notna(row.get("market_home_prob")) else None)
+        p_home, football_weight = combine(independent_p_home, market_p_home)
         # if schedule had sides swapped vs the slate, flip prob to slate orientation
         disp_home, disp_away = row.home_team, row.away_team
         pick = disp_home if p_home >= 0.5 else disp_away
@@ -155,9 +185,12 @@ def main():
             return {"name": name, "stats": s.get("stats", [])}
 
         reasons = explain(row, p_home)
+        if football_weight < 1:
+            market_side = disp_home if market_p_home >= .5 else disp_away
+            reasons.insert(0, f"The saved betting spread favors {market_side}. The final estimate combines 75% spread probability with 25% independent football analysis.")
         if rank_delta:
             ranked_side = disp_home if rank_delta > 0 else disp_away
-            reasons.insert(0, f"The separate computer rankings favor {ranked_side}; they shift the home win estimate by {rank_delta * 100:+.1f} percentage points.")
+            reasons.insert(0, f"The separate computer rankings favor {ranked_side}; their contribution shifts the final home win estimate by {rank_delta * football_weight * 100:+.1f} percentage points.")
 
         games_out.append({
             "game_id": str(row["game_id"]),
@@ -167,7 +200,10 @@ def main():
             "neutral": bool(row.get("neutral_site", False)),
             "model_prob_home": round(p_home, 3),
             "base_model_prob_home": round(base_p_home, 3),
-            "ranking_adjustment_home": round(rank_delta, 4),
+            "independent_prob_home": round(independent_p_home, 3),
+            "football_weight": football_weight,
+            "prediction_policy": POLICY if football_weight < 1 else "independent_fallback",
+            "ranking_adjustment_home": round(rank_delta * football_weight, 4),
             "market_prob_home": (round(float(row["market_home_prob"]), 3)
                                  if pd.notna(row.get("market_home_prob")) else None),
             "spread_home": (float(row["spread_home"])
@@ -182,6 +218,7 @@ def main():
         "season": season,
         "week": next(iter(slate_weeks)) if len(slate_weeks) == 1 else None,
         "generated_at": str(date.today()),
+        "prediction_policy": POLICY,
         "ranking_snapshot_utc": (rankings_published.isoformat()
                                  if rankings_published else None),
         "games": games_out,
@@ -191,11 +228,7 @@ def main():
     # Save the first complete set of picks for later grading. Re-running a week
     # cannot silently replace the picks that were already published.
     if out["week"] is not None and len(games_out) == len(slate) and all(g.get("game_id") for g in games_out):
-        archive = Path(f"historicals/predictions/{season}-week-{out['week']}.json")
-        archive.parent.mkdir(parents=True, exist_ok=True)
-        if not archive.exists():
-            archive.write_text(json.dumps(out, indent=2) + "\n")
-            print(f"Archived first picks for week {out['week']} at {archive}")
+        save_archive(out)
     else:
         print("Slate has missing games or mixed weeks; no grading archive created.")
     print(f"Wrote {OUT_JSON} with {len(games_out)} games.")
