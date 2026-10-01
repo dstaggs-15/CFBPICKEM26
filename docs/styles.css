@@ -1,4 +1,8 @@
 :root {
+  --factor-stats: #54b89b;
+  --factor-elo: #efaa4d;
+  --factor-context: #8c91e6;
+  --factor-baseline: #737985;
   --bg: #0a0a0b;
   --bg-top: #141013;
   --card: #141416;
@@ -112,3 +116,15 @@ h1 { font-family: "Oswald", sans-serif; font-weight: 700; letter-spacing: 0.02em
   .statcol--home { text-align: left; }
   .statcol--home .stat-list li { flex-direction: row; }
 }
+
+.contribution-panel { margin-bottom: 22px; }
+.contribution-panel[hidden] { display: none; }
+.contribution-layout { display: flex; align-items: center; gap: 22px; margin-top: 12px; flex-wrap: wrap; }
+.contribution-donut { width: 136px; height: 136px; border-radius: 50%; flex: 0 0 136px; position: relative; }
+.contribution-donut::after { content: "Factor sizes"; position: absolute; inset: 25px; border-radius: 50%; background: var(--card); display: grid; place-items: center; text-align: center; color: var(--text); font-size: 12px; }
+.contribution-legend { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; flex: 1 1 240px; }
+.contribution-legend li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; }
+.contribution-swatch { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 10px; margin-top: 5px; }
+.contribution-legend small { display: block; color: var(--muted); font-size: 12px; }
+.contribution-note { color: var(--muted); font-size: 12px; margin: 12px 0 0; max-width: 620px; }
+@media (max-width: 440px) { .contribution-layout { gap: 16px; } .contribution-donut { margin: 0 auto; } }

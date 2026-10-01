@@ -35,6 +35,64 @@ function renderStatList(ul, stats, homeSide) {
   });
 }
 
+function renderContributions(panel, game) {
+  const terms = game.model_log_odds_terms;
+  const intercept = game.model_log_odds_intercept;
+  if (!terms || !Number.isFinite(intercept) || !Object.values(terms).every(Number.isFinite)) return;
+  const groups = [
+    { label: "Current matchup stats", color: "var(--factor-stats)", magnitude: 0, net: 0 },
+    { label: "Elo", color: "var(--factor-elo)", magnitude: 0, net: 0 },
+    { label: "Venue, rest & postseason", color: "var(--factor-context)", magnitude: 0, net: 0 },
+    { label: "Starting score & data availability", color: "var(--factor-baseline)", magnitude: Math.abs(intercept), net: intercept },
+  ];
+  for (const [name, value] of Object.entries(terms)) {
+    const index = name === "elo_home_prob" ? 1 :
+      ["neutral_site", "rest_diff", "is_postseason"].includes(name) ? 2 :
+      name.startsWith("missingindicator_") ? 3 : 0;
+    groups[index].magnitude += Math.abs(value);
+    groups[index].net += value;
+  }
+  const total = groups.reduce((sum, group) => sum + group.magnitude, 0);
+  if (!(total > 0)) return;
+  // Largest remainders make the displayed whole percentages total exactly 100.
+  const shares = groups.map(group => group.magnitude / total * 100);
+  const percentages = shares.map(Math.floor);
+  const order = shares.map((share, index) => ({ index, remainder: share - percentages[index] }))
+    .sort((a, b) => b.remainder - a.remainder);
+  const remaining = 100 - percentages.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < remaining; i++) percentages[order[i].index]++;
+  let end = 0;
+  const slices = groups.map((group, index) => {
+    const start = end;
+    end += shares[index];
+    return `${group.color} ${start}% ${end}%`;
+  });
+  const donut = panel.querySelector(".contribution-donut");
+  donut.style.background = `conic-gradient(${slices.join(",")})`;
+  const legend = panel.querySelector(".contribution-legend");
+  const descriptions = [];
+  groups.forEach((group, index) => {
+    const direction = Math.abs(group.net) < .00001 ? "Balanced" :
+      `Net toward ${group.net > 0 ? game.home_team : game.away_team}`;
+    const item = document.createElement("li");
+    const swatch = document.createElement("span");
+    swatch.className = "contribution-swatch";
+    swatch.style.background = group.color;
+    swatch.setAttribute("aria-hidden", "true");
+    const text = document.createElement("span");
+    const label = document.createElement("span");
+    label.textContent = `${group.label} · ${percentages[index]}%`;
+    const detail = document.createElement("small");
+    detail.textContent = direction;
+    text.append(label, detail);
+    item.append(swatch, text);
+    legend.append(item);
+    descriptions.push(`${group.label}: ${percentages[index]}% of term magnitude, ${direction}`);
+  });
+  donut.setAttribute("aria-label", `${game.away_team} at ${game.home_team}. ${descriptions.join(". ")}. These are not win probabilities.`);
+  panel.hidden = false;
+}
+
 function render() {
   const board = document.getElementById("board");
   const tpl = document.getElementById("card-tpl");
@@ -110,6 +168,7 @@ function render() {
     }
 
     // Drawer content
+    renderContributions(node.querySelector(".contribution-panel"), g);
     const whyUl = node.querySelector(".why-list");
     (g.why || []).forEach((w) => { const li = document.createElement("li"); li.textContent = w; whyUl.appendChild(li); });
 
