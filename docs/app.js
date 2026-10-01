@@ -81,7 +81,8 @@ function renderContributions(panel, game) {
     swatch.setAttribute("aria-hidden", "true");
     const text = document.createElement("span");
     const label = document.createElement("span");
-    label.textContent = `${group.label} · ${percentages[index]}%`;
+    const shownShare = percentages[index] === 0 && shares[index] > 0 ? `${shares[index].toFixed(2)}%` : `${percentages[index]}%`;
+    label.textContent = `${group.label} · ${shownShare}`;
     const detail = document.createElement("small");
     detail.textContent = direction;
     text.append(label, detail);
@@ -90,6 +91,37 @@ function renderContributions(panel, game) {
     descriptions.push(`${group.label}: ${percentages[index]}% of term magnitude, ${direction}`);
   });
   donut.setAttribute("aria-label", `${game.away_team} at ${game.home_team}. ${descriptions.join(". ")}. These are not win probabilities.`);
+  const explanation = document.createElement("div");
+  explanation.className = "contribution-explanation";
+  const paragraph = text => {
+    const p = document.createElement("p");
+    p.textContent = text;
+    explanation.append(p);
+  };
+  const sigmoid = value => 1 / (1 + Math.exp(-value));
+  const score = intercept + Object.values(terms).reduce((sum, value) => sum + value, 0);
+  paragraph("Why the slices change: the fitted formula stays the same, but each matchup has different stats and Elo. Each slice is that group's share of the sizes of all fitted terms, including the starting score. A bigger slice means a larger term in this game; it is not a win chance or a fixed model weight. A slice can also shrink when another group's terms grow.");
+  paragraph(`The starting score alone gives ${game.home_team} ${(sigmoid(intercept) * 100).toFixed(1)}%. The model adds the adjustments below to reach its forecast. Directions compare each input with its training average, not with two equal teams.`);
+  const eloInput = game.model_input_values?.elo_home_prob;
+  const eloAverage = game.model_reference_values?.elo_home_prob;
+  if (Number.isFinite(eloInput) && Number.isFinite(terms.elo_home_prob)) {
+    const eloFav = eloInput >= .5 ? game.home_team : game.away_team;
+    const eloFavP = eloInput >= .5 ? eloInput : 1 - eloInput;
+    let text = `Elo alone favors ${eloFav} at ${(eloFavP * 100).toFixed(2)}%, including venue. `;
+    if (Number.isFinite(eloAverage)) text += `Its home-team estimate is ${(eloInput * 100).toFixed(2)}%, compared with ${(eloAverage * 100).toFixed(2)}% across training games. `;
+    if (shares[1] < .5) text += `Elo's slice is only ${shares[1].toFixed(2)}% because its input is close to the training average. Elo is still used; this does not mean the teams have equal ratings. `;
+    text += `The chart's direction describes the adjustment from that average, so it can differ from the team Elo alone favors.`;
+    paragraph(text);
+  }
+  groups.forEach((group, index) => {
+    if (index === 3) return;
+    const without = sigmoid(score - group.net);
+    const change = (sigmoid(score) - without) * 100;
+    const team = change >= 0 ? game.home_team : game.away_team;
+    paragraph(`${group.label}: holding the other inputs fixed, this group's combined adjustment moves the forecast ${Math.abs(change).toFixed(2)} percentage points toward ${team}, compared with putting these inputs at their training averages.${index === 0 ? " The slice counts each stat's size, while this change combines them; stats pointing in opposite directions can cancel." : ""}`);
+  });
+  paragraph("Those percentage-point changes are separate comparisons and do not add up. The model combines all terms first, then converts the total into a win probability.");
+  panel.append(explanation);
   panel.hidden = false;
 }
 

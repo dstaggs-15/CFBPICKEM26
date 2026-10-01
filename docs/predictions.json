@@ -153,7 +153,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856822",
@@ -303,7 +313,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401858474",
@@ -453,7 +473,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401858473",
@@ -603,7 +633,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856708",
@@ -753,7 +793,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401858253",
@@ -903,7 +953,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856709",
@@ -1053,7 +1113,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856818",
@@ -1203,7 +1273,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856817",
@@ -1353,7 +1433,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     },
     {
       "game_id": "401856820",
@@ -1503,7 +1593,17 @@
           ]
         }
       },
-      "ai_note": null
+      "ai_note": null,
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05083629913352747,
+        "joint_off_success_edge": 0.019939181738785654,
+        "joint_off_explosive_edge": 0.013217579827150092,
+        "joint_points_edge": 4.045320676302934,
+        "neutral_site": 0.07817204301075269,
+        "rest_diff": -0.06612903225806452,
+        "is_postseason": 0.05161290322580645,
+        "elo_home_prob": 0.5880225604722442
+      }
     }
   ]
 }

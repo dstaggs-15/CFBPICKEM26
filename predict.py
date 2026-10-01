@@ -229,6 +229,7 @@ def main():
             "model_log_odds_terms": model_terms,
             "model_log_odds_intercept": (round(float(model.pipeline.steps[-1][1].intercept_[0]), 8) if hasattr(model, 'pipeline') else None),
             "model_input_values": {c: (round(float(row[c]), 6) if pd.notna(row[c]) else None) for c in feats},
+            "model_reference_values": (dict(zip(model.features, map(float, model.pipeline.steps[1][1].mean_[:len(model.features)]))) if hasattr(model, 'pipeline') else None),
             "profile_snapshot_utc": cutoff.isoformat() if cutoff is not None else None,
             "teams": {"away": team_block(disp_away), "home": team_block(disp_home)},
             "ai_note": None,
