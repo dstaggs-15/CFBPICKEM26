@@ -88,7 +88,7 @@ function renderContributions(panel, game) {
     text.append(label, detail);
     item.append(swatch, text);
     legend.append(item);
-    descriptions.push(`${group.label}: ${percentages[index]}% of term magnitude, ${direction}`);
+    descriptions.push(`${group.label}: ${shownShare} of term magnitude, ${direction}`);
   });
   donut.setAttribute("aria-label", `${game.away_team} at ${game.home_team}. ${descriptions.join(". ")}. These are not win probabilities.`);
   const explanation = document.createElement("div");
