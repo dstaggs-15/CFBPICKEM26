@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "wins": 21,
-  "games": 40,
-  "accuracy": 0.525,
+  "wins": 28,
+  "games": 50,
+  "accuracy": 0.56,
   "wilson_95_interval": [
-    0.375,
-    0.6706
+    0.4231,
+    0.6884
   ],
   "weeks": [
     {
@@ -47,6 +47,16 @@
       "favorite_wins": 7,
       "disagreements": 5,
       "disagreement_wins": 0
+    },
+    {
+      "week": 5,
+      "wins": 7,
+      "losses": 3,
+      "source": "final scores",
+      "favorite_comparison_n": 10,
+      "favorite_wins": 5,
+      "disagreements": 2,
+      "disagreement_wins": 2
     }
   ],
   "note": "Published pool picks only; reported weeks lack individual archived picks. Historical full-FBS accuracy is a different evaluation population."

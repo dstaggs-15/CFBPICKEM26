@@ -288,6 +288,144 @@
           "winner": "Mississippi State"
         }
       ]
+    },
+    {
+      "week": 5,
+      "wins": 7,
+      "losses": 3,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "401856707",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Alabama",
+          "home_team": "Mississippi State",
+          "away_points": 56,
+          "home_points": 23,
+          "pick": "Alabama",
+          "model_confidence": 0.727,
+          "market_favorite": "Alabama",
+          "winner": "Alabama"
+        },
+        {
+          "game_id": "401856822",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "West Virginia",
+          "home_team": "Iowa State",
+          "away_points": 42,
+          "home_points": 45,
+          "pick": "Iowa State",
+          "model_confidence": 0.765,
+          "market_favorite": "Iowa State",
+          "winner": "Iowa State"
+        },
+        {
+          "game_id": "401858474",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Michigan",
+          "home_team": "Minnesota",
+          "away_points": 14,
+          "home_points": 20,
+          "pick": "Michigan",
+          "model_confidence": 0.57,
+          "market_favorite": "Michigan",
+          "winner": "Minnesota"
+        },
+        {
+          "game_id": "401858473",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Ohio State",
+          "home_team": "Iowa",
+          "away_points": 31,
+          "home_points": 14,
+          "pick": "Ohio State",
+          "model_confidence": 0.57,
+          "market_favorite": "Ohio State",
+          "winner": "Ohio State"
+        },
+        {
+          "game_id": "401856708",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Florida",
+          "home_team": "Missouri",
+          "away_points": 17,
+          "home_points": 45,
+          "pick": "Missouri",
+          "model_confidence": 0.681,
+          "market_favorite": "Florida",
+          "winner": "Missouri"
+        },
+        {
+          "game_id": "401858253",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Virginia",
+          "home_team": "Florida State",
+          "away_points": 7,
+          "home_points": 38,
+          "pick": "Virginia",
+          "model_confidence": 0.526,
+          "market_favorite": "Virginia",
+          "winner": "Florida State"
+        },
+        {
+          "game_id": "401856709",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "Kentucky",
+          "home_team": "South Carolina",
+          "away_points": 35,
+          "home_points": 34,
+          "pick": "Kentucky",
+          "model_confidence": 0.559,
+          "market_favorite": "South Carolina",
+          "winner": "Kentucky"
+        },
+        {
+          "game_id": "401856818",
+          "game_date": "2026-10-03",
+          "published_at": "2026-09-28",
+          "away_team": "BYU",
+          "home_team": "TCU",
+          "away_points": 17,
+          "home_points": 10,
+          "pick": "BYU",
+          "model_confidence": 0.559,
+          "market_favorite": "BYU",
+          "winner": "BYU"
+        },
+        {
+          "game_id": "401856817",
+          "game_date": "2026-10-04",
+          "published_at": "2026-09-28",
+          "away_team": "Baylor",
+          "home_team": "Arizona State",
+          "away_points": 55,
+          "home_points": 19,
+          "pick": "Arizona State",
+          "model_confidence": 0.681,
+          "market_favorite": "Arizona State",
+          "winner": "Baylor"
+        },
+        {
+          "game_id": "401856820",
+          "game_date": "2026-10-04",
+          "published_at": "2026-09-28",
+          "away_team": "Cincinnati",
+          "home_team": "Arizona",
+          "away_points": 7,
+          "home_points": 34,
+          "pick": "Arizona",
+          "model_confidence": 0.681,
+          "market_favorite": "Arizona",
+          "winner": "Arizona"
+        }
+      ]
     }
   ]
 }
