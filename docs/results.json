@@ -426,6 +426,144 @@
           "winner": "Arizona"
         }
       ]
+    },
+    {
+      "week": 6,
+      "wins": 5,
+      "losses": 5,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "401856716",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Texas A&M",
+          "home_team": "Missouri",
+          "away_points": 6,
+          "home_points": 27,
+          "pick": "Missouri",
+          "model_confidence": 0.717,
+          "market_favorite": "Missouri",
+          "winner": "Missouri"
+        },
+        {
+          "game_id": "401858256",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "North Carolina",
+          "home_team": "Pittsburgh",
+          "away_points": 21,
+          "home_points": 17,
+          "pick": "Pittsburgh",
+          "model_confidence": 0.775,
+          "market_favorite": "Pittsburgh",
+          "winner": "North Carolina"
+        },
+        {
+          "game_id": "401856823",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Arizona",
+          "home_team": "West Virginia",
+          "away_points": 52,
+          "home_points": 31,
+          "pick": "Arizona",
+          "model_confidence": 0.641,
+          "market_favorite": "Arizona",
+          "winner": "Arizona"
+        },
+        {
+          "game_id": "401858260",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Wake Forest",
+          "home_team": "NC State",
+          "away_points": 38,
+          "home_points": 14,
+          "pick": "Wake Forest",
+          "model_confidence": 0.651,
+          "market_favorite": "Wake Forest",
+          "winner": "Wake Forest"
+        },
+        {
+          "game_id": "401856717",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Texas",
+          "home_team": "Oklahoma",
+          "away_points": 24,
+          "home_points": 27,
+          "pick": "Texas",
+          "model_confidence": 0.798,
+          "market_favorite": "Texas",
+          "winner": "Oklahoma"
+        },
+        {
+          "game_id": "401856825",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Houston",
+          "home_team": "Kansas State",
+          "away_points": 35,
+          "home_points": 16,
+          "pick": "Houston",
+          "model_confidence": 0.646,
+          "market_favorite": "Kansas State",
+          "winner": "Houston"
+        },
+        {
+          "game_id": "401864518",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "North Dakota State",
+          "home_team": "UNLV",
+          "away_points": 7,
+          "home_points": 13,
+          "pick": "North Dakota State",
+          "model_confidence": 0.729,
+          "market_favorite": "North Dakota State",
+          "winner": "UNLV"
+        },
+        {
+          "game_id": "401856712",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Georgia",
+          "home_team": "Alabama",
+          "away_points": 20,
+          "home_points": 17,
+          "pick": "Alabama",
+          "model_confidence": 0.722,
+          "market_favorite": "Alabama",
+          "winner": "Georgia"
+        },
+        {
+          "game_id": "401858485",
+          "game_date": "2026-10-10",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "USC",
+          "home_team": "Penn State",
+          "away_points": 31,
+          "home_points": 23,
+          "pick": "Penn State",
+          "model_confidence": 0.553,
+          "market_favorite": "Penn State",
+          "winner": "USC"
+        },
+        {
+          "game_id": "401860901",
+          "game_date": "2026-10-11",
+          "published_at": "2026-10-07T13:59:01.372619+00:00",
+          "away_team": "Boise State",
+          "home_team": "Fresno State",
+          "away_points": 38,
+          "home_points": 31,
+          "pick": "Boise State",
+          "model_confidence": 0.615,
+          "market_favorite": "Boise State",
+          "winner": "Boise State"
+        }
+      ]
     }
   ]
 }

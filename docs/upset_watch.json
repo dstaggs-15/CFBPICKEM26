@@ -1,8 +1,8 @@
 {
   "season": 2026,
-  "week": 6,
+  "week": 7,
   "model_version": "joint-stats-elo-v3",
-  "generated_at": "2026-10-07T13:59:01.372619+00:00",
+  "generated_at": "2026-10-13T16:16:53.116344+00:00",
   "crowd_source": null,
   "upset_screen": {
     "season": 2026,
@@ -297,14 +297,66 @@
   "qualified_count": 0,
   "games": [
     {
-      "game_id": "401856825",
-      "game_date": "2026-10-10",
-      "underdog": "Houston",
-      "favorite": "Kansas State",
-      "away_team": "Houston",
-      "home_team": "Kansas State",
-      "spread_for_underdog": 2.5,
-      "model_prob_underdog": 0.646,
+      "game_id": "401858488",
+      "game_date": "2026-10-17",
+      "underdog": "Indiana",
+      "favorite": "Ohio State",
+      "away_team": "Ohio State",
+      "home_team": "Indiana",
+      "spread_for_underdog": 3.5,
+      "model_prob_underdog": 0.627,
+      "screening": {
+        "status": "watch_only",
+        "label": "Watch only \u2014 does not pass the upset screen",
+        "qualifies": false,
+        "reasons": [
+          "Underdog spread must be at most 3 points."
+        ],
+        "validation": {
+          "n": 272,
+          "wins": 127,
+          "win_rate": 0.46691176470588236,
+          "confidence_interval": [
+            0.40849516833836036,
+            0.5262499563540791
+          ],
+          "seasons": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "supported": false
+        }
+      },
+      "prior_fbs_games_min": 5,
+      "crowd_picked_pct": null,
+      "model_vs_crowd_pp": null,
+      "clues": [
+        "The combined fitted statistical contributions favor Ohio State; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors Indiana (65% for Indiana).",
+        "Indiana is at home."
+      ],
+      "historical": {
+        "count": 1042,
+        "dog_wins": 390,
+        "dog_win_rate": 0.374,
+        "criteria": "similar spread and underdog venue",
+        "spread_bucket": "3\u20137",
+        "bucket_count": 2325
+      }
+    },
+    {
+      "game_id": "401864524",
+      "game_date": "2026-10-17",
+      "underdog": "Air Force",
+      "favorite": "UNLV",
+      "away_team": "UNLV",
+      "home_team": "Air Force",
+      "spread_for_underdog": 1.25,
+      "model_prob_underdog": 0.679,
       "screening": {
         "status": "watch_only",
         "label": "Watch only \u2014 does not pass the upset screen",
@@ -331,18 +383,18 @@
           "supported": false
         }
       },
-      "prior_fbs_games_min": 3,
+      "prior_fbs_games_min": 4,
       "crowd_picked_pct": null,
       "model_vs_crowd_pp": null,
       "clues": [
-        "The combined fitted statistical contributions favor Houston; Elo is evaluated separately in the screen.",
-        "Pregame Elo favors Kansas State (45% for Houston).",
-        "Kansas State is at home."
+        "The combined fitted statistical contributions favor Air Force; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors Air Force (53% for Air Force).",
+        "Air Force is at home."
       ],
       "historical": {
-        "count": 896,
-        "dog_wins": 430,
-        "dog_win_rate": 0.48,
+        "count": 817,
+        "dog_wins": 375,
+        "dog_win_rate": 0.459,
         "criteria": "similar spread and underdog venue",
         "spread_bucket": "0\u20133",
         "bucket_count": 1713
