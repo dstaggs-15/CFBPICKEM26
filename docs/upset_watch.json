@@ -1,8 +1,8 @@
 {
   "season": 2026,
-  "week": 7,
+  "week": 8,
   "model_version": "joint-stats-elo-v3",
-  "generated_at": "2026-10-13T16:16:53.116344+00:00",
+  "generated_at": "2026-10-22T21:08:30.137629+00:00",
   "crowd_source": null,
   "upset_screen": {
     "season": 2026,
@@ -297,19 +297,174 @@
   "qualified_count": 0,
   "games": [
     {
-      "game_id": "401858488",
-      "game_date": "2026-10-17",
-      "underdog": "Indiana",
-      "favorite": "Ohio State",
-      "away_team": "Ohio State",
-      "home_team": "Indiana",
-      "spread_for_underdog": 3.5,
-      "model_prob_underdog": 0.627,
+      "game_id": "401856731",
+      "game_date": "2026-10-24",
+      "underdog": "Tennessee",
+      "favorite": "South Carolina",
+      "away_team": "Tennessee",
+      "home_team": "South Carolina",
+      "spread_for_underdog": 2.25,
+      "model_prob_underdog": 0.638,
+      "screening": {
+        "status": "unvalidated",
+        "label": "Matches a research screen; reliability not established",
+        "qualifies": true,
+        "reasons": [],
+        "validation": {
+          "n": 272,
+          "wins": 127,
+          "win_rate": 0.46691176470588236,
+          "confidence_interval": [
+            0.40849516833836036,
+            0.5262499563540791
+          ],
+          "seasons": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "supported": false
+        }
+      },
+      "prior_fbs_games_min": 5,
+      "crowd_picked_pct": null,
+      "model_vs_crowd_pp": null,
+      "clues": [
+        "The combined fitted statistical contributions favor Tennessee; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors Tennessee (54% for Tennessee).",
+        "South Carolina is at home."
+      ],
+      "historical": {
+        "count": 896,
+        "dog_wins": 430,
+        "dog_win_rate": 0.48,
+        "criteria": "similar spread and underdog venue",
+        "spread_bucket": "0\u20133",
+        "bucket_count": 1713
+      }
+    },
+    {
+      "game_id": "401862810",
+      "game_date": "2026-10-24",
+      "underdog": "Navy",
+      "favorite": "North Texas",
+      "away_team": "North Texas",
+      "home_team": "Navy",
+      "spread_for_underdog": 2.5,
+      "model_prob_underdog": 0.516,
       "screening": {
         "status": "watch_only",
         "label": "Watch only \u2014 does not pass the upset screen",
         "qualifies": false,
         "reasons": [
+          "Model estimate must be at least 55%."
+        ],
+        "validation": {
+          "n": 272,
+          "wins": 127,
+          "win_rate": 0.46691176470588236,
+          "confidence_interval": [
+            0.40849516833836036,
+            0.5262499563540791
+          ],
+          "seasons": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "supported": false
+        }
+      },
+      "prior_fbs_games_min": 5,
+      "crowd_picked_pct": null,
+      "model_vs_crowd_pp": null,
+      "clues": [
+        "The combined fitted statistical contributions favor Navy; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors Navy (53% for Navy).",
+        "Navy is at home."
+      ],
+      "historical": {
+        "count": 817,
+        "dog_wins": 375,
+        "dog_win_rate": 0.459,
+        "criteria": "similar spread and underdog venue",
+        "spread_bucket": "0\u20133",
+        "bucket_count": 1713
+      }
+    },
+    {
+      "game_id": "401858500",
+      "game_date": "2026-10-24",
+      "underdog": "Wisconsin",
+      "favorite": "USC",
+      "away_team": "USC",
+      "home_team": "Wisconsin",
+      "spread_for_underdog": 3.0,
+      "model_prob_underdog": 0.509,
+      "screening": {
+        "status": "watch_only",
+        "label": "Watch only \u2014 does not pass the upset screen",
+        "qualifies": false,
+        "reasons": [
+          "Model estimate must be at least 55%."
+        ],
+        "validation": {
+          "n": 272,
+          "wins": 127,
+          "win_rate": 0.46691176470588236,
+          "confidence_interval": [
+            0.40849516833836036,
+            0.5262499563540791
+          ],
+          "seasons": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "supported": false
+        }
+      },
+      "prior_fbs_games_min": 5,
+      "crowd_picked_pct": null,
+      "model_vs_crowd_pp": null,
+      "clues": [
+        "The combined fitted statistical contributions favor Wisconsin; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors USC (49% for Wisconsin).",
+        "Wisconsin is at home."
+      ],
+      "historical": {
+        "count": 817,
+        "dog_wins": 375,
+        "dog_win_rate": 0.459,
+        "criteria": "similar spread and underdog venue",
+        "spread_bucket": "0\u20133",
+        "bucket_count": 1713
+      }
+    },
+    {
+      "game_id": "401864527",
+      "game_date": "2026-10-25",
+      "underdog": "North Dakota State",
+      "favorite": "New Mexico",
+      "away_team": "North Dakota State",
+      "home_team": "New Mexico",
+      "spread_for_underdog": 4.5,
+      "model_prob_underdog": 0.539,
+      "screening": {
+        "status": "watch_only",
+        "label": "Watch only \u2014 does not pass the upset screen",
+        "qualifies": false,
+        "reasons": [
+          "Model estimate must be at least 55%.",
           "Underdog spread must be at most 3 points."
         ],
         "validation": {
@@ -335,69 +490,17 @@
       "crowd_picked_pct": null,
       "model_vs_crowd_pp": null,
       "clues": [
-        "The combined fitted statistical contributions favor Ohio State; Elo is evaluated separately in the screen.",
-        "Pregame Elo favors Indiana (65% for Indiana).",
-        "Indiana is at home."
+        "The combined fitted statistical contributions favor New Mexico; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors North Dakota State (51% for North Dakota State).",
+        "New Mexico is at home."
       ],
       "historical": {
-        "count": 1042,
-        "dog_wins": 390,
-        "dog_win_rate": 0.374,
+        "count": 1283,
+        "dog_wins": 430,
+        "dog_win_rate": 0.335,
         "criteria": "similar spread and underdog venue",
         "spread_bucket": "3\u20137",
         "bucket_count": 2325
-      }
-    },
-    {
-      "game_id": "401864524",
-      "game_date": "2026-10-17",
-      "underdog": "Air Force",
-      "favorite": "UNLV",
-      "away_team": "UNLV",
-      "home_team": "Air Force",
-      "spread_for_underdog": 1.25,
-      "model_prob_underdog": 0.679,
-      "screening": {
-        "status": "watch_only",
-        "label": "Watch only \u2014 does not pass the upset screen",
-        "qualifies": false,
-        "reasons": [
-          "Each team needs at least 5 earlier FBS games."
-        ],
-        "validation": {
-          "n": 272,
-          "wins": 127,
-          "win_rate": 0.46691176470588236,
-          "confidence_interval": [
-            0.40849516833836036,
-            0.5262499563540791
-          ],
-          "seasons": [
-            2020,
-            2021,
-            2022,
-            2023,
-            2024,
-            2025
-          ],
-          "supported": false
-        }
-      },
-      "prior_fbs_games_min": 4,
-      "crowd_picked_pct": null,
-      "model_vs_crowd_pp": null,
-      "clues": [
-        "The combined fitted statistical contributions favor Air Force; Elo is evaluated separately in the screen.",
-        "Pregame Elo favors Air Force (53% for Air Force).",
-        "Air Force is at home."
-      ],
-      "historical": {
-        "count": 817,
-        "dog_wins": 375,
-        "dog_win_rate": 0.459,
-        "criteria": "similar spread and underdog venue",
-        "spread_bucket": "0\u20133",
-        "bucket_count": 1713
       }
     }
   ]

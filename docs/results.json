@@ -564,6 +564,144 @@
           "winner": "Boise State"
         }
       ]
+    },
+    {
+      "week": 7,
+      "wins": 5,
+      "losses": 5,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "401858488",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Ohio State",
+          "home_team": "Indiana",
+          "away_points": 19,
+          "home_points": 15,
+          "pick": "Indiana",
+          "model_confidence": 0.627,
+          "market_favorite": "Ohio State",
+          "winner": "Ohio State"
+        },
+        {
+          "game_id": "401856723",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Alabama",
+          "home_team": "Tennessee",
+          "away_points": 10,
+          "home_points": 26,
+          "pick": "Alabama",
+          "model_confidence": 0.724,
+          "market_favorite": "Alabama",
+          "winner": "Tennessee"
+        },
+        {
+          "game_id": "401856721",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Missouri",
+          "home_team": "Ole Miss",
+          "away_points": 3,
+          "home_points": 31,
+          "pick": "Ole Miss",
+          "model_confidence": 0.663,
+          "market_favorite": "Ole Miss",
+          "winner": "Ole Miss"
+        },
+        {
+          "game_id": "401864524",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "UNLV",
+          "home_team": "Air Force",
+          "away_points": 31,
+          "home_points": 41,
+          "pick": "Air Force",
+          "model_confidence": 0.679,
+          "market_favorite": "UNLV",
+          "winner": "Air Force"
+        },
+        {
+          "game_id": "401858266",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "North Carolina",
+          "home_team": "Duke",
+          "away_points": 24,
+          "home_points": 20,
+          "pick": "Duke",
+          "model_confidence": 0.673,
+          "market_favorite": "Duke",
+          "winner": "North Carolina"
+        },
+        {
+          "game_id": "401866444",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Toledo",
+          "home_team": "Eastern Michigan",
+          "away_points": 34,
+          "home_points": 14,
+          "pick": "Toledo",
+          "model_confidence": 0.601,
+          "market_favorite": "Toledo",
+          "winner": "Toledo"
+        },
+        {
+          "game_id": "401856809",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Notre Dame",
+          "home_team": "BYU",
+          "away_points": 24,
+          "home_points": 28,
+          "pick": "Notre Dame",
+          "model_confidence": 0.598,
+          "market_favorite": "Notre Dame",
+          "winner": "BYU"
+        },
+        {
+          "game_id": "401858494",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Wisconsin",
+          "home_team": "UCLA",
+          "away_points": 7,
+          "home_points": 17,
+          "pick": "UCLA",
+          "model_confidence": 0.697,
+          "market_favorite": "UCLA",
+          "winner": "UCLA"
+        },
+        {
+          "game_id": "401856722",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Kentucky",
+          "home_team": "Oklahoma",
+          "away_points": 21,
+          "home_points": 13,
+          "pick": "Oklahoma",
+          "model_confidence": 0.639,
+          "market_favorite": "Oklahoma",
+          "winner": "Kentucky"
+        },
+        {
+          "game_id": "401856831",
+          "game_date": "2026-10-17",
+          "published_at": "2026-10-13T16:16:53.116344+00:00",
+          "away_team": "Oklahoma State",
+          "home_team": "Houston",
+          "away_points": 32,
+          "home_points": 35,
+          "pick": "Houston",
+          "model_confidence": 0.853,
+          "market_favorite": "Houston",
+          "winner": "Houston"
+        }
+      ]
     }
   ]
 }
