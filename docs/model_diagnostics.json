@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "wins": 38,
-  "games": 70,
-  "accuracy": 0.5428571428571428,
+  "wins": 43,
+  "games": 80,
+  "accuracy": 0.5375,
   "wilson_95_interval": [
-    0.427,
-    0.6543
+    0.429,
+    0.6425
   ],
   "weeks": [
     {
@@ -76,6 +76,16 @@
       "favorite_comparison_n": 10,
       "favorite_wins": 5,
       "disagreements": 2,
+      "disagreement_wins": 1
+    },
+    {
+      "week": 8,
+      "wins": 5,
+      "losses": 5,
+      "source": "final scores",
+      "favorite_comparison_n": 10,
+      "favorite_wins": 7,
+      "disagreements": 4,
       "disagreement_wins": 1
     }
   ],

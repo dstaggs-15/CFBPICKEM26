@@ -702,6 +702,144 @@
           "winner": "Houston"
         }
       ]
+    },
+    {
+      "week": 8,
+      "wins": 5,
+      "losses": 5,
+      "source": "final scores",
+      "picks": [
+        {
+          "game_id": "401866450",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Western Michigan",
+          "home_team": "Toledo",
+          "away_points": 38,
+          "home_points": 45,
+          "pick": "Toledo",
+          "model_confidence": 0.634,
+          "market_favorite": "Toledo",
+          "winner": "Toledo"
+        },
+        {
+          "game_id": "401856731",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Tennessee",
+          "home_team": "South Carolina",
+          "away_points": 24,
+          "home_points": 27,
+          "pick": "Tennessee",
+          "model_confidence": 0.638,
+          "market_favorite": "South Carolina",
+          "winner": "South Carolina"
+        },
+        {
+          "game_id": "401858497",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Iowa",
+          "home_team": "Minnesota",
+          "away_points": 10,
+          "home_points": 13,
+          "pick": "Iowa",
+          "model_confidence": 0.716,
+          "market_favorite": "Iowa",
+          "winner": "Minnesota"
+        },
+        {
+          "game_id": "401862810",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "North Texas",
+          "home_team": "Navy",
+          "away_points": 49,
+          "home_points": 39,
+          "pick": "Navy",
+          "model_confidence": 0.516,
+          "market_favorite": "North Texas",
+          "winner": "North Texas"
+        },
+        {
+          "game_id": "401858276",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Virginia Tech",
+          "home_team": "Clemson",
+          "away_points": 20,
+          "home_points": 16,
+          "pick": "Clemson",
+          "model_confidence": 0.643,
+          "market_favorite": "Clemson",
+          "winner": "Virginia Tech"
+        },
+        {
+          "game_id": "401856732",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Ole Miss",
+          "home_team": "Texas",
+          "away_points": 27,
+          "home_points": 34,
+          "pick": "Texas",
+          "model_confidence": 0.609,
+          "market_favorite": "Texas",
+          "winner": "Texas"
+        },
+        {
+          "game_id": "401858500",
+          "game_date": "2026-10-24",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "USC",
+          "home_team": "Wisconsin",
+          "away_points": 7,
+          "home_points": 24,
+          "pick": "Wisconsin",
+          "model_confidence": 0.509,
+          "market_favorite": "USC",
+          "winner": "Wisconsin"
+        },
+        {
+          "game_id": "401862811",
+          "game_date": "2026-10-25",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "UTSA",
+          "home_team": "Tulane",
+          "away_points": 42,
+          "home_points": 19,
+          "pick": "UTSA",
+          "model_confidence": 0.565,
+          "market_favorite": "UTSA",
+          "winner": "UTSA"
+        },
+        {
+          "game_id": "401864527",
+          "game_date": "2026-10-25",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "North Dakota State",
+          "home_team": "New Mexico",
+          "away_points": 16,
+          "home_points": 21,
+          "pick": "North Dakota State",
+          "model_confidence": 0.539,
+          "market_favorite": "New Mexico",
+          "winner": "New Mexico"
+        },
+        {
+          "game_id": "401856837",
+          "game_date": "2026-10-25",
+          "published_at": "2026-10-22T21:08:30.137629+00:00",
+          "away_team": "Houston",
+          "home_team": "Utah",
+          "away_points": 13,
+          "home_points": 21,
+          "pick": "Utah",
+          "model_confidence": 0.714,
+          "market_favorite": "Utah",
+          "winner": "Utah"
+        }
+      ]
     }
   ]
 }
