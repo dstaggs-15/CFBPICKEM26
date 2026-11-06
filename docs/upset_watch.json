@@ -1,8 +1,8 @@
 {
   "season": 2026,
-  "week": 9,
+  "week": 10,
   "model_version": "joint-stats-elo-v3",
-  "generated_at": "2026-10-30T19:41:06.059546+00:00",
+  "generated_at": "2026-11-06T18:51:09.835563+00:00",
   "crowd_source": null,
   "upset_screen": {
     "season": 2026,
@@ -295,5 +295,59 @@
     "note": "Screen settings are selected only from older season-held-out predictions. Retrospective research; frozen future picks remain the prospective test."
   },
   "qualified_count": 0,
-  "games": []
+  "games": [
+    {
+      "game_id": "401856741",
+      "game_date": "2026-11-08",
+      "underdog": "Ole Miss",
+      "favorite": "Georgia",
+      "away_team": "Georgia",
+      "home_team": "Ole Miss",
+      "spread_for_underdog": 3.5,
+      "model_prob_underdog": 0.539,
+      "screening": {
+        "status": "watch_only",
+        "label": "Watch only \u2014 does not pass the upset screen",
+        "qualifies": false,
+        "reasons": [
+          "Model estimate must be at least 55%.",
+          "Underdog spread must be at most 3 points."
+        ],
+        "validation": {
+          "n": 272,
+          "wins": 127,
+          "win_rate": 0.46691176470588236,
+          "confidence_interval": [
+            0.40849516833836036,
+            0.5262499563540791
+          ],
+          "seasons": [
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "supported": false
+        }
+      },
+      "prior_fbs_games_min": 7,
+      "crowd_picked_pct": null,
+      "model_vs_crowd_pp": null,
+      "clues": [
+        "The combined fitted statistical contributions favor Georgia; Elo is evaluated separately in the screen.",
+        "Pregame Elo favors Ole Miss (56% for Ole Miss).",
+        "Ole Miss is at home."
+      ],
+      "historical": {
+        "count": 1042,
+        "dog_wins": 390,
+        "dog_win_rate": 0.374,
+        "criteria": "similar spread and underdog venue",
+        "spread_bucket": "3\u20137",
+        "bucket_count": 2325
+      }
+    }
+  ]
 }

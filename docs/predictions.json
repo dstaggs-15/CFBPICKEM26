@@ -1,28 +1,28 @@
 {
   "season": 2026,
-  "week": 9,
-  "generated_at": "2026-10-30T19:41:06.059546+00:00",
+  "week": 10,
+  "generated_at": "2026-11-06T18:51:09.835563+00:00",
   "model_version": "joint-stats-elo-v3",
-  "ranking_snapshot_utc": "2026-10-25T11:32:12.177897+00:00",
+  "ranking_snapshot_utc": "2026-11-01T13:27:04.320694+00:00",
   "games": [
     {
-      "game_id": "401856842",
-      "game_date": "2026-10-31",
-      "away_team": "Arizona",
-      "home_team": "Texas Tech",
+      "game_id": "401856849",
+      "game_date": "2026-11-07",
+      "away_team": "BYU",
+      "home_team": "Utah",
       "neutral": false,
-      "model_prob_home": 0.655,
-      "base_model_prob_home": 0.654,
+      "model_prob_home": 0.735,
+      "base_model_prob_home": 0.735,
       "ranking_adjustment_home": 0.0005,
-      "market_prob_home": 0.62,
-      "spread_home": -3.5,
-      "pick": "Texas Tech",
+      "market_prob_home": 0.652,
+      "spread_home": -4.5,
+      "pick": "Utah",
       "why": [
-        "The separate computer rankings favor Texas Tech; they shift the home win estimate by +0.05 percentage points.",
-        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted success-rate matchup; the opponent-adjusted PPA matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Arizona: the opponent-adjusted explosiveness matchup; venue context.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Texas Tech's role won 45/75. This is historical context, not an additional forecast probability."
+        "The separate computer rankings favor Utah; they shift the home win estimate by +0.05 percentage points.",
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup; pregame Elo, with annual regression toward average.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward BYU: the opponent-adjusted explosiveness matchup; the opponent-adjusted PPA matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Utah's role won 53/75. This is historical context, not an additional forecast probability."
       ],
       "historical_profile": {
         "available": true,
@@ -34,132 +34,132 @@
           "elo_home_prob"
         ],
         "n": 75,
-        "home_wins": 45,
-        "home_win_rate": 0.6,
-        "median_distance": 0.205,
+        "home_wins": 53,
+        "home_win_rate": 0.707,
+        "median_distance": 0.256,
         "examples": [
           {
+            "season": 2020,
+            "game_id": "401247314",
+            "home_team": "Rutgers",
+            "away_team": "Illinois",
+            "home_points": 20,
+            "away_points": 23,
+            "distance": 0.109
+          },
+          {
             "season": 2016,
-            "game_id": "400869853",
-            "home_team": "Idaho",
-            "away_team": "South Alabama",
-            "home_points": 38,
-            "away_points": 31,
-            "distance": 0.087
+            "game_id": "400869145",
+            "home_team": "USC",
+            "away_team": "California",
+            "home_points": 45,
+            "away_points": 24,
+            "distance": 0.121
           },
           {
-            "season": 2021,
-            "game_id": "401301041",
-            "home_team": "SMU",
-            "away_team": "UCF",
-            "home_points": 55,
-            "away_points": 28,
-            "distance": 0.088
-          },
-          {
-            "season": 2025,
-            "game_id": "401761655",
-            "home_team": "Arkansas State",
-            "away_team": "Louisiana",
-            "home_points": 30,
-            "away_points": 34,
-            "distance": 0.106
+            "season": 2019,
+            "game_id": "401119308",
+            "home_team": "Buffalo",
+            "away_team": "Toledo",
+            "home_points": 49,
+            "away_points": 30,
+            "distance": 0.127
           }
         ],
         "note": "Descriptive historical sample; this rate is not the calibrated forecast."
       },
       "model_log_odds_terms": {
-        "joint_off_ppa_edge": 0.01353,
-        "joint_off_success_edge": 0.19264,
-        "joint_off_explosive_edge": -0.12224,
-        "joint_points_edge": -0.02144,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.00595,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.22302,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
+        "joint_off_ppa_edge": -0.04956,
+        "joint_off_success_edge": 0.51273,
+        "joint_off_explosive_edge": -0.13817,
+        "joint_points_edge": 0.23373,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": 0.10012,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
       },
-      "model_log_odds_intercept": 0.40731461,
+      "model_log_odds_intercept": 0.40936042,
       "model_input_values": {
-        "joint_off_ppa_edge": 0.028157,
-        "joint_off_success_edge": 0.051177,
-        "joint_off_explosive_edge": -0.189406,
-        "joint_points_edge": 3.387167,
+        "joint_off_ppa_edge": 0.141038,
+        "joint_off_success_edge": 0.103794,
+        "joint_off_explosive_edge": -0.222115,
+        "joint_points_edge": 11.910925,
         "neutral_site": 0.0,
-        "rest_diff": 1.0,
+        "rest_diff": 0.0,
         "is_postseason": 0.0,
-        "elo_home_prob": 0.623673
+        "elo_home_prob": 0.603984
       },
       "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
       },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
       "teams": {
         "away": {
-          "name": "Arizona",
+          "name": "BYU",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.25,
-              "rank": 32,
-              "of": 316
+              "value": 0.228,
+              "rank": 44,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": -0.064,
-              "rank": 31,
-              "of": 316
+              "value": 0.006,
+              "rank": 75,
+              "of": 317
             },
             {
               "label": "Success rate",
-              "value": "48.9%",
-              "rank": 24,
-              "of": 316
+              "value": "47.3%",
+              "rank": 38,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.22,
+              "rank": 198,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Utah",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.256,
+              "rank": 25,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.032,
+              "rank": 44,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "50.6%",
+              "rank": 9,
+              "of": 317
             },
             {
               "label": "Explosiveness",
               "value": 1.26,
-              "rank": 152,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Texas Tech",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.171,
-              "rank": 84,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.049,
-              "rank": 37,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "47.5%",
-              "rank": 37,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.11,
-              "rank": 286,
-              "of": 316
+              "rank": 156,
+              "of": 317
             }
           ]
         }
@@ -167,503 +167,22 @@
       "ai_note": null
     },
     {
-      "game_id": "401858502",
-      "game_date": "2026-10-31",
-      "away_team": "Wisconsin",
-      "home_team": "Iowa",
+      "game_id": "401858512",
+      "game_date": "2026-11-07",
+      "away_team": "UCLA",
+      "home_team": "Minnesota",
       "neutral": false,
-      "model_prob_home": 0.649,
-      "base_model_prob_home": 0.649,
+      "model_prob_home": 0.284,
+      "base_model_prob_home": 0.284,
       "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.587,
-      "spread_home": -2.5,
-      "pick": "Iowa",
+      "market_prob_home": 0.332,
+      "spread_home": 5.0,
+      "pick": "UCLA",
       "why": [
-        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted PPA matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Wisconsin: the opponent-adjusted scoring matchup; the opponent-adjusted explosiveness matchup.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Iowa's role won 45/75. This is historical context, not an additional forecast probability."
-      ],
-      "historical_profile": {
-        "available": true,
-        "features": [
-          "joint_off_ppa_edge",
-          "joint_off_success_edge",
-          "joint_off_explosive_edge",
-          "joint_points_edge",
-          "elo_home_prob"
-        ],
-        "n": 75,
-        "home_wins": 45,
-        "home_win_rate": 0.6,
-        "median_distance": 0.313,
-        "examples": [
-          {
-            "season": 2021,
-            "game_id": "401310736",
-            "home_team": "Wyoming",
-            "away_team": "Colorado State",
-            "home_points": 31,
-            "away_points": 17,
-            "distance": 0.116
-          },
-          {
-            "season": 2014,
-            "game_id": "400547862",
-            "home_team": "Kansas",
-            "away_team": "Texas",
-            "home_points": 0,
-            "away_points": 23,
-            "distance": 0.184
-          },
-          {
-            "season": 2024,
-            "game_id": "401645348",
-            "home_team": "UTSA",
-            "away_team": "Florida Atlantic",
-            "home_points": 38,
-            "away_points": 24,
-            "distance": 0.185
-          }
-        ],
-        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
-      },
-      "model_log_odds_terms": {
-        "joint_off_ppa_edge": 0.12551,
-        "joint_off_success_edge": -0.00634,
-        "joint_off_explosive_edge": -0.10422,
-        "joint_points_edge": -0.21201,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.00037,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.45571,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
-      },
-      "model_log_odds_intercept": 0.40731461,
-      "model_input_values": {
-        "joint_off_ppa_edge": -0.164472,
-        "joint_off_success_edge": 0.019228,
-        "joint_off_explosive_edge": -0.159478,
-        "joint_points_edge": -2.947825,
-        "neutral_site": 0.0,
-        "rest_diff": 0.0,
-        "is_postseason": 0.0,
-        "elo_home_prob": 0.660735
-      },
-      "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
-      },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
-      "teams": {
-        "away": {
-          "name": "Wisconsin",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.12,
-              "rank": 127,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.08,
-              "rank": 19,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "40.1%",
-              "rank": 165,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.34,
-              "rank": 80,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Iowa",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.107,
-              "rank": 130,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.043,
-              "rank": 39,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "43.8%",
-              "rank": 89,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.22,
-              "rank": 205,
-              "of": 316
-            }
-          ]
-        }
-      },
-      "ai_note": null
-    },
-    {
-      "game_id": "401858501",
-      "game_date": "2026-10-31",
-      "away_team": "Minnesota",
-      "home_team": "Indiana",
-      "neutral": false,
-      "model_prob_home": 0.937,
-      "base_model_prob_home": 0.937,
-      "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.946,
-      "spread_home": -20.5,
-      "pick": "Indiana",
-      "why": [
-        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; pregame Elo, with annual regression toward average; the opponent-adjusted scoring matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Minnesota: the opponent-adjusted PPA matchup; venue context.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Indiana's role won 71/75. This is historical context, not an additional forecast probability."
-      ],
-      "historical_profile": {
-        "available": true,
-        "features": [
-          "joint_off_ppa_edge",
-          "joint_off_success_edge",
-          "joint_off_explosive_edge",
-          "joint_points_edge",
-          "elo_home_prob"
-        ],
-        "n": 75,
-        "home_wins": 71,
-        "home_win_rate": 0.947,
-        "median_distance": 0.303,
-        "examples": [
-          {
-            "season": 2025,
-            "game_id": "401752733",
-            "home_team": "Ole Miss",
-            "away_team": "Washington State",
-            "home_points": 24,
-            "away_points": 21,
-            "distance": 0.062
-          },
-          {
-            "season": 2019,
-            "game_id": "401112119",
-            "home_team": "Oklahoma",
-            "away_team": "West Virginia",
-            "home_points": 52,
-            "away_points": 14,
-            "distance": 0.143
-          },
-          {
-            "season": 2025,
-            "game_id": "401756940",
-            "home_team": "Kansas",
-            "away_team": "Oklahoma State",
-            "home_points": 38,
-            "away_points": 21,
-            "distance": 0.162
-          }
-        ],
-        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
-      },
-      "model_log_odds_terms": {
-        "joint_off_ppa_edge": -0.22543,
-        "joint_off_success_edge": 1.02412,
-        "joint_off_explosive_edge": 0.0246,
-        "joint_points_edge": 0.67761,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.00037,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.84842,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
-      },
-      "model_log_odds_intercept": 0.40731461,
-      "model_input_values": {
-        "joint_off_ppa_edge": 0.439211,
-        "joint_off_success_edge": 0.184683,
-        "joint_off_explosive_edge": 0.054397,
-        "joint_points_edge": 26.625935,
-        "neutral_site": 0.0,
-        "rest_diff": 0.0,
-        "is_postseason": 0.0,
-        "elo_home_prob": 0.723284
-      },
-      "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
-      },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
-      "teams": {
-        "away": {
-          "name": "Minnesota",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.03,
-              "rank": 194,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.043,
-              "rank": 40,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "40.3%",
-              "rank": 160,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.14,
-              "rank": 262,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Indiana",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.301,
-              "rank": 18,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.076,
-              "rank": 20,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "45.3%",
-              "rank": 69,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.37,
-              "rank": 53,
-              "of": 316
-            }
-          ]
-        }
-      },
-      "ai_note": null
-    },
-    {
-      "game_id": "401858505",
-      "game_date": "2026-10-31",
-      "away_team": "Northwestern",
-      "home_team": "Oregon",
-      "neutral": false,
-      "model_prob_home": 0.617,
-      "base_model_prob_home": 0.617,
-      "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.62,
-      "spread_home": -3.5,
-      "pick": "Oregon",
-      "why": [
-        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted success-rate matchup; the opponent-adjusted PPA matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Northwestern: the opponent-adjusted explosiveness matchup; the opponent-adjusted scoring matchup.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Oregon's role won 46/75. This is historical context, not an additional forecast probability."
-      ],
-      "historical_profile": {
-        "available": true,
-        "features": [
-          "joint_off_ppa_edge",
-          "joint_off_success_edge",
-          "joint_off_explosive_edge",
-          "joint_points_edge",
-          "elo_home_prob"
-        ],
-        "n": 75,
-        "home_wins": 46,
-        "home_win_rate": 0.613,
-        "median_distance": 0.243,
-        "examples": [
-          {
-            "season": 2017,
-            "game_id": "400938665",
-            "home_team": "Western Kentucky",
-            "away_team": "Middle Tennessee",
-            "home_points": 41,
-            "away_points": 38,
-            "distance": 0.073
-          },
-          {
-            "season": 2014,
-            "game_id": "400548300",
-            "home_team": "Oregon State",
-            "away_team": "California",
-            "home_points": 31,
-            "away_points": 45,
-            "distance": 0.096
-          },
-          {
-            "season": 2017,
-            "game_id": "400941841",
-            "home_team": "Navy",
-            "away_team": "SMU",
-            "home_points": 43,
-            "away_points": 40,
-            "distance": 0.115
-          }
-        ],
-        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
-      },
-      "model_log_odds_terms": {
-        "joint_off_ppa_edge": 0.06508,
-        "joint_off_success_edge": 0.08574,
-        "joint_off_explosive_edge": -0.16432,
-        "joint_points_edge": -0.10888,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.00037,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.24331,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
-      },
-      "model_log_odds_intercept": 0.40731461,
-      "model_input_values": {
-        "joint_off_ppa_edge": -0.060529,
-        "joint_off_success_edge": 0.034012,
-        "joint_off_explosive_edge": -0.259262,
-        "joint_points_edge": 0.480376,
-        "neutral_site": 0.0,
-        "rest_diff": 0.0,
-        "is_postseason": 0.0,
-        "elo_home_prob": 0.626904
-      },
-      "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
-      },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
-      "teams": {
-        "away": {
-          "name": "Northwestern",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.336,
-              "rank": 8,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": 0.014,
-              "rank": 81,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "49.4%",
-              "rank": 19,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.36,
-              "rank": 64,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Oregon",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.102,
-              "rank": 134,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.068,
-              "rank": 25,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "41.9%",
-              "rank": 133,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.22,
-              "rank": 193,
-              "of": 316
-            }
-          ]
-        }
-      },
-      "ai_note": null
-    },
-    {
-      "game_id": "401856848",
-      "game_date": "2026-10-31",
-      "away_team": "Utah",
-      "home_team": "Cincinnati",
-      "neutral": false,
-      "model_prob_home": 0.211,
-      "base_model_prob_home": 0.211,
-      "ranking_adjustment_home": -0.0005,
-      "market_prob_home": 0.273,
-      "spread_home": 7.0,
-      "pick": "Utah",
-      "why": [
-        "The separate computer rankings favor Utah; they shift the home win estimate by -0.05 percentage points.",
-        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; pregame Elo, with annual regression toward average; the opponent-adjusted scoring matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Cincinnati: the opponent-adjusted explosiveness matchup; the opponent-adjusted PPA matchup.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Utah's role won 56/75. This is historical context, not an additional forecast probability."
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup; pregame Elo, with annual regression toward average.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Minnesota: the opponent-adjusted PPA matchup; the opponent-adjusted explosiveness matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching UCLA's role won 56/75. This is historical context, not an additional forecast probability."
       ],
       "historical_profile": {
         "available": true,
@@ -677,462 +196,130 @@
         "n": 75,
         "home_wins": 19,
         "home_win_rate": 0.253,
-        "median_distance": 0.277,
+        "median_distance": 0.301,
         "examples": [
           {
-            "season": 2023,
-            "game_id": "401532594",
-            "home_team": "Utah State",
-            "away_team": "Fresno State",
-            "home_points": 32,
-            "away_points": 37,
-            "distance": 0.087
+            "season": 2019,
+            "game_id": "401119282",
+            "home_team": "Bowling Green",
+            "away_team": "Central Michigan",
+            "home_points": 20,
+            "away_points": 38,
+            "distance": 0.122
           },
           {
             "season": 2015,
-            "game_id": "400756965",
-            "home_team": "Syracuse",
-            "away_team": "Pittsburgh",
-            "home_points": 20,
-            "away_points": 23,
-            "distance": 0.091
-          },
-          {
-            "season": 2017,
-            "game_id": "400945278",
-            "home_team": "Nevada",
-            "away_team": "Air Force",
-            "home_points": 42,
-            "away_points": 45,
-            "distance": 0.151
-          }
-        ],
-        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
-      },
-      "model_log_odds_terms": {
-        "joint_off_ppa_edge": 0.10442,
-        "joint_off_success_edge": -0.80703,
-        "joint_off_explosive_edge": 0.13095,
-        "joint_points_edge": -0.35377,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.00595,
-        "is_postseason": -0.00488,
-        "elo_home_prob": -0.74312,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
-      },
-      "model_log_odds_intercept": 0.40731461,
-      "model_input_values": {
-        "joint_off_ppa_edge": -0.128194,
-        "joint_off_success_edge": -0.109334,
-        "joint_off_explosive_edge": 0.23098,
-        "joint_points_edge": -7.660607,
-        "neutral_site": 0.0,
-        "rest_diff": 1.0,
-        "is_postseason": 0.0,
-        "elo_home_prob": 0.469787
-      },
-      "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
-      },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
-      "teams": {
-        "away": {
-          "name": "Utah",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.281,
-              "rank": 21,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.029,
-              "rank": 49,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "50.1%",
-              "rank": 12,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.27,
-              "rank": 139,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Cincinnati",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": 0.28,
-              "rank": 22,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": 0.147,
-              "rank": 205,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "45.7%",
-              "rank": 64,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.42,
-              "rank": 30,
-              "of": 316
-            }
-          ]
-        }
-      },
-      "ai_note": null
-    },
-    {
-      "game_id": "401856736",
-      "game_date": "2026-10-31",
-      "away_team": "South Carolina",
-      "home_team": "Oklahoma",
-      "neutral": false,
-      "model_prob_home": 0.708,
-      "base_model_prob_home": 0.708,
-      "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.62,
-      "spread_home": -3.5,
-      "pick": "Oklahoma",
-      "why": [
-        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted success-rate matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward South Carolina: the opponent-adjusted explosiveness matchup; the opponent-adjusted scoring matchup.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Oklahoma's role won 50/75. This is historical context, not an additional forecast probability."
-      ],
-      "historical_profile": {
-        "available": true,
-        "features": [
-          "joint_off_ppa_edge",
-          "joint_off_success_edge",
-          "joint_off_explosive_edge",
-          "joint_points_edge",
-          "elo_home_prob"
-        ],
-        "n": 75,
-        "home_wins": 50,
-        "home_win_rate": 0.667,
-        "median_distance": 0.229,
-        "examples": [
-          {
-            "season": 2017,
-            "game_id": "400935383",
-            "home_team": "Michigan State",
-            "away_team": "Indiana",
-            "home_points": 17,
-            "away_points": 9,
-            "distance": 0.097
+            "game_id": "400763617",
+            "home_team": "Rice",
+            "away_team": "Western Kentucky",
+            "home_points": 10,
+            "away_points": 49,
+            "distance": 0.123
           },
           {
             "season": 2024,
-            "game_id": "401640994",
-            "home_team": "Liberty",
-            "away_team": "Jacksonville State",
-            "home_points": 21,
-            "away_points": 31,
-            "distance": 0.127
-          },
-          {
-            "season": 2017,
-            "game_id": "400944901",
-            "home_team": "Central Michigan",
-            "away_team": "Miami (OH)",
-            "home_points": 14,
-            "away_points": 31,
-            "distance": 0.147
+            "game_id": "401628388",
+            "home_team": "LSU",
+            "away_team": "Ole Miss",
+            "home_points": 29,
+            "away_points": 26,
+            "distance": 0.128
           }
         ],
         "note": "Descriptive historical sample; this rate is not the calibrated forecast."
       },
       "model_log_odds_terms": {
-        "joint_off_ppa_edge": -0.02949,
-        "joint_off_success_edge": 0.19949,
-        "joint_off_explosive_edge": -0.07242,
-        "joint_points_edge": -0.04276,
-        "neutral_site": -0.0304,
+        "joint_off_ppa_edge": 0.16539,
+        "joint_off_success_edge": -0.80725,
+        "joint_off_explosive_edge": 0.01429,
+        "joint_points_edge": -0.44502,
+        "neutral_site": -0.03014,
         "rest_diff": -0.00037,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.47367,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.21164,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
       },
-      "model_log_odds_intercept": 0.40731461,
+      "model_log_odds_intercept": 0.40936042,
       "model_input_values": {
-        "joint_off_ppa_edge": 0.102153,
-        "joint_off_success_edge": 0.052276,
-        "joint_off_explosive_edge": -0.10668,
-        "joint_points_edge": 2.67858,
+        "joint_off_ppa_edge": -0.247189,
+        "joint_off_success_edge": -0.111014,
+        "joint_off_explosive_edge": 0.037593,
+        "joint_points_edge": -10.752342,
         "neutral_site": 0.0,
         "rest_diff": 0.0,
         "is_postseason": 0.0,
-        "elo_home_prob": 0.663596
+        "elo_home_prob": 0.554704
       },
       "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
       },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
       "teams": {
         "away": {
-          "name": "South Carolina",
+          "name": "UCLA",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.205,
+              "value": 0.163,
+              "rank": 84,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.222,
+              "rank": 2,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "45.9%",
               "rank": 57,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": 0.118,
-              "rank": 173,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "46.5%",
-              "rank": 50,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.24,
-              "rank": 176,
-              "of": 316
-            }
-          ]
-        },
-        "home": {
-          "name": "Oklahoma",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": -0.002,
-              "rank": 219,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.124,
-              "rank": 7,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "38.0%",
-              "rank": 210,
-              "of": 316
+              "of": 317
             },
             {
               "label": "Explosiveness",
               "value": 1.11,
-              "rank": 283,
-              "of": 316
-            }
-          ]
-        }
-      },
-      "ai_note": null
-    },
-    {
-      "away_team": "Appalachian State",
-      "home_team": "Georgia Southern",
-      "neutral": false,
-      "error": "not found on the schedule \u2014 check spelling vs CFBD",
-      "model_prob_home": null,
-      "market_prob_home": null,
-      "spread_home": null,
-      "pick": null,
-      "why": [],
-      "ai_note": null
-    },
-    {
-      "game_id": "401858280",
-      "game_date": "2026-10-31",
-      "away_team": "Clemson",
-      "home_team": "Florida State",
-      "neutral": false,
-      "model_prob_home": 0.604,
-      "base_model_prob_home": 0.604,
-      "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.698,
-      "spread_home": -6.0,
-      "pick": "Florida State",
-      "why": [
-        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Clemson: pregame Elo, with annual regression toward average; the opponent-adjusted PPA matchup.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Florida State's role won 41/75. This is historical context, not an additional forecast probability."
-      ],
-      "historical_profile": {
-        "available": true,
-        "features": [
-          "joint_off_ppa_edge",
-          "joint_off_success_edge",
-          "joint_off_explosive_edge",
-          "joint_points_edge",
-          "elo_home_prob"
-        ],
-        "n": 75,
-        "home_wins": 41,
-        "home_win_rate": 0.547,
-        "median_distance": 0.29,
-        "examples": [
-          {
-            "season": 2025,
-            "game_id": "401756945",
-            "home_team": "Texas Tech",
-            "away_team": "BYU",
-            "home_points": 29,
-            "away_points": 7,
-            "distance": 0.099
-          },
-          {
-            "season": 2024,
-            "game_id": "401643820",
-            "home_team": "Texas State",
-            "away_team": "Louisiana",
-            "home_points": 17,
-            "away_points": 23,
-            "distance": 0.143
-          },
-          {
-            "season": 2014,
-            "game_id": "400548060",
-            "home_team": "UTSA",
-            "away_team": "UTEP",
-            "home_points": 0,
-            "away_points": 34,
-            "distance": 0.15
-          }
-        ],
-        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
-      },
-      "model_log_odds_terms": {
-        "joint_off_ppa_edge": -0.04455,
-        "joint_off_success_edge": 0.3338,
-        "joint_off_explosive_edge": -0.00397,
-        "joint_points_edge": 0.2594,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.03944,
-        "is_postseason": -0.00488,
-        "elo_home_prob": -0.44243,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
-      },
-      "model_log_odds_intercept": 0.40731461,
-      "model_input_values": {
-        "joint_off_ppa_edge": 0.128066,
-        "joint_off_success_edge": 0.073842,
-        "joint_off_explosive_edge": 0.006962,
-        "joint_points_edge": 12.723122,
-        "neutral_site": 0.0,
-        "rest_diff": 7.0,
-        "is_postseason": 0.0,
-        "elo_home_prob": 0.517681
-      },
-      "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
-      },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
-      "teams": {
-        "away": {
-          "name": "Clemson",
-          "stats": [
-            {
-              "label": "Offense (PPA/play)",
-              "value": -0.04,
-              "rank": 244,
-              "of": 316
-            },
-            {
-              "label": "Defense (PPA allowed)",
-              "value": -0.017,
-              "rank": 57,
-              "of": 316
-            },
-            {
-              "label": "Success rate",
-              "value": "36.8%",
-              "rank": 229,
-              "of": 316
-            },
-            {
-              "label": "Explosiveness",
-              "value": 1.14,
-              "rank": 264,
-              "of": 316
+              "rank": 292,
+              "of": 317
             }
           ]
         },
         "home": {
-          "name": "Florida State",
+          "name": "Minnesota",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.21,
-              "rank": 55,
-              "of": 316
+              "value": 0.017,
+              "rank": 199,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": 0.186,
-              "rank": 235,
-              "of": 316
+              "value": -0.019,
+              "rank": 59,
+              "of": 317
             },
             {
               "label": "Success rate",
-              "value": "43.7%",
-              "rank": 90,
-              "of": 316
+              "value": "37.8%",
+              "rank": 212,
+              "of": 317
             },
             {
               "label": "Explosiveness",
-              "value": 1.41,
-              "rank": 36,
-              "of": 316
+              "value": 1.21,
+              "rank": 212,
+              "of": 317
             }
           ]
         }
@@ -1140,22 +327,21 @@
       "ai_note": null
     },
     {
-      "game_id": "401858509",
-      "game_date": "2026-10-31",
-      "away_team": "Ohio State",
-      "home_team": "USC",
+      "game_id": "401856743",
+      "game_date": "2026-11-07",
+      "away_team": "Texas",
+      "home_team": "Missouri",
       "neutral": false,
-      "model_prob_home": 0.302,
-      "base_model_prob_home": 0.302,
+      "model_prob_home": 0.375,
+      "base_model_prob_home": 0.375,
       "ranking_adjustment_home": 0.0,
-      "market_prob_home": 0.287,
-      "spread_home": 6.5,
-      "pick": "Ohio State",
+      "market_prob_home": 0.405,
+      "spread_home": 2.75,
+      "pick": "Texas",
       "why": [
-        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted scoring matchup; the opponent-adjusted success-rate matchup.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 7 games per team.",
-        "Inputs pulling toward USC: the opponent-adjusted PPA matchup; the rest-day difference.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Ohio State's role won 48/75. This is historical context, not an additional forecast probability."
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; pregame Elo, with annual regression toward average; the opponent-adjusted scoring matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Texas's role won 37/75. This is historical context, not an additional forecast probability."
       ],
       "historical_profile": {
         "available": true,
@@ -1167,132 +353,454 @@
           "elo_home_prob"
         ],
         "n": 75,
-        "home_wins": 27,
-        "home_win_rate": 0.36,
-        "median_distance": 0.24,
+        "home_wins": 38,
+        "home_win_rate": 0.507,
+        "median_distance": 0.297,
         "examples": [
           {
-            "season": 2019,
-            "game_id": "401112197",
-            "home_team": "Northwestern",
-            "away_team": "Iowa",
-            "home_points": 0,
-            "away_points": 20,
-            "distance": 0.119
+            "season": 2017,
+            "game_id": "400945261",
+            "home_team": "Wyoming",
+            "away_team": "Hawai'i",
+            "home_points": 28,
+            "away_points": 21,
+            "distance": 0.1
           },
           {
-            "season": 2018,
-            "game_id": "401019512",
-            "home_team": "Navy",
-            "away_team": "Houston",
-            "home_points": 36,
-            "away_points": 49,
-            "distance": 0.122
+            "season": 2014,
+            "game_id": "400547744",
+            "home_team": "Clemson",
+            "away_team": "NC State",
+            "home_points": 41,
+            "away_points": 0,
+            "distance": 0.148
           },
           {
-            "season": 2016,
-            "game_id": "400869473",
-            "home_team": "Florida State",
-            "away_team": "Clemson",
-            "home_points": 34,
-            "away_points": 37,
-            "distance": 0.137
+            "season": 2017,
+            "game_id": "400938668",
+            "home_team": "Florida International",
+            "away_team": "Western Kentucky",
+            "home_points": 41,
+            "away_points": 17,
+            "distance": 0.171
           }
         ],
         "note": "Descriptive historical sample; this rate is not the calibrated forecast."
       },
       "model_log_odds_terms": {
-        "joint_off_ppa_edge": 0.0908,
-        "joint_off_success_edge": -0.30725,
-        "joint_off_explosive_edge": -0.11036,
-        "joint_points_edge": -0.41805,
-        "neutral_site": -0.0304,
-        "rest_diff": 0.0387,
-        "is_postseason": -0.00488,
-        "elo_home_prob": -0.49026,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
+        "joint_off_ppa_edge": -0.00395,
+        "joint_off_success_edge": -0.4668,
+        "joint_off_explosive_edge": -0.02991,
+        "joint_points_edge": -0.1244,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.24617,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
       },
-      "model_log_odds_intercept": 0.40731461,
+      "model_log_odds_intercept": 0.40936042,
       "model_input_values": {
-        "joint_off_ppa_edge": -0.104774,
-        "joint_off_success_edge": -0.029088,
-        "joint_off_explosive_edge": -0.169677,
-        "joint_points_edge": -9.797377,
+        "joint_off_ppa_edge": 0.058666,
+        "joint_off_success_edge": -0.055611,
+        "joint_off_explosive_edge": -0.037699,
+        "joint_points_edge": -0.046902,
         "neutral_site": 0.0,
-        "rest_diff": -7.0,
+        "rest_diff": 0.0,
         "is_postseason": 0.0,
-        "elo_home_prob": 0.510062
+        "elo_home_prob": 0.549246
       },
       "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
       },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
       "teams": {
         "away": {
+          "name": "Texas",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.066,
+              "rank": 164,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.045,
+              "rank": 34,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "41.5%",
+              "rank": 137,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.23,
+              "rank": 188,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Missouri",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.173,
+              "rank": 78,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.002,
+              "rank": 71,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "40.5%",
+              "rank": 156,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.37,
+              "rank": 55,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401858514",
+      "game_date": "2026-11-07",
+      "away_team": "Oregon",
+      "home_team": "Ohio State",
+      "neutral": false,
+      "model_prob_home": 0.808,
+      "base_model_prob_home": 0.807,
+      "ranking_adjustment_home": 0.0005,
+      "market_prob_home": 0.747,
+      "spread_home": -7.75,
+      "pick": "Ohio State",
+      "why": [
+        "The separate computer rankings favor Ohio State; they shift the home win estimate by +0.05 percentage points.",
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup; pregame Elo, with annual regression toward average.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Oregon: the opponent-adjusted PPA matchup; venue context.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Ohio State's role won 63/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 63,
+        "home_win_rate": 0.84,
+        "median_distance": 0.247,
+        "examples": [
+          {
+            "season": 2025,
+            "game_id": "401754596",
+            "home_team": "Wake Forest",
+            "away_team": "North Carolina",
+            "home_points": 28,
+            "away_points": 12,
+            "distance": 0.064
+          },
+          {
+            "season": 2023,
+            "game_id": "401520229",
+            "home_team": "Louisiana Tech",
+            "away_team": "North Texas",
+            "home_points": 37,
+            "away_points": 40,
+            "distance": 0.111
+          },
+          {
+            "season": 2021,
+            "game_id": "401309898",
+            "home_team": "UCLA",
+            "away_team": "Colorado",
+            "home_points": 44,
+            "away_points": 20,
+            "distance": 0.138
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": -0.09525,
+        "joint_off_success_edge": 0.54791,
+        "joint_off_explosive_edge": 0.05587,
+        "joint_points_edge": 0.31053,
+        "neutral_site": -0.03014,
+        "rest_diff": 0.00523,
+        "is_postseason": -0.00502,
+        "elo_home_prob": 0.24838,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.223553,
+        "joint_off_success_edge": 0.109519,
+        "joint_off_explosive_edge": 0.108421,
+        "joint_points_edge": 14.475239,
+        "neutral_site": 0.0,
+        "rest_diff": -1.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.627421
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Oregon",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.115,
+              "rank": 124,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.028,
+              "rank": 49,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "41.6%",
+              "rank": 134,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.28,
+              "rank": 138,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
           "name": "Ohio State",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.273,
-              "rank": 23,
-              "of": 316
+              "value": 0.256,
+              "rank": 26,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": -0.11,
-              "rank": 9,
-              "of": 316
+              "value": -0.073,
+              "rank": 21,
+              "of": 317
             },
             {
               "label": "Success rate",
-              "value": "49.1%",
-              "rank": 22,
-              "of": 316
+              "value": "48.4%",
+              "rank": 26,
+              "of": 317
             },
             {
               "label": "Explosiveness",
-              "value": 1.31,
-              "rank": 100,
-              "of": 316
+              "value": 1.28,
+              "rank": 134,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401856740",
+      "game_date": "2026-11-07",
+      "away_team": "Alabama",
+      "home_team": "LSU",
+      "neutral": false,
+      "model_prob_home": 0.611,
+      "base_model_prob_home": 0.611,
+      "ranking_adjustment_home": 0.0001,
+      "market_prob_home": 0.698,
+      "spread_home": -6.0,
+      "pick": "LSU",
+      "why": [
+        "The separate computer rankings favor LSU; they shift the home win estimate by +0.01 percentage points.",
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup; the opponent-adjusted explosiveness matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Alabama: pregame Elo, with annual regression toward average; the opponent-adjusted PPA matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching LSU's role won 35/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 35,
+        "home_win_rate": 0.467,
+        "median_distance": 0.232,
+        "examples": [
+          {
+            "season": 2025,
+            "game_id": "401752845",
+            "home_team": "Wisconsin",
+            "away_team": "Maryland",
+            "home_points": 10,
+            "away_points": 27,
+            "distance": 0.107
+          },
+          {
+            "season": 2023,
+            "game_id": "401532625",
+            "home_team": "Boise State",
+            "away_team": "Air Force",
+            "home_points": 27,
+            "away_points": 19,
+            "distance": 0.14
+          },
+          {
+            "season": 2024,
+            "game_id": "401643831",
+            "home_team": "Georgia State",
+            "away_team": "Arkansas State",
+            "home_points": 20,
+            "away_points": 27,
+            "distance": 0.152
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": -0.0314,
+        "joint_off_success_edge": 0.22445,
+        "joint_off_explosive_edge": 0.04218,
+        "joint_points_edge": 0.0882,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.23292,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.108241,
+        "joint_off_success_edge": 0.056881,
+        "joint_off_explosive_edge": 0.085102,
+        "joint_points_edge": 7.051573,
+        "neutral_site": 0.0,
+        "rest_diff": 0.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.55134
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Alabama",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.239,
+              "rank": 35,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.042,
+              "rank": 35,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "47.0%",
+              "rank": 42,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.3,
+              "rank": 116,
+              "of": 317
             }
           ]
         },
         "home": {
-          "name": "USC",
+          "name": "LSU",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.248,
-              "rank": 33,
-              "of": 316
+              "value": 0.266,
+              "rank": 21,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": 0.112,
-              "rank": 165,
-              "of": 316
+              "value": -0.101,
+              "rank": 10,
+              "of": 317
             },
             {
               "label": "Success rate",
               "value": "50.9%",
               "rank": 8,
-              "of": 316
+              "of": 317
             },
             {
               "label": "Explosiveness",
-              "value": 1.19,
-              "rank": 228,
-              "of": 316
+              "value": 1.21,
+              "rank": 210,
+              "of": 317
             }
           ]
         }
@@ -1300,22 +808,22 @@
       "ai_note": null
     },
     {
-      "game_id": "401862814",
-      "game_date": "2026-11-01",
-      "away_team": "Army",
-      "home_team": "Memphis",
+      "game_id": "401856745",
+      "game_date": "2026-11-07",
+      "away_team": "Kentucky",
+      "home_team": "Tennessee",
       "neutral": false,
-      "model_prob_home": 0.745,
-      "base_model_prob_home": 0.745,
+      "model_prob_home": 0.627,
+      "base_model_prob_home": 0.627,
       "ranking_adjustment_home": 0.0,
       "market_prob_home": 0.698,
       "spread_home": -6.0,
-      "pick": "Memphis",
+      "pick": "Tennessee",
       "why": [
-        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted explosiveness matchup; pregame Elo, with annual regression toward average.",
-        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-10-26, with at least 6 games per team.",
-        "Inputs pulling toward Army: the opponent-adjusted PPA matchup; venue context.",
-        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Memphis's role won 60/75. This is historical context, not an additional forecast probability."
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted explosiveness matchup; the opponent-adjusted scoring matchup; pregame Elo, with annual regression toward average.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Kentucky: the opponent-adjusted success-rate matchup; venue context.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Tennessee's role won 47/75. This is historical context, not an additional forecast probability."
       ],
       "historical_profile": {
         "available": true,
@@ -1327,132 +835,774 @@
           "elo_home_prob"
         ],
         "n": 75,
-        "home_wins": 60,
-        "home_win_rate": 0.8,
-        "median_distance": 0.297,
+        "home_wins": 47,
+        "home_win_rate": 0.627,
+        "median_distance": 0.222,
         "examples": [
           {
-            "season": 2019,
-            "game_id": "401117913",
-            "home_team": "Memphis",
-            "away_team": "Cincinnati",
-            "home_points": 34,
-            "away_points": 24,
-            "distance": 0.147
+            "season": 2018,
+            "game_id": "401012305",
+            "home_team": "South Carolina",
+            "away_team": "Missouri",
+            "home_points": 37,
+            "away_points": 35,
+            "distance": 0.133
           },
           {
-            "season": 2025,
-            "game_id": "401762834",
-            "home_team": "Western Michigan",
-            "away_team": "Ball State",
-            "home_points": 42,
-            "away_points": 0,
-            "distance": 0.189
+            "season": 2021,
+            "game_id": "401282647",
+            "home_team": "Clemson",
+            "away_team": "Boston College",
+            "home_points": 19,
+            "away_points": 13,
+            "distance": 0.139
           },
           {
-            "season": 2022,
-            "game_id": "401415635",
-            "home_team": "SMU",
-            "away_team": "Navy",
-            "home_points": 40,
-            "away_points": 34,
-            "distance": 0.191
+            "season": 2018,
+            "game_id": "401012296",
+            "home_team": "Kentucky",
+            "away_team": "South Carolina",
+            "home_points": 24,
+            "away_points": 10,
+            "distance": 0.146
           }
         ],
         "note": "Descriptive historical sample; this rate is not the calibrated forecast."
       },
       "model_log_odds_terms": {
-        "joint_off_ppa_edge": -0.06113,
-        "joint_off_success_edge": 0.29629,
-        "joint_off_explosive_edge": 0.18066,
-        "joint_points_edge": 0.14889,
-        "neutral_site": -0.0304,
-        "rest_diff": -0.01153,
-        "is_postseason": -0.00488,
-        "elo_home_prob": 0.16192,
-        "missingindicator_joint_off_ppa_edge": -0.00366,
-        "missingindicator_joint_off_success_edge": -0.00366,
-        "missingindicator_joint_off_explosive_edge": -0.00366,
-        "missingindicator_joint_points_edge": -0.00366
+        "joint_off_ppa_edge": -0.00446,
+        "joint_off_success_edge": -0.0592,
+        "joint_off_explosive_edge": 0.12607,
+        "joint_points_edge": 0.09215,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00596,
+        "is_postseason": -0.00502,
+        "elo_home_prob": 0.01165,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
       },
-      "model_log_odds_intercept": 0.40731461,
+      "model_log_odds_intercept": 0.40936042,
       "model_input_values": {
-        "joint_off_ppa_edge": 0.156588,
-        "joint_off_success_edge": 0.06782,
-        "joint_off_explosive_edge": 0.313502,
-        "joint_points_edge": 9.049417,
+        "joint_off_ppa_edge": 0.059583,
+        "joint_off_success_edge": 0.01072,
+        "joint_off_explosive_edge": 0.22801,
+        "joint_points_edge": 7.183653,
         "neutral_site": 0.0,
-        "rest_diff": 2.0,
+        "rest_diff": 1.0,
         "is_postseason": 0.0,
-        "elo_home_prob": 0.61394
+        "elo_home_prob": 0.59
       },
       "model_reference_values": {
-        "joint_off_ppa_edge": 0.05142659010772807,
-        "joint_off_success_edge": 0.020245837971234058,
-        "joint_off_explosive_edge": 0.013553642716270024,
-        "joint_points_edge": 4.099955995169688,
-        "neutral_site": 0.07635028841111693,
-        "rest_diff": -0.06586261143156791,
-        "is_postseason": 0.050340849501835344,
-        "elo_home_prob": 0.5881500035006407
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
       },
-      "profile_snapshot_utc": "2026-10-26T00:00:00+00:00",
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
       "teams": {
         "away": {
-          "name": "Army",
+          "name": "Kentucky",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.336,
-              "rank": 7,
-              "of": 316
+              "value": 0.217,
+              "rank": 52,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": 0.204,
-              "rank": 250,
-              "of": 316
+              "value": 0.042,
+              "rank": 96,
+              "of": 317
             },
             {
               "label": "Success rate",
-              "value": "51.2%",
-              "rank": 6,
-              "of": 316
+              "value": "49.3%",
+              "rank": 19,
+              "of": 317
             },
             {
               "label": "Explosiveness",
-              "value": 1.14,
-              "rank": 263,
-              "of": 316
+              "value": 1.1,
+              "rank": 296,
+              "of": 317
             }
           ]
         },
         "home": {
-          "name": "Memphis",
+          "name": "Tennessee",
           "stats": [
             {
               "label": "Offense (PPA/play)",
-              "value": 0.201,
-              "rank": 62,
-              "of": 316
+              "value": 0.164,
+              "rank": 82,
+              "of": 317
             },
             {
               "label": "Defense (PPA allowed)",
-              "value": 0.062,
-              "rank": 130,
-              "of": 316
+              "value": -0.082,
+              "rank": 15,
+              "of": 317
             },
             {
               "label": "Success rate",
-              "value": "47.7%",
-              "rank": 35,
-              "of": 316
+              "value": "45.2%",
+              "rank": 70,
+              "of": 317
             },
             {
               "label": "Explosiveness",
-              "value": 1.3,
-              "rank": 101,
-              "of": 316
+              "value": 1.13,
+              "rank": 275,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401858291",
+      "game_date": "2026-11-08",
+      "away_team": "Miami",
+      "home_team": "Notre Dame",
+      "neutral": false,
+      "model_prob_home": 0.603,
+      "base_model_prob_home": 0.603,
+      "ranking_adjustment_home": -0.0005,
+      "market_prob_home": 0.734,
+      "spread_home": -7.25,
+      "pick": "Notre Dame",
+      "why": [
+        "The separate computer rankings favor Miami; they shift the home win estimate by -0.05 percentage points.",
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted success-rate matchup; the opponent-adjusted scoring matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Miami: pregame Elo, with annual regression toward average; the opponent-adjusted PPA matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Notre Dame's role won 40/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 40,
+        "home_win_rate": 0.533,
+        "median_distance": 0.23,
+        "examples": [
+          {
+            "season": 2017,
+            "game_id": "400945262",
+            "home_team": "Utah State",
+            "away_team": "BYU",
+            "home_points": 40,
+            "away_points": 24,
+            "distance": 0.101
+          },
+          {
+            "season": 2024,
+            "game_id": "401629032",
+            "home_team": "UConn",
+            "away_team": "Buffalo",
+            "home_points": 47,
+            "away_points": 3,
+            "distance": 0.102
+          },
+          {
+            "season": 2017,
+            "game_id": "400935292",
+            "home_team": "Oregon",
+            "away_team": "Washington State",
+            "home_points": 10,
+            "away_points": 33,
+            "distance": 0.126
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": -0.05043,
+        "joint_off_success_edge": 0.32189,
+        "joint_off_explosive_edge": -0.0196,
+        "joint_points_edge": 0.05486,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.24815,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.142605,
+        "joint_off_success_edge": 0.072738,
+        "joint_off_explosive_edge": -0.020131,
+        "joint_points_edge": 5.938543,
+        "neutral_site": 0.0,
+        "rest_diff": 0.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.548932
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Miami",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.388,
+              "rank": 1,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.04,
+              "rank": 95,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "52.6%",
+              "rank": 3,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.31,
+              "rank": 104,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Notre Dame",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.356,
+              "rank": 3,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.027,
+              "rank": 54,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "51.5%",
+              "rank": 5,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.18,
+              "rank": 243,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401862823",
+      "game_date": "2026-11-08",
+      "away_team": "Air Force",
+      "home_team": "Army",
+      "neutral": false,
+      "model_prob_home": 0.567,
+      "base_model_prob_home": 0.567,
+      "ranking_adjustment_home": 0.0,
+      "market_prob_home": 0.62,
+      "spread_home": -3.5,
+      "pick": "Army",
+      "why": [
+        "The fitted statistical model's strongest supporting inputs are pregame Elo, with annual regression toward average; the opponent-adjusted scoring matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Air Force: the opponent-adjusted success-rate matchup; the opponent-adjusted explosiveness matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Army's role won 40/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 40,
+        "home_win_rate": 0.533,
+        "median_distance": 0.248,
+        "examples": [
+          {
+            "season": 2020,
+            "game_id": "401249434",
+            "home_team": "USC",
+            "away_team": "Oregon",
+            "home_points": 24,
+            "away_points": 31,
+            "distance": 0.088
+          },
+          {
+            "season": 2022,
+            "game_id": "401426586",
+            "home_team": "North Texas",
+            "away_team": "Louisiana Tech",
+            "home_points": 47,
+            "away_points": 27,
+            "distance": 0.089
+          },
+          {
+            "season": 2023,
+            "game_id": "401520331",
+            "home_team": "Sam Houston",
+            "away_team": "Florida International",
+            "home_points": 27,
+            "away_points": 33,
+            "distance": 0.125
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": -0.00178,
+        "joint_off_success_edge": -0.21387,
+        "joint_off_explosive_edge": -0.08028,
+        "joint_points_edge": 0.05532,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": 0.14988,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.054732,
+        "joint_off_success_edge": -0.014449,
+        "joint_off_explosive_edge": -0.123502,
+        "joint_points_edge": 5.95381,
+        "neutral_site": 0.0,
+        "rest_diff": 0.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.61185
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Air Force",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.22,
+              "rank": 48,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.082,
+              "rank": 138,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "50.1%",
+              "rank": 14,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.02,
+              "rank": 304,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Army",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.31,
+              "rank": 11,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.233,
+              "rank": 265,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "50.1%",
+              "rank": 13,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.15,
+              "rank": 262,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401856741",
+      "game_date": "2026-11-08",
+      "away_team": "Georgia",
+      "home_team": "Ole Miss",
+      "neutral": false,
+      "model_prob_home": 0.539,
+      "base_model_prob_home": 0.54,
+      "ranking_adjustment_home": -0.0005,
+      "market_prob_home": 0.38,
+      "spread_home": 3.5,
+      "pick": "Ole Miss",
+      "why": [
+        "The separate computer rankings favor Georgia; they shift the home win estimate by -0.05 percentage points.",
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted explosiveness matchup; the opponent-adjusted PPA matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Georgia: pregame Elo, with annual regression toward average; the opponent-adjusted success-rate matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Ole Miss's role won 48/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 48,
+        "home_win_rate": 0.64,
+        "median_distance": 0.206,
+        "examples": [
+          {
+            "season": 2018,
+            "game_id": "401020758",
+            "home_team": "Northern Illinois",
+            "away_team": "Ohio",
+            "home_points": 24,
+            "away_points": 21,
+            "distance": 0.049
+          },
+          {
+            "season": 2014,
+            "game_id": "400547931",
+            "home_team": "Maryland",
+            "away_team": "Iowa",
+            "home_points": 38,
+            "away_points": 31,
+            "distance": 0.119
+          },
+          {
+            "season": 2018,
+            "game_id": "401013320",
+            "home_team": "Oklahoma State",
+            "away_team": "Texas",
+            "home_points": 38,
+            "away_points": 35,
+            "distance": 0.127
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": 0.00284,
+        "joint_off_success_edge": -0.05932,
+        "joint_off_explosive_edge": 0.06634,
+        "joint_points_edge": -0.05703,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.15399,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.046403,
+        "joint_off_success_edge": 0.010701,
+        "joint_off_explosive_edge": 0.126257,
+        "joint_points_edge": 2.202448,
+        "neutral_site": 0.0,
+        "rest_diff": 0.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.563816
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Georgia",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.297,
+              "rank": 14,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.004,
+              "rank": 66,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "51.4%",
+              "rank": 6,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.17,
+              "rank": 246,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Ole Miss",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.238,
+              "rank": 37,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.106,
+              "rank": 166,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "50.2%",
+              "rank": 11,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.19,
+              "rank": 237,
+              "of": 317
+            }
+          ]
+        }
+      },
+      "ai_note": null
+    },
+    {
+      "game_id": "401858513",
+      "game_date": "2026-11-08",
+      "away_team": "Iowa",
+      "home_team": "Northwestern",
+      "neutral": false,
+      "model_prob_home": 0.514,
+      "base_model_prob_home": 0.514,
+      "ranking_adjustment_home": 0.0,
+      "market_prob_home": 0.517,
+      "spread_home": -0.5,
+      "pick": "Northwestern",
+      "why": [
+        "The fitted statistical model's strongest supporting inputs are the opponent-adjusted scoring matchup; the opponent-adjusted explosiveness matchup; the opponent-adjusted success-rate matchup.",
+        "One fitted model combines this season's opponent-adjusted matchup stats with pregame Elo. The statistical profile uses completed FBS games before 2026-11-02, with at least 7 games per team.",
+        "Inputs pulling toward Iowa: pregame Elo, with annual regression toward average; the opponent-adjusted PPA matchup.",
+        "In 75 similar earlier-season FBS stats-and-Elo matchup profiles, the side matching Northwestern's role won 45/75. This is historical context, not an additional forecast probability."
+      ],
+      "historical_profile": {
+        "available": true,
+        "features": [
+          "joint_off_ppa_edge",
+          "joint_off_success_edge",
+          "joint_off_explosive_edge",
+          "joint_points_edge",
+          "elo_home_prob"
+        ],
+        "n": 75,
+        "home_wins": 45,
+        "home_win_rate": 0.6,
+        "median_distance": 0.325,
+        "examples": [
+          {
+            "season": 2025,
+            "game_id": "401760394",
+            "home_team": "Colorado State",
+            "away_team": "Hawai'i",
+            "home_points": 19,
+            "away_points": 31,
+            "distance": 0.104
+          },
+          {
+            "season": 2025,
+            "game_id": "401761666",
+            "home_team": "Southern Miss",
+            "away_team": "Troy",
+            "home_points": 18,
+            "away_points": 28,
+            "distance": 0.181
+          },
+          {
+            "season": 2018,
+            "game_id": "401015000",
+            "home_team": "Ball State",
+            "away_team": "Western Kentucky",
+            "home_points": 20,
+            "away_points": 28,
+            "distance": 0.189
+          }
+        ],
+        "note": "Descriptive historical sample; this rate is not the calibrated forecast."
+      },
+      "model_log_odds_terms": {
+        "joint_off_ppa_edge": -0.10719,
+        "joint_off_success_edge": 0.01281,
+        "joint_off_explosive_edge": 0.02203,
+        "joint_points_edge": 0.07234,
+        "neutral_site": -0.03014,
+        "rest_diff": -0.00037,
+        "is_postseason": -0.00502,
+        "elo_home_prob": -0.30186,
+        "missingindicator_joint_off_ppa_edge": -0.0035,
+        "missingindicator_joint_off_success_edge": -0.0035,
+        "missingindicator_joint_off_explosive_edge": -0.0035,
+        "missingindicator_joint_points_edge": -0.0035
+      },
+      "model_log_odds_intercept": 0.40936042,
+      "model_input_values": {
+        "joint_off_ppa_edge": 0.245112,
+        "joint_off_success_edge": 0.022439,
+        "joint_off_explosive_edge": 0.050789,
+        "joint_points_edge": 6.522036,
+        "neutral_site": 0.0,
+        "rest_diff": 0.0,
+        "is_postseason": 0.0,
+        "elo_home_prob": 0.540443
+      },
+      "model_reference_values": {
+        "joint_off_ppa_edge": 0.05152464723732245,
+        "joint_off_success_edge": 0.020354678495789473,
+        "joint_off_explosive_edge": 0.013254743366248675,
+        "joint_points_edge": 4.106724056440469,
+        "neutral_site": 0.076209341117598,
+        "rest_diff": -0.06557547956630526,
+        "is_postseason": 0.05004170141784821,
+        "elo_home_prob": 0.5881583098539916
+      },
+      "profile_snapshot_utc": "2026-11-02T00:00:00+00:00",
+      "teams": {
+        "away": {
+          "name": "Iowa",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.104,
+              "rank": 134,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": -0.06,
+              "rank": 29,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "44.1%",
+              "rank": 83,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.2,
+              "rank": 216,
+              "of": 317
+            }
+          ]
+        },
+        "home": {
+          "name": "Northwestern",
+          "stats": [
+            {
+              "label": "Offense (PPA/play)",
+              "value": 0.325,
+              "rank": 9,
+              "of": 317
+            },
+            {
+              "label": "Defense (PPA allowed)",
+              "value": 0.039,
+              "rank": 93,
+              "of": 317
+            },
+            {
+              "label": "Success rate",
+              "value": "48.9%",
+              "rank": 22,
+              "of": 317
+            },
+            {
+              "label": "Explosiveness",
+              "value": 1.35,
+              "rank": 75,
+              "of": 317
             }
           ]
         }
